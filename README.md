@@ -36,7 +36,7 @@ All submitted work must be under the "Creative Commons Attribution-NonCommercial
 ----------------------------
 
 ```
-git clone git@github.com:KuriKai/DHTP.git
-cd DHTP
+git clone git@github.com:KuriKai/DHMP.git
+cd DHMP
 TODO
 ```
