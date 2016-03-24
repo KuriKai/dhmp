@@ -4,7 +4,7 @@
 DOOM High-resolution Model Project
 * [Download](http://dhmp.hiriwa.com/)
 * [GitHub](https://github.com/KuriKai/DHMP/)
-* [Forum](http://dengine.net/forums/viewtopic.php?f=3&t=875#topic)
+* [Forum](http://dengine.net/forums/viewtopic.php?f=3&t=877#topic)
 
 
 
@@ -24,3 +24,19 @@ The aim of the DHMP is to get faithfully recreated high resolution models that m
 **** Copyright / Permissions ****
 ---------------------------------
 All submitted work must be under the "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License."
+
+-----------------------
+**** Participation ****
+-----------------------
+
+*)
+
+----------------------------
+**** Build Instructions ****
+----------------------------
+
+```
+git clone git@github.com:KuriKai/DHTP.git
+cd DHTP
+TODO
+```
