@@ -1,0 +1,109 @@
+title: DHMP Armor bonus
+version: 2017.01.08.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: artifact item armorbonus
+
+#requires </dhmp.common.pack>
+#MISC2
+########################
+#Set up the model
+########################
+asset model.thing.misc3 {
+  path = "armorbonus.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/armor_d.png"
+        normalMap = "textures/armor_n.png"
+        specularMap = "textures/armor_s.png"
+        emissiveMap = "textures/armor_e.png"
+      }
+    }
+    variant "material_glow" { # use the normal textures
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/armor_d.png"
+        normalMap = "textures/armor_n.png"
+      	specularMap = "textures/armor_s.png"
+        emissiveMap = "textures/armor_e.png"
+      }
+    }
+  }
+#meshes
+#0metal
+#1glow
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_metal" {
+      shader = "model.skeletal.generic"
+      material = "material_metal" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 16 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflectionBlur { value = 5.4 }
+      variable uSpecular       { value = 0.9 }
+    }
+    pass "render_pass_glow" {
+      shader = "model.skeletal.generic"
+      material = "material_glow" #make the render pass use the m_body material
+      meshes <@1> #make this render pass use the 0st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 0.0 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0, 1, 0> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpecular       { value = 0 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "glow" {
+      script at 0.1 {
+            #after 0.1 seconds of the animation has passed, change the uAlpha value...
+            # from "0" to "1", making the change take place over 0.4 seconds
+        render_pass_glow.uAlpha.setValueFrom (0, 1, 0.4)
+      }
+      script at 0.6 {
+            #after 0.5 seconds of the animation has passed, change the uAlpha value...
+            # from "1" to "0", making the change take place over 0.4 seconds
+        render_pass_glow.uAlpha.setValueFrom (1, 0, 0.4)
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state BON2 {
+      sequence @0 {
+        timeline = glow
+        duration = 1
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

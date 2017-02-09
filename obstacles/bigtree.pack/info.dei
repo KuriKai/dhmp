@@ -1,0 +1,40 @@
+title: DHMP Bigtree
+version: 020150904-0057
+license: license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle object tree
+
+asset model.thing.misc76 {
+  path = "bigtree.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #dw
+
+
+  material {
+    variant "material_wood" {
+      @0 {
+        diffuseMap = "textures/bigtree_d.png"
+        normalMap = "textures/bigtree_n.png"
+      }
+    }
+  }
+  render {
+    pass "wood" {
+      shader = "model.skeletal.opaque.matte"
+      material = "material_wood"
+      meshes <@0>
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+    }
+  }
+  animation {
+    state BIGTREE {
+      sequence @0 {
+    		prob = 1
+    		priority = 0
+    		looping = True
+	     }
+	  }
+  }
+}
