@@ -1,0 +1,73 @@
+title: DHMP Shotgun shells
+version: 20170108.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition ammo item barrel
+
+#requires <dhmp.common.pack>
+
+########################
+#Set up the model
+########################
+asset model.thing.misc22 {
+  path = "shotgunshells.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_shell" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/shotgunshells_d.png"
+        normalMap = "textures/shotgunshells_n.png"
+        specularMap = "textures/shotgunshells_s.png"
+        emissiveMap = "textures/shotgunshells_e.png"
+      }
+    }
+  }
+#meshes
+#0shell
+#exported at 0.04
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_shell" {
+      shader = "model.skeletal.generic"
+      material = "material_shell" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 6 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 3 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state SHEL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

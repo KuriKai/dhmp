@@ -1,0 +1,76 @@
+title: DHMP Medikit
+version: 20170108.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: powerup item medikit
+
+#requires <dhmp.common.pack>
+#MISC2
+########################
+#Set up the model
+########################
+asset model.thing.misc11 {
+  path = "medikit.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_fabric" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/medikit_d.png"
+        normalMap = "textures/medikit_n.png"
+        specularMap = "textures/medikit_s.png"
+        emissiveMap = "textures/medikit_e.png"
+      }
+    }
+  }
+#meshes
+#0medikit
+#exported at 0.15
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_fabric" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_fabric" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 0st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpecular       { value = 0 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #variable spinner {
+    #  speed = 60
+    #  axis <0, 0, 1>
+    #  node = "root"
+    #}
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state MEDI {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

@@ -1,0 +1,303 @@
+title: DHMP Pillar pack
+version: 20170108.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle item short tall green red pillar heart skull
+
+#meshes as exported from blender
+#0 tall pillar
+#1 heart
+#2 short pillar
+#3 skull
+
+########################
+#===========================Tall Green pillar | MISC32
+########################
+asset model.thing.misc32 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      @0 { #this says which mesh the material will be used with
+        diffuseMap = "textures/pillar_tall_green_d.png"
+        normalMap = "textures/pillar_tall_n.png"
+        specularMap = "textures/pillar_tall_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_marble"
+      meshes <@0>
+      enabled = True
+      variable uColor          { value <1, 1, 1> }
+      variable uGlossiness     { value = 50 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.7 }
+    }
+  }
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state TALLGRNCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
+
+
+########################
+#===========================Tall Red pillar | MISC34
+########################
+asset model.thing.misc34 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      group @0 inherits model.thing.misc32.material.material_marble.@0 {
+        diffuseMap = "textures/pillar_tall_red_d.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" inherits model.thing.misc32.render.render_pass_marble {
+    }
+  }
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state TALLREDCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
+
+
+
+########################
+#===========================Short Green pillar  | MISC33
+########################
+asset model.thing.misc33 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      @2 { #this says which mesh the material will be used with
+        diffuseMap = "textures/pillar_short_green_d.png"
+        normalMap = "textures/pillar_short_n.png"
+        specularMap = "textures/pillar_short_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" inherits model.thing.misc32.render.render_pass_marble {
+    meshes <@2>
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state SHRTGRNCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
+
+
+
+
+
+########################
+#===========================Short Green Heart pillar  | MISC37
+########################
+asset model.thing.misc37 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      @2 { #this says which mesh the material will be used with
+        diffuseMap = "textures/pillar_short_blood_green_d.png"
+        normalMap = "textures/pillar_short_blood_n.png"
+        specularMap = "textures/pillar_short_blood_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_heart" {
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/heart_d.png"
+        normalMap = "textures/heart_n.png"
+        specularMap = "textures/heart_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" inherits model.thing.misc33.render.render_pass_marble {
+    }
+    pass "render_pass_heart" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_heart"
+      meshes <@1>
+      enabled = True
+      variable uGlossiness     { value = 50 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 1 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state HEARTCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
+
+
+
+
+########################
+#===========================Short Red pillar  | MISC35
+########################
+asset model.thing.misc35 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      group @2 inherits model.thing.misc33.material.material_marble.@2 {
+        diffuseMap = "textures/pillar_short_red_d.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" inherits model.thing.misc33.render.render_pass_marble {
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state SHRTREDCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
+
+
+########################
+#===========================Short Red Skull pillar  | MISC36
+########################
+asset model.thing.misc36 {
+  path = "pillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_marble" {
+      group @2 inherits model.thing.misc35.material.material_marble.@2 {
+      }
+    }
+    variant "material_skull" {
+      @3 {
+        diffuseMap = "textures/skull_d.png"
+        normalMap = "textures/skull_n.png"
+        specularMap = "textures/skull_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_marble" inherits model.thing.misc33.render.render_pass_marble {
+    }
+    pass "render_pass_skull" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_skull"
+      meshes <@3>
+      variable uGlossiness     { value = 1 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.6 }
+    }
+  }
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+  	state SKULLCOL {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
