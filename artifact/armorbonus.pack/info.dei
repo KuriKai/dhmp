@@ -26,13 +26,8 @@ asset model.thing.misc3 {
         emissiveMap = "textures/armor_e.png"
       }
     }
-    variant "material_glow" { # use the normal textures
-      @1 { #this says which mesh the material will be used with
-        #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/armor_d.png"
-        normalMap = "textures/armor_n.png"
-      	specularMap = "textures/armor_s.png"
-        emissiveMap = "textures/armor_e.png"
+    variant "material_glow" {
+      group @1 inherits model.thing.misc3.material.material_metal.@0 {
       }
     }
   }
