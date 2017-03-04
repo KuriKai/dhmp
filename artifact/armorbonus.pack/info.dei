@@ -51,6 +51,7 @@ asset model.thing.misc3 {
       variable uEmission       { value = 0 }
       variable uGlossiness     { value = 16 }
       variable uOffsetUV       { value <0, 0> }
+      variable uReflect        { value = 1 }
       variable uReflectionBlur { value = 5.4 }
       variable uSpecular       { value = 0.9 }
     }
@@ -65,6 +66,8 @@ asset model.thing.misc3 {
       variable uColor          { value <0, 1, 0> }
       variable uEmission       { value = 1 }
       variable uGlossiness     { value = 0 }
+      variable uReflect        { value = 0 }
+      variable uReflectionBlur { value = 40 }
       variable uOffsetUV       { value <0, 0> }
       variable uSpecular       { value = 0 }
     }

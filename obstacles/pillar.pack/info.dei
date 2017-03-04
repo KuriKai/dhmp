@@ -41,6 +41,7 @@ asset model.thing.misc32 {
       enabled = True
       variable uColor          { value <1, 1, 1> }
       variable uGlossiness     { value = 50 }
+      variable uReflect        { value = 1 }
       variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 0.7 }
     }
@@ -188,6 +189,7 @@ asset model.thing.misc37 {
       meshes <@1>
       enabled = True
       variable uGlossiness     { value = 50 }
+      variable uReflect        { value = 0 }
       variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 1 }
     }
@@ -285,6 +287,7 @@ asset model.thing.misc36 {
       material = "material_skull"
       meshes <@3>
       variable uGlossiness     { value = 1 }
+      variable uReflect        { value = 0 }
       variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 0.6 }
     }

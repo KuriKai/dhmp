@@ -48,7 +48,8 @@ asset model.thing.misc22 {
       variable uEmission       { value = 0 }
       variable uGlossiness     { value = 6 }
       variable uOffsetUV       { value <0, 0> }
-      variable uReflectionBlur { value = 0 }
+      variable uReflect        { value = 1 }
+      variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 3 }
     }
   }

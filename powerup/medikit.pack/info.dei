@@ -47,6 +47,8 @@ asset model.thing.misc11 {
       variable uEmission       { value = 0 }
       variable uGlossiness     { value = 0 }
       variable uOffsetUV       { value <0, 0> }
+      variable uReflect        { value = 1 }
+      variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 0 }
     }
   }
@@ -55,14 +57,6 @@ asset model.thing.misc11 {
   #setup the animations
   #++++++++++++++++++++++++
   animation {
-    #-----------------
-    #setup different timeline changes
-    #-----------------
-    #variable spinner {
-    #  speed = 60
-    #  axis <0, 0, 1>
-    #  node = "root"
-    #}
     #-----------------
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
