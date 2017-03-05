@@ -25,7 +25,7 @@ asset model.thing.misc76 {
       meshes <@0>
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
-      variable uReflect        { value = 0 }
+      variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 40 }
       variable uOffsetUV       { value <0, 0> }
     }

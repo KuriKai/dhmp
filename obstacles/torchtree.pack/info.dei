@@ -1,0 +1,46 @@
+title: DHMP Torched tree
+version: 020150904-0057
+license: license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle object tree
+
+asset model.thing.misc40 {
+  path = "torchtree.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #dw
+
+
+  material {
+    variant "material_wood" {
+      @0 {
+        diffuseMap = "textures/torchtree_d.png"
+        normalMap = "textures/torchtree_n.png"
+        specularMap = "textures/torchtree_gs.png"
+        emissiveMap = "textures/torchtree_e.png"
+      }
+    }
+  }
+  render {
+    pass "wood" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_wood"
+      meshes <@0>
+      variable uAlpha          { value = 1 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 20 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.5 }
+    }
+  }
+  animation {
+    state TORCHTREE {
+      sequence @0 {
+    		prob = 1
+    		priority = 0
+    		looping = True
+	     }
+	  }
+  }
+}
