@@ -16,7 +16,7 @@ History:
 The DHMP (DOOM High-resolution Model Project) is a community driven project that had is birth as the dmp (Doom model project). Back when the doomsday engine had support for md2 and dmd low resolution models. Most of the models that were availible to play with looked nothing like the original sprites.
 
 Aim:
-The aim of the DHMP is to get faithfully recreated high resolution models that may also have inspiration from the concept sketches and models the id create when making DOOM 
+The aim of the DHMP is to get faithfully recreated high resolution models that may also have inspiration from the concept sketches and models the id create when making DOOM
 
  It will also be a lot more tightly controlled than its predecessor, in regards to both copyrights and quality control.
 
@@ -36,7 +36,7 @@ All submitted work must be under the "Creative Commons Attribution-NonCommercial
 ----------------------------
 
 ```
-git clone git@github.com:KuriKai/DHMP.git
-cd DHMP
-TODO
+git clone git@github.com:KuriKai/dhmp.git
+cd dhmp/build
+./dhmp-doomsday.sh
 ```
