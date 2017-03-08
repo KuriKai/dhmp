@@ -55,20 +55,15 @@ asset model.thing.misc3 {
       variable uReflectionBlur { value = 5.4 }
       variable uSpecular       { value = 0.9 }
     }
-    pass "render_pass_glow" {
-      shader = "model.skeletal.generic"
-      material = "material_glow" #make the render pass use the m_body material
-      meshes <@1> #make this render pass use the 0st model
-      enabled = True
-      #enabled = False
+    pass "render_pass_glow" inherits model.thing.misc3.render.render_pass_metal {
+      material = "material_glow"
+      meshes <@1>
       variable uAlpha          { value = 0.0 }
-      variable uAlphaLimit     { value = 0 }
       variable uColor          { value <0, 1, 0> }
       variable uEmission       { value = 1 }
       variable uGlossiness     { value = 0 }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 40 }
-      variable uOffsetUV       { value <0, 0> }
       variable uSpecular       { value = 0 }
     }
   }
