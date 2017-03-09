@@ -36,6 +36,7 @@ All submitted work must be under the "Creative Commons Attribution-NonCommercial
 ----------------------------
 
 ```
+Requirements: Debian/Redhat based distro with Bash(Linux shell)[may work on windows10 with Bash{not tested!}]
 git clone git@github.com:KuriKai/dhmp.git
 cd dhmp/build
 ./dhmp-doomsday.sh
