@@ -1,0 +1,260 @@
+title: DHMP Cacodemon
+version: 20170325.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle item caco
+
+#meshes
+#1 cacodemon
+#4 cacodemon dead
+#0 lightning
+#3 eye
+#2 blood
+
+#exported at 0.14
+
+########################
+#Set up the model
+########################
+asset model.thing.head {
+  path = "caco.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_body" {
+      @1 {
+        diffuseMap = "textures/body_d.png"
+        normalMap = "textures/body_n.png"
+        specularMap = "textures/body_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+      @3 { #eye
+        diffuseMap = "textures/eye_d.png"
+        normalMap = "textures/eye_n.png"
+        specularMap = "textures/eye_gs.png"
+        emissiveMap = "textures/eye_e.png"
+      }
+    }
+    variant "material_body_dead" {
+      group @4 inherits model.thing.head.material.material_body.@1 {
+      diffuseMap = "textures/body_dead_d.png"
+      normalMap = "textures/body_dead_n.png"
+      specularMap = "textures/body_dead_gs.png"
+      }
+    }
+    variant "material_lightning" {
+      @0 {
+        diffuseMap = "textures/teeth_d.png"
+        normalMap = "textures/black_e.png"
+        specularMap = "textures/black_e.png"
+        emissiveMap = "textures/teeth_d.png"
+      }
+    }
+    variant "material_blood" {
+      @2 {
+        diffuseMap = "textures/blood.png"
+        normalMap = "textures/blood_n.png"
+        specularMap = "textures/blood_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_body" {
+      shader = "model.skeletal.generic"
+      material = "material_body"
+      meshes <@1> #meshes
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 24 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 1.4 }
+    }
+    pass "render_pass_eye" {
+      shader = "model.skeletal.generic"
+      material = "material_body"
+      meshes <@3> #meshes
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 60 }
+      variable uReflection     { value = 0.6 }
+      variable uReflectionBlur { value = 0.5 }
+      variable uSpecular       { value = 3 }
+    }
+    #copy the body pass as we want the same variable settings
+    pass "render_pass_body_dead" inherits model.thing.head.render.render_pass_body {
+      material = "material_body_dead"
+      enabled = False
+      meshes <@4> #meshes
+    }
+    pass "render_pass_lightning" {
+      shader = "model.caco.uvscroll"
+      material = "material_lightning"
+      meshes <@0>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.6 }
+    }
+    pass "render_pass_blood" {
+      shader = "model.skeletal.generic"
+      material = "material_blood"
+      meshes <@2>
+      enabled = False
+      variable uAlpha          { value = 0.86 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.3, 0, 0.5> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 15 }
+      variable uReflection     { value = 0.8 }
+      variable uReflectionBlur { value = 4.2 }
+      variable uSpecular       { value = 0.5 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "stand" {
+      script at 0 {
+      render_pass_body_dead.enabled = False
+      render_pass_body.enabled = True
+      render_pass_lightning.enabled = False
+      }
+    }
+    timeline "run" {
+      script at 0 {
+      render_pass_body_dead.enabled = False
+      render_pass_body.enabled = True
+      render_pass_lightning.enabled = False
+      }
+    }
+    timeline "pain" {
+      script at 0.1 {
+      render_pass_lightning.enabled = False
+      render_pass_body.uEmission.setValue (0, 0.1)
+      render_pass_eye.uEmission.setValue (0, 0.1)
+      }
+    }
+    timeline "attack" {
+      script at 0 {
+        render_pass_body_dead.enabled = False
+        render_pass_body.enabled = True
+        render_pass_lightning.enabled = True
+        render_pass_body.uEmission.setValueFrom (0, 2.0, 0.5)
+        render_pass_eye.uEmission.setValueFrom (0, 2.0, 0.5)
+      }
+      script at 0.6 {
+        render_pass_body.uEmission.setValueFrom (2.0, 0, 0.4)
+        render_pass_eye.uEmission.setValueFrom (2.0, 0, 0.4)
+      }
+    }
+    timeline "die" {
+      script at 0 {
+        render_pass_body_dead.enabled = True
+        render_pass_body.enabled = False
+        render_pass_lightning.enabled = False
+        render_pass_body.uEmission.setValue (0, 0.1)
+        render_pass_eye.uEmission.setValue (0, 0.1)
+      }
+      script at 0.5 {
+        render_pass_blood.enabled = True
+      }
+    }
+    #0 attack
+    #1 die
+    #2 die2
+    #3 stand1
+    #4 stand2
+    #5 stand3
+    #6 pain1
+    #7 run1
+    #8 run2
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state HEAD_STND {
+      sequence @4 {
+  		  prob = 0.3
+        timeline = stand
+        looping = True
+  		}
+      sequence @5 {
+  		  prob = 0.3
+        timeline = stand
+        looping = True
+  		}
+      sequence @3 {
+        prob = 1
+        timeline = stand
+        looping = True
+		  }
+	  }
+    state HEAD_RUN1 {
+      sequence @7 {
+  		  prob = 0.5
+        timeline = run
+        priority = 2
+        looping = True
+  		}
+      sequence @8 {
+  		  timeline = run
+        priority = 2
+        looping = True
+  		}
+	  }
+    state HEAD_PAIN {
+      sequence @6 {
+        priority = 4
+        timeline = pain
+      }
+    }
+    state HEAD_ATK1 {
+      sequence @0 {
+        priority = 3
+        timeline = attack
+        #this make the animation start from begining if state is hit again
+        #this makes sure it always show and attack aniumation when it fires a ball at you
+        alwaysTrigger = True
+      }
+    }
+    state HEAD_DIE1 {
+      sequence @2 {
+        prob = 0.5
+        #we want dieing to take priority over everything
+        priority = 5
+        timeline = die
+      }
+      sequence @1 {
+        #we want dieing to take priority over everything
+        priority = 5
+        timeline = die
+      }
+    }
+  }
+}
