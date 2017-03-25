@@ -1,0 +1,138 @@
+title: DHMP Healthbonus
+version: 20170108.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: artifact item healthbonus
+
+
+########################
+#Set up the model
+########################
+asset model.thing.misc2 {
+  path = "healthbonus.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #meshes
+  #0cork
+  #1liquid
+  #2botle
+  #exported at 0.07
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_cork" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/bottle_d.png"
+        normalMap = "textures/bottle_n.png"
+        specularMap = "textures/bottle_gs.png"
+        emissiveMap = "textures/bottle_e.png"
+      }
+    }
+    variant "material_glass" { # use the normal textures
+      @2 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/bottle_d.png"
+        normalMap = "textures/bottle_n.png"
+      	specularMap = "textures/bottle_gs.png"
+        diffuseMap = "textures/bottle_e.png"
+      }
+    }
+    variant "material_liquid" { # use the normal textures
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/liquid_d.png"
+        normalMap = "textures/liquid_e.png"
+      	specularMap = "textures/liquid_gs.png"
+      	emissiveMap = "textures/liquid_e.png"
+      }
+    }
+  }
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_cork" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_cork" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 0st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_liquid" {
+      shader = "model.skeletal.generic"
+      #shader = "model.thing.misc2.uvscroll"
+      material = "material_liquid" #make the render pass use the m_body material
+      meshes <@1> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 2 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_bottle" {
+      shader = "model.skeletal.generic"
+      material = "material_glass" #make the render pass use the m_body material
+      meshes <@2> #make this render pass use the 3st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0, 0, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uReflection     { value = 1.5 }
+      variable uReflectionBlur { value = 2 }
+      variable uSpecular       { value = 4 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "water_glow" {
+      script at 0.1 {
+            #after 0.1 seconds of the animation has passed, change the emission value...
+            # from "0" to "2", making the change take place over 0.5 seconds
+        render_pass_liquid.uEmission.setValueFrom (0, 2, 0.4)
+      }
+      script at 0.6 {
+            #after 0.6 seconds of the animation has passed, change the emission value...
+            # from "1" to "0", making the change take place over 0.4 seconds
+        render_pass_liquid.uEmission.setValueFrom (1, 0, 0.4)
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state BON1 {
+      sequence @0 {
+        timeline = water_glow
+        duration = 1
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
