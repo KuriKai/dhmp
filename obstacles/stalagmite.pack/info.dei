@@ -1,0 +1,64 @@
+title: DHMP Stalagmite
+version: 20170327.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: object stalagmite
+
+#meshes
+#0 tech part
+
+#exported at 0.15
+
+
+asset model.thing.misc47 {
+  path = "stalagmite.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #randomise the angle the stalagmite is facing, so they are more unique
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_stalagmite" {
+      @0 {
+        diffuseMap = "textures/stalagmite_d.png"
+        normalMap = "textures/stalagmite_n.png"
+    	  specularMap = "textures/stalagmite_s.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_stalagmite" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_stalagmite"
+      meshes <@0>
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 0.5 }
+      }
+    }
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    state STALAGTITE {
+      sequence @0 {
+    		prob = 1
+    		priority = 0
+    		looping = True
+	     }
+	  }
+  }
+}
