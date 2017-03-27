@@ -50,6 +50,14 @@ do   # The quotes are necessary here
       cp -R $PACK $BASE_PATH/doomsday/$PACK
       rm -r $BASE_PATH/doomsday/$PACK/textures-hires
       rm -r $BASE_PATH/doomsday/$PACK/textures-lowres
+      BLEND_FILE=`ls $BASE_PATH/doomsday/$PACK | grep .blend`
+      if [ ! -z "$BLEND_FILE" ]
+      then
+        echo "Removing unessesary blend file, we don't need to put it in a pack"
+        rm -v $BASE_PATH/doomsday/$PACK/$BLEND_FILE
+      else
+        echo "No blend file found, therefore not trying to delete a blend file"
+      fi
       pushd $BASE_PATH/doomsday/$PACK/
       zip -r $BASE_PATH/built/dhmp.$PACK *
       popd
@@ -61,7 +69,14 @@ do   # The quotes are necessary here
       rm -r $BASE_PATH/doomsday/$PACK/textures-hires
       rm -r $BASE_PATH/doomsday/$PACK/textures
       mv $BASE_PATH/doomsday/$PACK/textures-lowres $BASE_PATH/doomsday/$PACK/textures
-      pushd $BASE_PATH/doomsday/$PACK/
+      BLEND_FILE=`ls $BASE_PATH/doomsday/$PACK | grep .blend`
+      if [ ! -z "$BLEND_FILE" ]
+      then
+        echo "Removing unessesary blend file, we don't need to put it in a pack"
+        rm -v $BASE_PATH/doomsday/$PACK/$BLEND_FILE
+      else
+        echo "No blend file found, therefore not trying to delete a blend file"
+      fi      pushd $BASE_PATH/doomsday/$PACK/
       zip -r $BASE_PATH/built/dhmp.low.$PACK *
       popd
     fi
