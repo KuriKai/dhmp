@@ -76,7 +76,8 @@ do   # The quotes are necessary here
         rm -v $BASE_PATH/doomsday/$PACK/$BLEND_FILE
       else
         echo "No blend file found, therefore not trying to delete a blend file"
-      fi      pushd $BASE_PATH/doomsday/$PACK/
+      fi
+      pushd $BASE_PATH/doomsday/$PACK/
       zip -r $BASE_PATH/built/dhmp.low.$PACK *
       popd
     fi
