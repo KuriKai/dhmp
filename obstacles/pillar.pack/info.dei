@@ -1,7 +1,7 @@
 title: DHMP Pillar pack
-version: 20170108.01
+version: 20170401.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: obstacle item short tall green red pillar heart skull
+tags: obstacle short tall green red pillar heart skull
 
 #meshes as exported from blender
 #0 tall pillar

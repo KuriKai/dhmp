@@ -1,7 +1,7 @@
 title: DHMP Torched tree
-version: 020150904-0057
-license: license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: obstacle object tree
+version: 20170401.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle tree
 
 asset model.thing.misc40 {
   path = "torchtree.fbx"
