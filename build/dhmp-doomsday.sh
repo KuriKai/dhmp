@@ -108,6 +108,7 @@ do   # The quotes are necessary here
   popd
 done
 pushd $BASE_PATH/built/
+cp $BASE_PATH/docs/* $BASE_PATH/built/$PACK_FOLDERNAME/
 if [[ "$RESOLUTION" == "medium" ]]
 then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.$DATESTAMP.zip $PACK_FOLDERNAME
