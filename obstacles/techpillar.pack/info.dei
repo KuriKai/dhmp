@@ -1,0 +1,82 @@
+title: DHMP Techpillar
+version: 20170108.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle item techpillar
+
+#meshes
+#0 tech part
+#1 pillar part
+#exported at 0.17
+
+
+########################
+#Set up the model
+########################
+asset model.thing.misc48 {
+  path = "techpillar.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" { # use the normal textures
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/techpillar_d.png"
+        normalMap = "textures/techpillar_n.png"
+        specularMap = "textures/techpillar_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_tech" { # use the normal textures
+      group @0 inherits model.thing.misc48.material.material_metal.@1 {
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_metal" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_metal"
+      meshes <@1>
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 40 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.4 }
+    }
+    pass "render_pass_tech" inherits model.thing.misc48.render.render_pass_metal {
+      material = "material_tech"
+      meshes <@0>
+      variable uEmission       { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uGlossiness     { value = 4 }
+      variable uReflection     { value = 0.85 }
+      variable uReflectionBlur { value = 12.5}
+      variable uSpecular       { value = 1.7 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state TECHPILLAR {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
