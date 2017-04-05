@@ -12,6 +12,7 @@ asset model.thing.misc3 {
   path = "armorbonus.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
+  alignment.yaw = random
 
   #++++++++++++++++++++++++
   #set up the textures for the model
