@@ -1,0 +1,100 @@
+title: DHMP Box of Rockets
+version: 20170915.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition ammo shotgun shells
+
+#requires <dhmp.common.pack>
+
+########################
+#Set up the model
+########################
+asset model.thing.misc19 {
+  path = "rocketbox.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/rocketbox_d.png"
+        normalMap = "textures/rocketbox_n.png"
+        specularMap = "textures/rocketbox_s.png"
+        emissiveMap = "textures/rocketbox_e.png"
+      }
+    }
+    variant "material_wood" { # use the normal textures
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/rocketbox_d.png"
+        normalMap = "textures/rocketbox_n.png"
+        specularMap = "textures/rocketbox_s.png"
+        emissiveMap = "textures/rocketbox_e.png"
+      }
+    }
+  }
+#meshes
+#0shell
+#exported at 0.1
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_metal" {
+      shader = "model.skeletal.generic"
+      material = "material_metal" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 50 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 4 }
+    }
+    pass "render_pass_wood" {
+      shader = "model.skeletal.generic"
+      material = "material_wood" #make the render pass use the m_body material
+      meshes <@1> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 69 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.5 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state BROK {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
