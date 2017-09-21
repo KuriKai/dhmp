@@ -1,15 +1,15 @@
-title: DHMP Box of Rockets
+title: DHMP Clip
 version: 20170921.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition ammo rocket box
+tags: ammunition ammo clip
 
 #requires <dhmp.common.pack>
 
 ########################
 #Set up the model
 ########################
-asset model.thing.misc19 {
-  path = "rocketbox.fbx"
+asset model.thing.clip {
+  path = "clip.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
   alignment.yaw = random
@@ -18,38 +18,38 @@ asset model.thing.misc19 {
   #set up the textures for the model
   #++++++++++++++++++++++++
   material {
-    variant "material_metal" { # use the normal textures
+    variant "material_bullet" { # use the normal textures
       @0 { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/rocketbox_d.png"
-        normalMap = "textures/rocketbox_n.png"
-        specularMap = "textures/rocketbox_s.png"
-        emissiveMap = "textures/rocketbox_e.png"
+        diffuseMap = "textures/clip_d.png"
+        normalMap = "textures/clip_n.png"
+        specularMap = "textures/clip_gs.png"
+        emissiveMap = "textures/clip_e.png"
       }
     }
-    variant "material_wood" { # use the normal textures
+    variant "material_case" { # use the normal textures
       @1 { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/rocketbox_d.png"
-        normalMap = "textures/rocketbox_n.png"
-        specularMap = "textures/rocketbox_s.png"
-        emissiveMap = "textures/rocketbox_e.png"
+        diffuseMap = "textures/clip_d.png"
+        normalMap = "textures/clip_n.png"
+        specularMap = "textures/clip_gs.png"
+        emissiveMap = "textures/clip_e.png"
       }
     }
   }
 #meshes
-#0 metal
-#1 wood
-#exported at 0.1
+#0 bullet
+#1 case
+#exported at 0.4
 
 
   #++++++++++++++++++++++++
   #set up the rendering of the skin
   #++++++++++++++++++++++++
   render {
-    pass "render_pass_metal" {
+    pass "render_pass_bullet" {
       shader = "model.skeletal.generic"
-      material = "material_metal" #make the render pass use the m_body material
+      material = "material_bullet" #make the render pass use the m_body material
       meshes <@0> #make this render pass use the 1st model
       enabled = True
       #enabled = False
@@ -57,27 +57,27 @@ asset model.thing.misc19 {
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
-      variable uGlossiness     { value = 50 }
+      variable uGlossiness     { value = 9 }
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 4 }
+      variable uSpecular       { value = 0.7 }
     }
-    pass "render_pass_wood" {
+    pass "render_pass_case" {
       shader = "model.skeletal.generic"
-      material = "material_wood" #make the render pass use the m_body material
+      material = "material_case" #make the render pass use the m_body material
       meshes <@1> #make this render pass use the 2nd model
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
-      variable uColor          { value <1, 1, 1> }
+      variable uColor          { value <0.7, 0.7, 0.7> }
       variable uEmission       { value = 0 }
-      variable uGlossiness     { value = 69 }
+      variable uGlossiness     { value = 25 }
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 0.5 }
+      variable uSpecular       { value = 0.2 }
     }
   }
 
@@ -91,7 +91,7 @@ asset model.thing.misc19 {
     #-----------------
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
-     state BROK {
+     state CLIP {
       sequence @0 {
   		  prob = 1.0
   		  looping = True
