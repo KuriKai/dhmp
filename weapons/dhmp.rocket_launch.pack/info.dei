@@ -1,0 +1,101 @@
+title: DHMP Rocket Launcher
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition rocket launcher weapon pickup
+
+#requires <dhmp.common.pack>
+
+########################
+#Set up the model
+########################
+asset model.thing.misc27 {
+  path = "rocket_launcher.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_rocket" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/rocket_d.png"
+        normalMap = "textures/rocket_n.png"
+        specularMap = "textures/rocket_gs.png"
+        emissiveMap = "textures/rocket_e.png"
+      }
+    }
+    variant "material_rocket_launcher" { # use the normal textures
+      @1 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/rocketlauncher_d.png"
+        normalMap = "textures/rocketlauncher_n.png"
+        specularMap = "textures/rocketlauncher_gs.png"
+        emissiveMap = "textures/rocketlauncher_e.png"
+      }
+    }
+  }
+#meshes
+#0 rocket
+#1 rocket_launcher
+#exported at 0.07
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_rocket" {
+      shader = "model.skeletal.generic"
+      material = "material_rocket" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 9 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.7 }
+    }
+    pass "render_pass_rocket_launcher" {
+      shader = "model.skeletal.generic"
+      material = "material_rocket_launcher" #make the render pass use the m_body material
+      meshes <@1> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 25 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state LAUN {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

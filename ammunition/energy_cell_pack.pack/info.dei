@@ -1,0 +1,75 @@
+title: DHMP Energy cell pack
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition ammo eenrgy cell pack plasma
+
+#requires <dhmp.common.pack>
+
+########################
+#Set up the model
+########################
+asset model.thing.misc21 {
+  path = "energy_cell_pack.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" { # use the normal textures
+      @0 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/energycell_d.png"
+        normalMap = "textures/energycell_n.png"
+        specularMap = "textures/energycell_gs.png"
+        emissiveMap = "textures/energycell_e.png"
+      }
+    }
+  }
+#meshes
+#0 metal
+#exported at 0.6
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_metal" {
+      shader = "model.skeletal.generic"
+      material = "material_metal" #make the render pass use the m_body material
+      meshes <@0> #make this render pass use the 1st model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 125 }
+      variable uGlossiness     { value = 9 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.7 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state CELP {
+      sequence @0 {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
