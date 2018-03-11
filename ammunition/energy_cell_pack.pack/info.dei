@@ -46,7 +46,7 @@ asset model.thing.misc21 {
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
-      variable uEmission       { value = 125 }
+      variable uEmission       { value = 1.5 }
       variable uGlossiness     { value = 9 }
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }

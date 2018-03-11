@@ -5,8 +5,8 @@ tags: DOOM Reflection Cubemaps
 
 # Default reflection maps
 asset texture.reflect.default {
-    interior.path = "indoor-ep1m1.jpg"
-    exterior.path = "outdoor-ep1m1.jpg"
+    interior.path = "ep1m1-in.jpg"
+    exterior.path = "ep1m1-out.jpg"
 }
 asset texture.reflect.e1m1 {
     interior.path = "e1m1-in.png"
@@ -43,6 +43,84 @@ asset texture.reflect.e1m8 {
 asset texture.reflect.e1m9 {
     interior.path = "e1m9-in.png"
     exterior.path = "e1m9-out.png"
+}
+
+
+
+asset texture.reflect.e2m1 {
+    interior.path = "e2m1-in.png"
+    exterior.path = "e2m1-out.png"
+}
+asset texture.reflect.e2m2 {
+    interior.path = "e2m2-in.png"
+    exterior.path = "e2m2-out.png"
+}
+asset texture.reflect.e2m3 {
+    interior.path = "e2m3-in.png"
+    exterior.path = "e2m3-out.png"
+}
+asset texture.reflect.e2m4 {
+    interior.path = "e2m4-in.png"
+    exterior.path = "e2m4-out.png"
+}
+asset texture.reflect.e2m5 {
+    interior.path = "e2m5-in.png"
+    exterior.path = "e2m5-out.png"
+}
+asset texture.reflect.e2m6 {
+    interior.path = "e2m6-in.png"
+    exterior.path = "e2m6-out.png"
+}
+asset texture.reflect.e2m7 {
+    interior.path = "e2m7-in.png"
+    exterior.path = "e2m7-out.png"
+}
+asset texture.reflect.e2m8 {
+    interior.path = "e2m8-in.png"
+    exterior.path = "e2m8-out.png"
+}
+asset texture.reflect.e2m9 {
+    interior.path = "e2m9-in.png"
+    exterior.path = "e2m9-out.png"
+}
+
+
+
+asset texture.reflect.e3m1 {
+    interior.path = "e3m1-in.png"
+    exterior.path = "e3m1-out.png"
+}
+asset texture.reflect.e3m2 {
+    interior.path = "e3m2-in.png"
+    exterior.path = "e3m2-out.png"
+}
+asset texture.reflect.e3m3 {
+    interior.path = "e3m3-in.png"
+    exterior.path = "e3m3-out.png"
+}
+asset texture.reflect.e3m4 {
+    interior.path = "e3m4-in.png"
+    exterior.path = "e3m4-out.png"
+}
+asset texture.reflect.e3m5 {
+    interior.path = "e3m5-in.png"
+    exterior.path = "e3m5-out.png"
+}
+asset texture.reflect.e3m6 {
+    interior.path = "e3m6-in.png"
+    exterior.path = "e3m6-out.png"
+}
+asset texture.reflect.e3m7 {
+    interior.path = "e3m7-in.png"
+    exterior.path = "e3m7-out.png"
+}
+asset texture.reflect.e3m8 {
+    interior.path = "e3m8-in.png"
+    exterior.path = "e3m8-out.png"
+}
+asset texture.reflect.e3m9 {
+    interior.path = "e3m9-in.png"
+    exterior.path = "e3m9-out.png"
 }
 asset texture.reflect.map01 {
     interior.path = "d2_prt1_indoors.png"

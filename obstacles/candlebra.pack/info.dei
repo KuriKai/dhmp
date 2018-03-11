@@ -1,0 +1,121 @@
+title: DHMP Candlebra
+version: 20180311-1449
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle Candlebra
+
+#requires <dhmp.common.pack>
+
+#exported at 0.055
+
+########################
+#Set up the model
+########################
+asset model.thing.misc50 {
+  path = "candlebra.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" {
+      mesh_staff {
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/candlebra_d.png"
+        normalMap = "textures/candlebra_n.png"
+      	specularMap = "textures/candlebra_gs.png"
+      	emissiveMap = "textures/candlebra_e.png"
+      }
+    }
+    variant "material_wax" {
+      mesh_candle
+       {
+        diffuseMap = "textures/candlebra_d.png"
+        normalMap = "textures/candlebra_n.png"
+      	specularMap = "textures/candlebra_gs.png"
+      	emissiveMap = "textures/candlebra_e.png"
+      }
+    }
+    variant "material_flame" {
+      mesh_flame
+       {
+        diffuseMap = "textures/candleflame_d.png"
+        normalMap = "textures/noise3d_flame.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_metal" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_metal"
+      meshes <mesh_staff>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 0.5, 0.5> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 25 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_wax" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_wax"
+      meshes <mesh_candle>
+      enabled = true
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_pass_flame" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material_flame"
+      meshes <mesh_flame>
+      enabled = true
+      depthWrite = false
+      blendFunc <SrcAlpha, One>
+    variable uAlphaMultiplier       { value = 1.5 }
+    variable uAlphaPower            { value = 1 }
+    variable uDiffuseMultiplier     { value <4, 2.1, 1.2> }
+    variable uFresnelTranspPow      { value = 2 }
+    variable uMainOffset            { value <0.08, 0> }
+    variable uMainScaleUV           { value <0.79, 1> }
+    variable uMainSpeedUV           { value <0, 0> }
+    variable uNoiseMultiplier       { value = 0.001 }
+    variable uNoiseScaleUV          { value <0.2, 0.4> }
+    variable uNoiseSpeedUV          { value <0.01, 0.35> }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state CANDELABRA {
+      sequence arm|wait {
+  		  prob = 1.0
+  		  looping = True
+      }
+    }
+  }
+}
