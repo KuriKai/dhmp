@@ -1,12 +1,8 @@
 title: DHMP Postlight pack
-version: 20170401.01
+version: 20180313.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: obstacle postlight
 
-#meshes as exported from blender
-#0 glow
-#1 glass
-#2 metal
 #exported at 0.02
 
 ########################
@@ -21,22 +17,30 @@ asset model.thing.misc31 {
   #set up the textures for the model
   #++++++++++++++++++++++++
   material {
-    variant "material_glow" {
-      @0 {
+    variant "material_glass" {
+      mesh_glass {
         diffuseMap = "textures/pillarlight_d.png"
         normalMap = "textures/pillarlight_n.png"
         specularMap = "textures/pillarlight_gs.png"
         emissiveMap = "textures/pillarlight_e.png"
       }
     }
-    variant "material_glass" {
-      group @1 inherits model.thing.misc31.material.material_glow.@0 {
-      }
-    }
     variant "material_metal" {
-      group @2 inherits model.thing.misc31.material.material_glow.@0 {
+      mesh_post {
+        diffuseMap = "textures/pillarlight_d.png"
+        normalMap = "textures/pillarlight_n.png"
+        specularMap = "textures/pillarlight_gs.png"
+        emissiveMap = "textures/pillarlight_e.png"
       }
     }
+    #variant "material_glow" {
+    #  mesh_glow {
+    #    diffuseMap = "textures/pillarlight_d.png"
+    #    normalMap = "textures/pillarlight_n.png"
+    #    #specularMap = "textures/pillarlight_gs.png"
+    #   #emissiveMap = "textures/pillarlight_e.png"
+    #  }
+    #}
   }
   #++++++++++++++++++++++++
   #set up the rendering of the skin
@@ -45,7 +49,7 @@ asset model.thing.misc31 {
     pass "render_pass_metal" {
       shader = "model.skeletal.opaque.generic"
       material = "material_metal"
-      meshes <@2>
+      meshes <mesh_post>
       enabled = True
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -59,31 +63,33 @@ asset model.thing.misc31 {
     pass "render_pass_glass" {
       shader = "model.skeletal.generic"
       material = "material_glass"
-      meshes <@1>
+      meshes <mesh_glass>
       enabled = True
       variable uAlpha          { value = 0.75 }
       variable uAlphaLimit     { value = 0 }
-      variable uColor          { value <1, 1, 1> }
+      variable uColor          { value <1.5, 1.5, 0.5> }
       variable uEmission       { value = 2 }
       variable uGlossiness     { value = 15 }
       variable uReflection     { value = 1 }
       variable uReflectionBlur { value = 5 }
       variable uSpecular       { value = 10 }
     }
-    pass "render_pass_glow" {
-      shader = "model.skeletal.generic"
-      material = "material_glow"
-      meshes <@0>
-      enabled = True
-      variable uAlpha          { value = 0.15 }
-      variable uAlphaLimit     { value = 0 }
-      variable uColor          { value <1, 1, 1> }
-      variable uEmission       { value = 1 }
-      variable uGlossiness     { value = 0 }
-      variable uReflection     { value = 0 }
-      variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 0 }
-    }
+    #pass "render_pass_glow" {
+   #   shader = "model.skeletal.veirdo.fire"
+   #   material = "material_glow"
+   #   meshes <mesh_glow>
+   #   enabled = true
+   #   depthWrite = false
+   #   blendFunc <SrcAlpha, One>
+#      variable uAlpha          { value = 0.15 }
+#      variable uAlphaLimit     { value = 0 }
+#      variable uColor          { value <1, 1, 1> }
+#      variable uEmission       { value = 1 }
+#      variable uGlossiness     { value = 0 }
+#      variable uReflection     { value = 0 }
+#      variable uReflectionBlur { value = 0 }
+#      variable uSpecular       { value = 0 }
+#    }
   }
   #++++++++++++++++++++++++
   #setup the animations
