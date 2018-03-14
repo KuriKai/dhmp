@@ -20,7 +20,7 @@ echo $BASE_PATH
 #ask what texture resolution they want to build and ask to quit
 while true
 do
-  read -p "Build with (M)edium or (L)ow resolution textures? (Q)uit" -n 1 -r
+  read -p "Build with (H)High, (M)edium, or (L)ow resolution textures? (Q)uit" -n 1 -r
   echo    # (optional) move to a new line
   if [[ $REPLY =~ ^[Mm]$ ]]
   then
@@ -32,6 +32,12 @@ do
   then
     RESOLUTION="low"
     PACK_FOLDERNAME="com.hiriwa.dhmp.low.pack"
+    echo "$PACK_FOLDERNAME"
+    break
+  elif [[ $REPLY =~ ^[Hh]$ ]]
+  then
+    RESOLUTION="high"
+    PACK_FOLDERNAME="com.hiriwa.dhmp.high.pack"
     echo "$PACK_FOLDERNAME"
     break
   elif [[  $REPLY =~ ^[Qq]$  ]]
@@ -103,6 +109,26 @@ do   # The quotes are necessary here
 #      zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$RELEASER.dhmp.low.$PACK *
       zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$PACK_TYPE_FOLDER/$PACK *
       popd
+    elif [[ "$RESOLUTION" == "high"  ]]
+    #copy the pack to the build folder, delete the texture folders
+    #we don't want and rename the one we do want to the right name
+    then
+      cp -R $PACK $BASE_PATH/doomsday/$PACK
+      rm -r $BASE_PATH/doomsday/$PACK/textures-lowres
+      rm -r $BASE_PATH/doomsday/$PACK/textures
+      mv $BASE_PATH/doomsday/$PACK/textures-hires $BASE_PATH/doomsday/$PACK/textures
+      BLEND_FILE=`ls $BASE_PATH/doomsday/$PACK | grep .blend`
+      if [ ! -z "$BLEND_FILE" ]
+      then
+        echo "Removing unessesary blend file, we don't need to put it in a pack"
+        rm -v $BASE_PATH/doomsday/$PACK/$BLEND_FILE
+      else
+        echo "No blend file found, therefore not trying to delete a blend file"
+      fi
+      pushd $BASE_PATH/doomsday/$PACK/
+#      zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$RELEASER.dhmp.low.$PACK *
+      zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$PACK_TYPE_FOLDER/$PACK *
+      popd
     fi
   done
   popd
@@ -115,6 +141,9 @@ then
 elif [[ "$RESOLUTION" == "low"  ]]
 then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.low.$DATESTAMP.zip $PACK_FOLDERNAME
+elif [[ "$RESOLUTION" == "high"  ]]
+then
+  zip -r $BASE_PATH/built/$RELEASER.dhmp.high.$DATESTAMP.zip $PACK_FOLDERNAME
 fi
 popd
 rm -r $BASE_PATH/doomsday
