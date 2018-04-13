@@ -8,6 +8,7 @@ DOOM High-resolution Model Project
 
 
 
+
 ----------------------
 **** Introduction ****
 ----------------------
@@ -29,7 +30,8 @@ All submitted work must be under the "Creative Commons Attribution-NonCommercial
 **** Participation ****
 -----------------------
 
-*)
+* [How to export models from blender to fbx format](https://github.com/KuriKai/dhmp/wiki/Model-exporting)
+* [Tips on Dei creation](https://github.com/KuriKai/dhmp/wiki/Dei-creation)
 
 ----------------------------
 **** Build Instructions ****

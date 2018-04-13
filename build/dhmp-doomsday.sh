@@ -20,7 +20,7 @@ echo $BASE_PATH
 #ask what texture resolution they want to build and ask to quit
 while true
 do
-  read -p "Build with (H)High, (M)edium, or (L)ow resolution textures? (Q)uit" -n 1 -r
+  read -p "Build with (S)src, (M)edium, or (L)ow resolution textures? (Q)uit" -n 1 -r
   echo    # (optional) move to a new line
   if [[ $REPLY =~ ^[Mm]$ ]]
   then
@@ -34,10 +34,10 @@ do
     PACK_FOLDERNAME="com.hiriwa.dhmp.low.pack"
     echo "$PACK_FOLDERNAME"
     break
-  elif [[ $REPLY =~ ^[Hh]$ ]]
+  elif [[ $REPLY =~ ^[Ss]$ ]]
   then
-    RESOLUTION="high"
-    PACK_FOLDERNAME="com.hiriwa.dhmp.high.pack"
+    RESOLUTION="src"
+    PACK_FOLDERNAME="com.hiriwa.dhmp.src.pack"
     echo "$PACK_FOLDERNAME"
     break
   elif [[  $REPLY =~ ^[Qq]$  ]]
@@ -109,7 +109,7 @@ do   # The quotes are necessary here
 #      zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$RELEASER.dhmp.low.$PACK *
       zip -r $BASE_PATH/built/$PACK_FOLDERNAME/$PACK_TYPE_FOLDER/$PACK *
       popd
-    elif [[ "$RESOLUTION" == "high"  ]]
+    elif [[ "$RESOLUTION" == "src"  ]]
     #copy the pack to the build folder, delete the texture folders
     #we don't want and rename the one we do want to the right name
     then
@@ -141,9 +141,9 @@ then
 elif [[ "$RESOLUTION" == "low"  ]]
 then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.low.$DATESTAMP.zip $PACK_FOLDERNAME
-elif [[ "$RESOLUTION" == "high"  ]]
+elif [[ "$RESOLUTION" == "src"  ]]
 then
-  zip -r $BASE_PATH/built/$RELEASER.dhmp.high.$DATESTAMP.zip $PACK_FOLDERNAME
+  zip -r $BASE_PATH/built/$RELEASER.dhmp.src.$DATESTAMP.zip $PACK_FOLDERNAME
 fi
 popd
 rm -r $BASE_PATH/doomsday
