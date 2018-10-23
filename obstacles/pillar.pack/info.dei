@@ -1,13 +1,10 @@
 title: DHMP Pillar pack
-version: 20170401.01
+version: 20181022-2348
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: obstacle short tall green red pillar heart skull
 
-#meshes as exported from blender
-#0 tall pillar
-#1 heart
-#2 short pillar
-#3 skull
+
+#exported at 0.16
 
 ########################
 #===========================Tall Green pillar | MISC32
@@ -22,7 +19,7 @@ asset model.thing.misc32 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      @0 { #this says which mesh the material will be used with
+      mesh_pillar_tall { #this says which mesh the material will be used with
         diffuseMap = "textures/pillar_tall_green_d.png"
         normalMap = "textures/pillar_tall_n.png"
         specularMap = "textures/pillar_tall_gs.png"
@@ -37,7 +34,7 @@ asset model.thing.misc32 {
     pass "render_pass_marble" {
       shader = "model.skeletal.opaque.generic"
       material = "material_marble"
-      meshes <@0>
+      meshes <mesh_pillar_tall>
       enabled = True
       variable uColor          { value <1, 1, 1> }
       variable uGlossiness     { value = 50 }
@@ -51,7 +48,7 @@ asset model.thing.misc32 {
   #++++++++++++++++++++++++
   animation {
   	state TALLGRNCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
@@ -73,7 +70,7 @@ asset model.thing.misc34 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      group @0 inherits model.thing.misc32.material.material_marble.@0 {
+      group mesh_pillar_tall inherits model.thing.misc32.material.material_marble.mesh_pillar_tall {
         diffuseMap = "textures/pillar_tall_red_d.png"
       }
     }
@@ -90,7 +87,7 @@ asset model.thing.misc34 {
   #++++++++++++++++++++++++
   animation {
   	state TALLREDCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
@@ -113,7 +110,7 @@ asset model.thing.misc33 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      @2 { #this says which mesh the material will be used with
+      mesh_pillar_small { #this says which mesh the material will be used with
         diffuseMap = "textures/pillar_short_green_d.png"
         normalMap = "textures/pillar_short_n.png"
         specularMap = "textures/pillar_short_gs.png"
@@ -126,7 +123,7 @@ asset model.thing.misc33 {
   #++++++++++++++++++++++++
   render {
     pass "render_pass_marble" inherits model.thing.misc32.render.render_pass_marble {
-    meshes <@2>
+    meshes <mesh_pillar_small>
     }
   }
 
@@ -135,7 +132,7 @@ asset model.thing.misc33 {
   #++++++++++++++++++++++++
   animation {
   	state SHRTGRNCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
@@ -160,7 +157,7 @@ asset model.thing.misc37 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      @2 { #this says which mesh the material will be used with
+      mesh_pillar_small { #this says which mesh the material will be used with
         diffuseMap = "textures/pillar_short_blood_green_d.png"
         normalMap = "textures/pillar_short_blood_n.png"
         specularMap = "textures/pillar_short_blood_gs.png"
@@ -168,7 +165,7 @@ asset model.thing.misc37 {
       }
     }
     variant "material_heart" {
-      @1 { #this says which mesh the material will be used with
+      mesh_heart { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/heart_d.png"
         normalMap = "textures/heart_n.png"
@@ -186,7 +183,7 @@ asset model.thing.misc37 {
     pass "render_pass_heart" {
       shader = "model.skeletal.opaque.generic"
       material = "material_heart"
-      meshes <@1>
+      meshes <mesh_heart>
       enabled = True
       variable uGlossiness     { value = 50 }
       variable uReflection     { value = 0 }
@@ -200,7 +197,7 @@ asset model.thing.misc37 {
   #++++++++++++++++++++++++
   animation {
   	state HEARTCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
@@ -224,7 +221,7 @@ asset model.thing.misc35 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      group @2 inherits model.thing.misc33.material.material_marble.@2 {
+      group mesh_pillar_small inherits model.thing.misc33.material.material_marble.mesh_pillar_small {
         diffuseMap = "textures/pillar_short_red_d.png"
       }
     }
@@ -242,7 +239,7 @@ asset model.thing.misc35 {
   #++++++++++++++++++++++++
   animation {
   	state SHRTREDCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
@@ -264,11 +261,11 @@ asset model.thing.misc36 {
   #++++++++++++++++++++++++
   material {
     variant "material_marble" {
-      group @2 inherits model.thing.misc35.material.material_marble.@2 {
+      group mesh_pillar_small inherits model.thing.misc35.material.material_marble.mesh_pillar_small {
       }
     }
     variant "material_skull" {
-      @3 {
+      mesh_skull {
         diffuseMap = "textures/skull_d.png"
         normalMap = "textures/skull_n.png"
         specularMap = "textures/skull_gs.png"
@@ -285,7 +282,7 @@ asset model.thing.misc36 {
     pass "render_pass_skull" {
       shader = "model.skeletal.opaque.generic"
       material = "material_skull"
-      meshes <@3>
+      meshes <mesh_skull>
       variable uGlossiness     { value = 1 }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 40 }
@@ -297,7 +294,7 @@ asset model.thing.misc36 {
   #++++++++++++++++++++++++
   animation {
   	state SKULLCOL {
-      sequence @0 {
+      sequence arm_pillar|wait {
   		  prob = 1.0
   		  looping = True
   		}
