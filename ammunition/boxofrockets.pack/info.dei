@@ -1,9 +1,11 @@
 title: DHMP Box of Rockets
-version: 20170921.01
+version: 20181023-1958
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: ammunition ammo rocket box
 
 #requires <dhmp.common.pack>
+
+#exported at 0.1
 
 ########################
 #Set up the model
@@ -19,8 +21,7 @@ asset model.thing.misc19 {
   #++++++++++++++++++++++++
   material {
     variant "material_metal" { # use the normal textures
-      @0 { #this says which mesh the material will be used with
-        #Multiply adds another texture ontop of the first using multiplying blending
+      mesh_metal { #this says which mesh the material will be used with
         diffuseMap = "textures/rocketbox_d.png"
         normalMap = "textures/rocketbox_n.png"
         specularMap = "textures/rocketbox_s.png"
@@ -28,8 +29,7 @@ asset model.thing.misc19 {
       }
     }
     variant "material_wood" { # use the normal textures
-      @1 { #this says which mesh the material will be used with
-        #Multiply adds another texture ontop of the first using multiplying blending
+      mesh_box { #this says which mesh the material will be used with
         diffuseMap = "textures/rocketbox_d.png"
         normalMap = "textures/rocketbox_n.png"
         specularMap = "textures/rocketbox_s.png"
@@ -37,10 +37,7 @@ asset model.thing.misc19 {
       }
     }
   }
-#meshes
-#0 metal
-#1 wood
-#exported at 0.1
+
 
 
   #++++++++++++++++++++++++
@@ -49,8 +46,8 @@ asset model.thing.misc19 {
   render {
     pass "render_pass_metal" {
       shader = "model.skeletal.generic"
-      material = "material_metal" #make the render pass use the m_body material
-      meshes <@0> #make this render pass use the 1st model
+      material = "material_metal"
+      meshes <mesh_metal>
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
@@ -65,8 +62,8 @@ asset model.thing.misc19 {
     }
     pass "render_pass_wood" {
       shader = "model.skeletal.generic"
-      material = "material_wood" #make the render pass use the m_body material
-      meshes <@1> #make this render pass use the 2nd model
+      material = "material_wood"
+      meshes <mesh_box>
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
@@ -92,7 +89,7 @@ asset model.thing.misc19 {
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
      state BROK {
-      sequence @0 {
+      sequence arm_boxofrockets|wait {
   		  prob = 1.0
   		  looping = True
   		}

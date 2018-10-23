@@ -1,7 +1,10 @@
 title: DHMP Torched tree
-version: 20170401.01
+version: 20181023-2030
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: obstacle tree
+
+#exported at 0.21
+
 
 asset model.thing.misc40 {
   path = "torchtree.fbx"
@@ -13,7 +16,7 @@ asset model.thing.misc40 {
 
   material {
     variant "material_wood" {
-      @0 {
+      mesh_tree {
         diffuseMap = "textures/torchtree_d.png"
         normalMap = "textures/torchtree_n.png"
         specularMap = "textures/torchtree_gs.png"
@@ -25,7 +28,7 @@ asset model.thing.misc40 {
     pass "wood" {
       shader = "model.skeletal.opaque.generic"
       material = "material_wood"
-      meshes <@0>
+      meshes <mesh_tree>
       variable uAlpha          { value = 1 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
@@ -37,7 +40,7 @@ asset model.thing.misc40 {
   }
   animation {
     state TORCHTREE {
-      sequence @0 {
+      sequence arm_tree|wait {
     		prob = 1
     		priority = 0
     		looping = True

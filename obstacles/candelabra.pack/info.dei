@@ -1,7 +1,7 @@
-title: DHMP Candlebra
-version: 20180311-1449
+title: DHMP Candelabra
+version: 20181023-2023
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: obstacle Candlebra
+tags: obstacle Candelabra
 
 #requires <dhmp.common.pack>
 
@@ -22,19 +22,19 @@ asset model.thing.misc50 {
     variant "material_metal" {
       mesh_staff {
         #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/candlebra_d.png"
-        normalMap = "textures/candlebra_n.png"
-      	specularMap = "textures/candlebra_gs.png"
-      	emissiveMap = "textures/candlebra_e.png"
+        diffuseMap = "textures/candelabra_d.png"
+        normalMap = "textures/candelabra_n.png"
+      	specularMap = "textures/candelabra_gs.png"
+      	emissiveMap = "textures/candelabra_e.png"
       }
     }
     variant "material_wax" {
       mesh_candle
        {
-        diffuseMap = "textures/candlebra_d.png"
-        normalMap = "textures/candlebra_n.png"
-      	specularMap = "textures/candlebra_gs.png"
-      	emissiveMap = "textures/candlebra_e.png"
+        diffuseMap = "textures/candelabra_d.png"
+        normalMap = "textures/candelabra_n.png"
+      	specularMap = "textures/candelabra_gs.png"
+      	emissiveMap = "textures/candelabra_e.png"
       }
     }
     variant "material_flame" {
