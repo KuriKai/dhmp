@@ -11,7 +11,7 @@ tags: obstacle Candelabra
 #Set up the model
 ########################
 asset model.thing.misc50 {
-  path = "candlebra.fbx"
+  path = "candelabra.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
 
@@ -21,7 +21,6 @@ asset model.thing.misc50 {
   material {
     variant "material_metal" {
       mesh_staff {
-        #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/candelabra_d.png"
         normalMap = "textures/candelabra_n.png"
       	specularMap = "textures/candelabra_gs.png"

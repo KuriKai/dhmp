@@ -1,9 +1,11 @@
 title: DHMP Clip
-version: 20170921.01
+version: 20181023-2149
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: ammunition ammo clip
 
 #requires <dhmp.common.pack>
+
+#exported at 0.4
 
 ########################
 #Set up the model
@@ -19,7 +21,7 @@ asset model.thing.clip {
   #++++++++++++++++++++++++
   material {
     variant "material_bullet" { # use the normal textures
-      @0 { #this says which mesh the material will be used with
+      mesh_bullet { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/clip_d.png"
         normalMap = "textures/clip_n.png"
@@ -28,7 +30,7 @@ asset model.thing.clip {
       }
     }
     variant "material_case" { # use the normal textures
-      @1 { #this says which mesh the material will be used with
+      mesh_case { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/clip_d.png"
         normalMap = "textures/clip_n.png"
@@ -37,10 +39,7 @@ asset model.thing.clip {
       }
     }
   }
-#meshes
-#0 bullet
-#1 case
-#exported at 0.4
+
 
 
   #++++++++++++++++++++++++
@@ -50,7 +49,7 @@ asset model.thing.clip {
     pass "render_pass_bullet" {
       shader = "model.skeletal.generic"
       material = "material_bullet" #make the render pass use the m_body material
-      meshes <@0> #make this render pass use the 1st model
+      meshes <mesh_bullet> #make this render pass use the 1st model
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
@@ -66,7 +65,7 @@ asset model.thing.clip {
     pass "render_pass_case" {
       shader = "model.skeletal.generic"
       material = "material_case" #make the render pass use the m_body material
-      meshes <@1> #make this render pass use the 2nd model
+      meshes <mesh_case> #make this render pass use the 2nd model
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
@@ -92,7 +91,7 @@ asset model.thing.clip {
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
      state CLIP {
-      sequence @0 {
+      sequence arm_clip|wait {
   		  prob = 1.0
   		  looping = True
   		}

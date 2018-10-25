@@ -1,10 +1,12 @@
 title: DHMP Armor bonus
-version: 20170401.01
+version: 20181025-1801
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: artifact armorbonus
 
 #requires </dhmp.common.pack>
-#MISC2
+
+#exported at 0.06
+
 ########################
 #Set up the model
 ########################
@@ -19,8 +21,7 @@ asset model.thing.misc3 {
   #++++++++++++++++++++++++
   material {
     variant "material_metal" { # use the normal textures
-      @0 { #this says which mesh the material will be used with
-        #Multiply adds another texture ontop of the first using multiplying blending
+      mesh_helmet { #this says which mesh the material will be used with
         diffuseMap = "textures/armor_d.png"
         normalMap = "textures/armor_n.png"
         specularMap = "textures/armor_s.png"
@@ -28,13 +29,16 @@ asset model.thing.misc3 {
       }
     }
     variant "material_glow" {
-      group @1 inherits model.thing.misc3.material.material_metal.@0 {
+      #group mesh_visor inherits model.thing.misc3.material.material_metal.mesh_helmet {
+      mesh_visor {
+        diffuseMap = "textures/armor_d.png"
+        normalMap = "textures/armor_n.png"
+        specularMap = "textures/armor_s.png"
+        emissiveMap = "textures/armor_e.png"
       }
     }
   }
-#meshes
-#0metal
-#1glow
+
 
   #++++++++++++++++++++++++
   #set up the rendering of the skin
@@ -42,8 +46,8 @@ asset model.thing.misc3 {
   render {
     pass "render_pass_metal" {
       shader = "model.skeletal.generic"
-      material = "material_metal" #make the render pass use the m_body material
-      meshes <@0> #make this render pass use the 1st model
+      material = "material_metal"
+      meshes <mesh_helmet> #make this render pass use the 1st model
       enabled = True
       #enabled = False
       variable uAlpha          { value = 1 }
@@ -56,13 +60,15 @@ asset model.thing.misc3 {
       variable uReflectionBlur { value = 5.4 }
       variable uSpecular       { value = 0.9 }
     }
-    pass "render_pass_glow" inherits model.thing.misc3.render.render_pass_metal {
+    pass "render_pass_glow" {
       material = "material_glow"
-      meshes <@1>
+      meshes <mesh_visor>
       variable uAlpha          { value = 0.0 }
+      variable uAlphaLimit     { value = 0 }
       variable uColor          { value <0, 1, 0> }
       variable uEmission       { value = 1 }
       variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 40 }
       variable uSpecular       { value = 0 }
@@ -91,13 +97,13 @@ asset model.thing.misc3 {
     #-----------------
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
-  	state BON2 {
-      sequence @0 {
+    state BON2 {
+      sequence arm_armor|wait {
         timeline = glow
         duration = 1
-  		  prob = 1.0
-  		  looping = True
-  		}
-	  }
+  	prob = 1.0
+  	looping = True
+      }
+    }
   }
 }

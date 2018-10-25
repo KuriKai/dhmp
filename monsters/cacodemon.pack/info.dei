@@ -3,12 +3,6 @@ version: 20170401.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: monster cacodemon
 
-#meshes
-#1 cacodemon
-#4 cacodemon dead
-#0 lightning
-#3 eye
-#2 blood
 
 #exported at 0.14
 
@@ -25,28 +19,28 @@ asset model.thing.head {
   #++++++++++++++++++++++++
   material {
     variant "material_body" {
-      @1 {
+      mesh_caco_alive {
         diffuseMap = "textures/body_d.png"
         normalMap = "textures/body_n.png"
         specularMap = "textures/body_gs.png"
         emissiveMap = "textures/black_e.png"
       }
-      @3 { #eye
+      mesh_guts { #eye
         diffuseMap = "textures/eye_d.png"
         normalMap = "textures/eye_n.png"
         specularMap = "textures/eye_gs.png"
         emissiveMap = "textures/eye_e.png"
       }
     }
-    variant "material_body_dead" {
-      group @4 inherits model.thing.head.material.material_body.@1 {
+    variant "material_body_death" {
+      group mesh_caco_death inherits model.thing.head.material.material_body.mesh_caco_alive {
       diffuseMap = "textures/body_dead_d.png"
       normalMap = "textures/body_dead_n.png"
       specularMap = "textures/body_dead_gs.png"
       }
     }
     variant "material_lightning" {
-      @0 {
+      mesh_teeth {
         diffuseMap = "textures/teeth_d.png"
         normalMap = "textures/black_e.png"
         specularMap = "textures/black_e.png"
@@ -54,7 +48,7 @@ asset model.thing.head {
       }
     }
     variant "material_blood" {
-      @2 {
+      mesh_blood {
         diffuseMap = "textures/blood.png"
         normalMap = "textures/blood_n.png"
         specularMap = "textures/blood_gs.png"
@@ -72,7 +66,7 @@ asset model.thing.head {
     pass "render_pass_body" {
       shader = "model.skeletal.generic"
       material = "material_body"
-      meshes <@1> #meshes
+      meshes <mesh_caco_alive> #meshes
       enabled = True
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -86,7 +80,7 @@ asset model.thing.head {
     pass "render_pass_eye" {
       shader = "model.skeletal.generic"
       material = "material_body"
-      meshes <@3> #meshes
+      meshes <mesh_guts> #meshes
       enabled = True
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -98,15 +92,15 @@ asset model.thing.head {
       variable uSpecular       { value = 3 }
     }
     #copy the body pass as we want the same variable settings
-    pass "render_pass_body_dead" inherits model.thing.head.render.render_pass_body {
-      material = "material_body_dead"
+    pass "render_pass_body_death" inherits model.thing.head.render.render_pass_body {
+      material = "material_body_death"
       enabled = False
-      meshes <@4> #meshes
+      meshes <mesh_caco_death> #meshes
     }
     pass "render_pass_lightning" {
       shader = "model.caco.uvscroll"
       material = "material_lightning"
-      meshes <@0>
+      meshes <mesh_teeth>
       enabled = False
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -120,7 +114,7 @@ asset model.thing.head {
     pass "render_pass_blood" {
       shader = "model.skeletal.generic"
       material = "material_blood"
-      meshes <@2>
+      meshes <mesh_blood>
       enabled = False
       variable uAlpha          { value = 0.86 }
       variable uAlphaLimit     { value = 0 }
@@ -142,14 +136,14 @@ asset model.thing.head {
     #-----------------
     timeline "stand" {
       script at 0 {
-      render_pass_body_dead.enabled = False
+      render_pass_body_death.enabled = False
       render_pass_body.enabled = True
       render_pass_lightning.enabled = False
       }
     }
     timeline "run" {
       script at 0 {
-      render_pass_body_dead.enabled = False
+      render_pass_body_death.enabled = False
       render_pass_body.enabled = True
       render_pass_lightning.enabled = False
       }
@@ -163,7 +157,7 @@ asset model.thing.head {
     }
     timeline "attack" {
       script at 0 {
-        render_pass_body_dead.enabled = False
+        render_pass_body_death.enabled = False
         render_pass_body.enabled = True
         render_pass_lightning.enabled = True
         render_pass_body.uEmission.setValueFrom (0, 2.0, 0.5)
@@ -174,9 +168,9 @@ asset model.thing.head {
         render_pass_eye.uEmission.setValueFrom (2.0, 0, 0.4)
       }
     }
-    timeline "die" {
+    timeline "death" {
       script at 0 {
-        render_pass_body_dead.enabled = True
+        render_pass_body_death.enabled = True
         render_pass_body.enabled = False
         render_pass_lightning.enabled = False
         render_pass_body.uEmission.setValue (0, 0.1)
@@ -186,56 +180,48 @@ asset model.thing.head {
         render_pass_blood.enabled = True
       }
     }
-    #0 attack
-    #1 die
-    #2 die2
-    #3 stand1
-    #4 stand2
-    #5 stand3
-    #6 pain1
-    #7 run1
-    #8 run2
+
     #-----------------
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
-  	state HEAD_STND {
-      sequence @4 {
-  		  prob = 0.3
+  state HEAD_STND {
+      sequence arm_caco|wait {
+  	prob = 0.3
         timeline = stand
         looping = True
-  		}
-      sequence @5 {
-  		  prob = 0.3
+      }
+      sequence arm_caco|wait_2 {
+  	prob = 0.3
         timeline = stand
         looping = True
-  		}
-      sequence @3 {
+      }
+      sequence arm_caco|wait_3 {
         prob = 1
         timeline = stand
         looping = True
-		  }
-	  }
+        }
+    }
     state HEAD_RUN1 {
-      sequence @7 {
-  		  prob = 0.5
+      sequence arm_caco|walk {
+  	prob = 0.5
+        priority = 2
         timeline = run
-        priority = 2
         looping = True
-  		}
-      sequence @8 {
-  		  timeline = run
-        priority = 2
+      }
+      sequence arm_caco|walk_2 {
+  	priority = 2
+        timeline = run
         looping = True
-  		}
-	  }
+      }
+    }
     state HEAD_PAIN {
-      sequence @6 {
+      sequence arm_caco|pain {
         priority = 4
         timeline = pain
       }
     }
-    state HEAD_ATK1 {
-      sequence @0 {
+    state HEAD_ATK1 { #aim
+      sequence arm_caco|attack {
         priority = 3
         timeline = attack
         #this make the animation start from begining if state is hit again
@@ -244,16 +230,16 @@ asset model.thing.head {
       }
     }
     state HEAD_DIE1 {
-      sequence @2 {
+      sequence arm_caco|death {
         prob = 0.5
         #we want dieing to take priority over everything
         priority = 5
-        timeline = die
+        timeline = death
       }
-      sequence @1 {
+      sequence arm_caco|death_2 {
         #we want dieing to take priority over everything
         priority = 5
-        timeline = die
+        timeline = death
       }
     }
   }
