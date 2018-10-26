@@ -1,8 +1,7 @@
 title: DHMP Cacodemon
-version: 20170401.01
+version: 20181026-1825
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: monster cacodemon
-
 
 #exported at 0.14
 
@@ -33,14 +32,15 @@ asset model.thing.head {
       }
     }
     variant "material_body_death" {
-      group mesh_caco_death inherits model.thing.head.material.material_body.mesh_caco_alive {
-      diffuseMap = "textures/body_dead_d.png"
-      normalMap = "textures/body_dead_n.png"
-      specularMap = "textures/body_dead_gs.png"
+      mesh_caco_death {
+        diffuseMap = "textures/body_dead_d.png"
+        normalMap = "textures/body_dead_n.png"
+        specularMap = "textures/body_dead_gs.png"
+        emissiveMap = "textures/black_e.png"
       }
     }
     variant "material_lightning" {
-      mesh_teeth {
+      mesh_lightning {
         diffuseMap = "textures/teeth_d.png"
         normalMap = "textures/black_e.png"
         specularMap = "textures/black_e.png"
@@ -91,16 +91,24 @@ asset model.thing.head {
       variable uReflectionBlur { value = 0.5 }
       variable uSpecular       { value = 3 }
     }
-    #copy the body pass as we want the same variable settings
-    pass "render_pass_body_death" inherits model.thing.head.render.render_pass_body {
+    pass "render_pass_death" {
+      shader = "model.skeletal.generic"
       material = "material_body_death"
-      enabled = False
       meshes <mesh_caco_death> #meshes
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 24 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 1.4 }
     }
     pass "render_pass_lightning" {
       shader = "model.caco.uvscroll"
       material = "material_lightning"
-      meshes <mesh_teeth>
+      meshes <mesh_lightning>
       enabled = False
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -136,16 +144,17 @@ asset model.thing.head {
     #-----------------
     timeline "stand" {
       script at 0 {
-      render_pass_body_death.enabled = False
+      render_pass_death.enabled = False
       render_pass_body.enabled = True
       render_pass_lightning.enabled = False
       }
     }
     timeline "run" {
       script at 0 {
-      render_pass_body_death.enabled = False
+      render_pass_death.enabled = False
       render_pass_body.enabled = True
       render_pass_lightning.enabled = False
+      render_pass_eye.uEmission.setValue (0, 0.1)
       }
     }
     timeline "pain" {
@@ -157,20 +166,28 @@ asset model.thing.head {
     }
     timeline "attack" {
       script at 0 {
-        render_pass_body_death.enabled = False
-        render_pass_body.enabled = True
         render_pass_lightning.enabled = True
-        render_pass_body.uEmission.setValueFrom (0, 2.0, 0.5)
         render_pass_eye.uEmission.setValueFrom (0, 2.0, 0.5)
       }
-      script at 0.6 {
+    }
+    timeline "attack" {
+      script at 0 {
+        render_pass_death.enabled = False
+        render_pass_body.enabled = True
+      }
+    }
+    timeline "close" {
+      script at 0 {
         render_pass_body.uEmission.setValueFrom (2.0, 0, 0.4)
         render_pass_eye.uEmission.setValueFrom (2.0, 0, 0.4)
+      }
+      script at 0.6 {
+        render_pass_lightning.enabled = False
       }
     }
     timeline "death" {
       script at 0 {
-        render_pass_body_death.enabled = True
+        render_pass_death.enabled = True
         render_pass_body.enabled = False
         render_pass_lightning.enabled = False
         render_pass_body.uEmission.setValue (0, 0.1)
@@ -206,13 +223,14 @@ asset model.thing.head {
   	prob = 0.5
         priority = 2
         timeline = run
-        looping = True
+        #looping = True
       }
-      sequence arm_caco|walk_2 {
-  	priority = 2
-        timeline = run
-        looping = True
-      }
+     #I crash doomsday for some reason, so commenting out for now
+     # sequence arm_caco|walk_2 {
+     #	#priority = 2
+     #   timeline = run
+     #   #looping = True
+     # }
     }
     state HEAD_PAIN {
       sequence arm_caco|pain {
@@ -221,9 +239,27 @@ asset model.thing.head {
       }
     }
     state HEAD_ATK1 { #aim
+      sequence arm_caco|aim {
+        priority = 3
+        timeline = aim
+        #this make the animation start from begining if state is hit again
+        #this makes sure it always show and attack aniumation when it fires a ball at you
+        #alwaysTrigger = True
+      }
+    }
+    state HEAD_ATK2 { #attack
       sequence arm_caco|attack {
         priority = 3
         timeline = attack
+        #this make the animation start from begining if state is hit again
+        #this makes sure it always show and attack aniumation when it fires a ball at you
+        alwaysTrigger = True
+      }
+    }
+    state HEAD_ATK3 { #attack
+      sequence arm_caco|close {
+        priority = 3
+        timeline = close
         #this make the animation start from begining if state is hit again
         #this makes sure it always show and attack aniumation when it fires a ball at you
         alwaysTrigger = True
