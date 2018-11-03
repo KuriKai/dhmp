@@ -1,0 +1,471 @@
+title: DMP2 Pinky
+version: 20181103-2359
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: enemy pinky spectre
+
+#exported at 0.20
+
+########################
+#Set up the model
+########################
+asset model.thing.sergeant {
+  path = "pinky.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_alive" { # use the normal textures
+      mesh_pinky {
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/pinky_diff.png/Multiply:pinky_ao.png"
+        normalMap = "textures/pinky_norm.png"
+      	specularMap = "textures/pinky_specgloss.png"
+      	#emissiveMap = "textures/pinky_e.png"
+      }
+    }
+    variant "material_death" { #use the wound textures
+      mesh_pinky {
+        diffuseMap = "textures/pinky_death_diff.png/Multiply:pinky_ao.png"
+        normalMap = "textures/pinky_death_norm.png"
+      	specularMap = "textures/pinky_death_specgloss.png"
+      	#emissiveMap = "textures/pinky_death_e.png"
+      }
+    }
+    variant "material_eyes" { # use the normal textures
+      mesh_eyes {
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/eye_d.png"
+        #normalMap = "textures/pinky_n.png"
+      	#specularMap = "textures/pinky_s.png"
+      	emissiveMap = "textures/eye_e.png"
+      }
+    }
+    variant "material_blood_death" { # use the normal textures
+      mesh_blood_death {
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/blood_death_diff.png"
+        #normalMap = "textures/blood_death_norm.png"
+      	#specularMap = "textures/pinky_s.png"
+      	#emissiveMap = "textures/eye_e.png"
+      }
+    }
+    variant "material_blood_pain" { # use the normal textures
+      mesh_blood_pain {
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/pinky_blood01.png"
+        #normalMap = "textures/blood_anim_norm.png"
+      	#specularMap = "textures/pinky_s.png"
+      	#emissiveMap = "textures/eye_e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    shader = "model.skeletal.opaque.generic"
+    pass "render_pass_alive" {
+      material = "material_alive"
+      meshes <mesh_pinky>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 30 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_death" {
+      material = "material_death"
+      meshes <mesh_pinky>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 30 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_eyes" {
+      material = "material_eyes"
+      meshes <mesh_eyes>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 1 }
+    }
+     pass "render_pass_death_blood" {
+      material = "material_blood_death"
+      meshes <mesh_blood_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.1 }
+    }
+    pass "render_pass_pain" {
+      material = "material_blood_pain"
+      meshes <mesh_blood_pain>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.1 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "death" {
+        script at 0 {
+          render_pass_death_blood.enabled = True
+	  render_pass_alive.enabled = False
+	  render_pass_death.enabled = True
+          render_pass_pain.uAlpha.setValue (1)
+          render_pass_pain.enabled = True
+          render_pass_pain.uAlpha.setValue (0, 0.6)
+	  # set the emission to 0 over 1 second
+          render_pass_eyes.uEmission.setValue (0, 1)
+        }
+        script at 1 {
+          render_pass_pain.enabled = False
+        }
+    }
+    timeline "pain" {
+        script at 0 {
+	  #set the value to 1 right away
+	  render_pass_pain.uAlpha.setValue (1)
+          render_pass_pain.enabled = True
+	  #set alpha value from 1 to 0 over 0.6 seconds
+          render_pass_pain.uAlpha.setValue (0, 0.6)
+        }
+        script at 1 {
+          render_pass_pain.enabled = False
+        }
+    }
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state SARG_STND {
+      sequence arm_pinky|wait {
+  	prob = 0.85
+  	looping = True
+      }
+      sequence arm_pinky|wait_2 {
+  	prob = 0.5
+  	looping = True
+      }
+      sequence arm_pinky|wait_3 {
+  	prob = 1
+  	looping = True
+      }
+    }
+    state SARG_RUN1 {
+      sequence arm_pinky|walk {
+    	prob = 0.90
+    	looping = True
+      }
+      sequence arm_pinky|walk_2 {
+    	prob = 0.50
+    	looping = True
+      }
+      sequence arm_pinky|walk_3 {
+    	prob = 1
+    	looping = True
+      }
+    }
+    state SARG_PAIN {
+      sequence arm_pinky|pain {
+      timeline = pain
+      prob = 1.0
+      alwaysTrigger = True
+      }
+    }
+    state SARG_ATK1 {
+      sequence arm_pinky|attack {
+  	prob = 0.7
+        alwaysTrigger = True
+      }
+      sequence arm_pinky|attack_2 {
+  	prob = 1.0
+        alwaysTrigger = True
+      }
+    }
+    state SARG_DIE1 {
+      sequence arm_pinky|death {
+        timeline = death #use the seath timeline
+        prob = 0.7
+        alwaysTrigger = True
+      }
+      sequence arm_pinky|death_2 {
+        timeline = death #use the seath timeline
+        prob = 1
+        alwaysTrigger = True
+      }
+    }
+	  state SARG_RAISE1 {
+      sequence arm_pinky|death {
+        prob = 1.0
+      }
+    }
+  }
+}
+
+
+########################
+#Set up the model
+########################
+asset model.thing.shadows {
+  path = "pinky.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_alive" { # use the normal textures
+      group mesh_pinky inherits model.thing.sergeant.material.material_alive.mesh_pinky {
+        diffuseMap = "textures/noise.png"
+      }
+    }
+    variant "material_death" { #use the wound textures
+      group mesh_pinky inherits model.thing.sergeant.material.material_death.mesh_pinky {
+        diffuseMap = "textures/noise.png"
+      }
+    }
+    variant "material_eyes" { # use the normal textures
+        group mesh_eyes inherits model.thing.sergeant.material.material_eyes.mesh_eyes {
+        diffuseMap = "textures/noise.png"
+      }
+    }
+    variant "material_blood_death" { # use the normal textures
+      group mesh_blood_death inherits model.thing.sergeant.material.material_blood_death.mesh_blood_death {
+        diffuseMap = "textures/noise_blood.png"
+      }
+    }
+    variant "material_blood_pain" { # use the normal textures
+      group mesh_blood_pain inherits model.thing.sergeant.material.material_blood_pain.mesh_blood_pain {
+        diffuseMap = "textures/noise_blood01.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    shader = "model.skeletal.opaque.generic"
+    pass "render_pass_alive" {
+      shader = "model.thing.shadows.uvscroll"
+      material = "material_alive"
+      meshes <mesh_pinky>
+      blendFunc <SrcAlpha, OneMinusSrcAlpha>
+      depthWrite = False
+      enabled = True
+      variable uAlpha          { value = 0.2 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 10 }
+    }
+    pass "render_pass_death" {
+      shader = "model.thing.shadows.uvscroll"
+      material = "material_death"
+      meshes <mesh_pinky>
+      blendFunc <SrcAlpha, OneMinusSrcAlpha>
+      depthWrite = False
+      enabled = False
+      variable uAlpha          { value = 0.2 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 10 }
+    }
+    pass "render_pass_eyes" {
+      shader = "model.thing.shadows.uvscroll"
+      material = "material_eyes"
+      meshes <mesh_eyes>
+      enabled = True
+      variable uAlpha          { value = 0.10 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 } ########
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 6 }
+    }
+     pass "render_pass_death_blood" {
+      material = "material_blood_death"
+      meshes <mesh_blood_death>
+      enabled = False
+      variable uAlpha          { value = 0.2 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.1 }
+    }
+    pass "render_pass_pain" {
+      material = "material_blood_pain"
+      meshes <mesh_blood_pain>
+      enabled = False
+      variable uAlpha          { value = 0.2 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.1 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "death" {
+        script at 0 {
+          render_pass_death_blood.enabled = True
+	  render_pass_alive.enabled = False
+	  render_pass_death.enabled = True
+          render_pass_pain.uAlpha.setValue (1)
+          render_pass_pain.enabled = True
+          render_pass_pain.uAlpha.setValue (0, 0.6)
+	  # set the emission to 0 over 1 second
+          render_pass_eyes.uEmission.setValue (0, 1)
+        }
+        script at 1 {
+          render_pass_pain.enabled = False
+        }
+    }
+    timeline "pain" {
+        script at 0 {
+	  #set the value to 1 right away
+	  render_pass_pain.uAlpha.setValue (1)
+          render_pass_pain.enabled = True
+	  #set alpha value from 1 to 0 over 0.6 seconds
+          render_pass_pain.uAlpha.setValue (0, 0.6)
+        }
+        script at 1 {
+          render_pass_pain.enabled = False
+        }
+    }
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state SARG_STND {
+      sequence arm_pinky|wait {
+  	prob = 0.85
+  	looping = True
+      }
+      sequence arm_pinky|wait_2 {
+  	prob = 0.5
+  	looping = True
+      }
+      sequence arm_pinky|wait_3 {
+  	prob = 1
+  	looping = True
+      }
+    }
+    state SARG_RUN1 {
+      sequence arm_pinky|walk {
+    	prob = 0.90
+    	looping = True
+      }
+      sequence arm_pinky|walk_2 {
+    	prob = 0.50
+    	looping = True
+      }
+      sequence arm_pinky|walk_3 {
+    	prob = 1
+    	looping = True
+      }
+    }
+    state SARG_PAIN {
+      sequence arm_pinky|pain {
+      timeline = pain
+      prob = 1.0
+      alwaysTrigger = True
+      }
+    }
+    state SARG_ATK1 {
+      sequence arm_pinky|attack {
+  	prob = 0.7
+        alwaysTrigger = True
+      }
+      sequence arm_pinky|attack_2 {
+  	prob = 1.0
+        alwaysTrigger = True
+      }
+    }
+    state SARG_DIE1 {
+      sequence arm_pinky|death {
+        timeline = death #use the seath timeline
+        prob = 0.7
+        alwaysTrigger = True
+      }
+      sequence arm_pinky|death_2 {
+        timeline = death #use the seath timeline
+        prob = 1
+        alwaysTrigger = True
+      }
+    }
+	  state SARG_RAISE1 {
+      sequence arm_pinky|death {
+        prob = 1.0
+      }
+    }
+  }
+}

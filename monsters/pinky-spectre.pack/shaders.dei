@@ -1,0 +1,16 @@
+shader model.thing.shadows.uvscroll inherits model.skeletal.unlit.diffuse {
+    variable uMapTime {}
+    
+    # Use the common shader functions.
+    include.vertex   </packs/net.dengine.client.renderer/shaders/include/skeletal.glsl>
+    include.fragment </packs/net.dengine.client.renderer/shaders/include/texture.glsl,
+                      uvscroll.glsl> # additional custom functions
+
+    # A macro define can be as simple as a single calculation:
+    #defines $= { 'PREDEF_TRANSFORM_UV(uv)': 'uv += vec2(0.0, uMapTime*0.1)' }
+
+    # One can also call functions defined in included GLSL files.
+    # Includes are placed before the uniform declarations in the inherited
+    # shader, so we'll pass it as an argument:
+    defines $= { 'PREDEF_TRANSFORM_UV(uv)': 'uv = scrolledUV(uv, uMapTime)'}
+}
