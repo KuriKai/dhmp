@@ -4,9 +4,13 @@ license: Attribution-NonCommercial-ShareAlike 4.0 International https://creative
 tags: DOOM Reflection Cubemaps
 
 # Default reflection maps
+
+##########
+#DOOM ep1#
+##########
 asset texture.reflect.default {
-    interior.path = "ep1m1-in.jpg"
-    exterior.path = "ep1m1-out.jpg"
+    interior.path = "e1m1-in.jpg"
+    exterior.path = "e1m1-out.jpg"
 }
 asset texture.reflect.e1m1 {
     interior.path = "e1m1-in.png"
@@ -45,8 +49,9 @@ asset texture.reflect.e1m9 {
     exterior.path = "e1m9-out.png"
 }
 
-
-
+##########
+#DOOM ep2#
+##########
 asset texture.reflect.e2m1 {
     interior.path = "e2m1-in.png"
     exterior.path = "e2m1-out.png"
@@ -84,8 +89,9 @@ asset texture.reflect.e2m9 {
     exterior.path = "e2m9-out.png"
 }
 
-
-
+##########
+#DOOM ep3#
+##########
 asset texture.reflect.e3m1 {
     interior.path = "e3m1-in.png"
     exterior.path = "e3m1-out.png"
@@ -122,7 +128,14 @@ asset texture.reflect.e3m9 {
     interior.path = "e3m9-in.png"
     exterior.path = "e3m9-out.png"
 }
-asset texture.reflect.map01 {
-    interior.path = "d2_prt1_indoors.png"
-    exterior.path = "d2_prt1_outdoors.png"
-}
+##########
+#DOOM ep4#
+##########
+
+#######
+#DOOM2#
+#######
+#asset texture.reflect.map01 {
+#    interior.path = "d2_prt1_indoors.png"
+#    exterior.path = "d2_prt1_outdoors.png"
+#}

@@ -1,7 +1,7 @@
-title: DHMP Beserk
+title: DHMP Berserk
 version: 20181023-2016
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: artifact beserk
+tags: artifact berserk
 
 #requires <dhmp.common.pack>
 
@@ -11,7 +11,7 @@ tags: artifact beserk
 #Set up the model
 ########################
 asset model.thing.misc13 {
-  path = "beserk.fbx"
+  path = "berserk.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
 
@@ -22,10 +22,10 @@ asset model.thing.misc13 {
     variant "material_fabric" { # use the normal textures
       mesh_medikit { #this says which mesh the material will be used with
         #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/beserker_d.png"
-        normalMap = "textures/beserker_n.png"
-        specularMap = "textures/beserker_s.png"
-        emissiveMap = "textures/beserker_e.png"
+        diffuseMap = "textures/berserk_d.png"
+        normalMap = "textures/berserk_n.png"
+        specularMap = "textures/berserk_s.png"
+        emissiveMap = "textures/berserk_e.png"
       }
     }
   }

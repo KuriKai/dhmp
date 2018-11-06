@@ -1,5 +1,5 @@
 title: DHMP Candelabra
-version: 20181023-2023
+version: 20181106-2223
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: obstacle Candelabra
 
@@ -111,7 +111,7 @@ asset model.thing.misc50 {
     #setup the states(e.g. attacking, dying, walking)
     #-----------------
     state CANDELABRA {
-      sequence arm|wait {
+      sequence arm_candelabra|wait {
   		  prob = 1.0
   		  looping = True
       }
