@@ -1,0 +1,417 @@
+title: DHMP Spider MasterMind
+version: 20181206-2311
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: actor enemy spider master mind
+
+#requires <dhmp.common.pack>
+
+#exported at 0.18
+
+########################
+#Set up the model
+########################
+asset model.thing.spider {
+  path = "spidermm.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_brain" {
+      mesh_brain {
+        diffuseMap = "textures/spiderbody_d.png/Multiply:spiderbody_ao.png"
+        normalMap = "textures/spiderbody_n.png"
+      	specularMap = "textures/spiderbody_gs.png"
+      	emissiveMap = "textures/spiderbody_e.png"
+      }
+    }
+    variant "material_brain_death" {
+      mesh_brain_death {
+        diffuseMap = "textures/spiderbody_death_d.png/Multiply:spiderbody_death_ao.png"
+        normalMap = "textures/spiderbody_death_n.png"
+      	specularMap = "textures/spiderbody_death_gs.png"
+      	emissiveMap = "textures/spiderbody_e.png"
+      }
+    }
+    variant "material_chassis" {
+      mesh_chassis {
+        diffuseMap = "textures/spiderchassis_d.png/Multiply:spiderchassis_death_ao.png"
+        normalMap = "textures/spiderchassis_n.png"
+      	specularMap = "textures/spiderchassis_gs.png"
+      	emissiveMap = "textures/spiderchassis_e.png"
+      }
+    }
+    variant "material_chassis_death" {
+      mesh_chassis_death {
+        diffuseMap = "textures/spiderchassis_death_d.png/Multiply:spiderchassis_death_ao.png"
+        normalMap = "textures/spiderchassis_death_n.png"
+      	specularMap = "textures/spiderchassis_death_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_legs" {
+      mesh_legs {
+	diffuseMap = "textures/spiderlegs_d.png"
+        normalMap = "textures/spiderlegs_n.png"
+      	specularMap = "textures/spiderlegs_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_legs_death" {
+      mesh_legs_death {
+	diffuseMap = "textures/spiderlegs_d.png"
+        normalMap = "textures/spiderlegs_n.png"
+      	specularMap = "textures/spiderlegs_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_cable" {
+      mesh_cable {
+        diffuseMap = "textures/spiderbody_d.png/Multiply:spiderbody_ao.png"
+        normalMap = "textures/spiderbody_n.png"
+      	specularMap = "textures/spiderbody_gs.png"
+      	emissiveMap = "textures/spiderbody_e.png"
+      }
+    }
+    variant "material_cable_death" {
+      mesh_cable_death {
+        diffuseMap = "textures/spiderbody_death_d.png/Multiply:spiderbody_death_ao.png"
+        normalMap = "textures/spiderbody_death_n.png"
+      	specularMap = "textures/spiderbody_death_gs.png"
+      	emissiveMap = "textures/spiderbody_e.png"
+      }
+    }
+    variant "material_flash_side" {
+      mesh_flash_side {
+        diffuseMap = "textures/shotblast_side.png"
+      	emissiveMap = "textures/shotblast_side.png"
+      }
+    }
+    variant "material_flash_front" {
+      mesh_flash_front {
+        diffuseMap = "textures/shotblast_front.png"
+      	emissiveMap = "textures/shotblast_front.png"
+      }
+    }
+    variant "material_blood" {
+      mesh_blood {
+        diffuseMap = "textures/blood_death_d.png"
+        normalMap = "textures/blood_death_n.png"
+      }
+    }
+    variant "material_guts" {
+      mesh_guts {
+        diffuseMap = "textures/gutpile_d.png/Multiply:gutpile_ao.png"
+        normalMap = "textures/gutpile_n.png"
+      	specularMap = "textures/gutpile_gs.png"
+      	emissiveMap = "textures/spiderbody_e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_brain" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_brain"
+      meshes <mesh_brain>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_brain_death" {
+      shader = "model.skeletal.generic"
+      material = "material_brain_death"
+      meshes <mesh_brain_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_chassis" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_chassis"
+      meshes <mesh_chassis>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 4 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_chassis_death" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_chassis_death"
+      meshes <mesh_chassis_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 4 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_legs" {
+      shader = "model.skeletal.generic"
+      material = "material_legs"
+      meshes <mesh_legs>
+      enabled = True
+      #allow multiple transperant meshes
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 4 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_legs_death" {
+      shader = "model.skeletal.generic"
+      material = "material_legs_death"
+      meshes <mesh_legs_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 4 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_cable" {
+      shader = "model.skeletal.generic"
+      material = "material_cable"
+      meshes <mesh_cable>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_cable_death" {
+      shader = "model.skeletal.generic"
+      material = "material_cable_death"
+      meshes <mesh_cable_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_flash_side" {
+      shader = "model.skeletal.generic"
+      material = "material_flash_side"
+      meshes <mesh_flash_side>
+      enabled = True
+      #allow multiple transperant meshes
+      depthWrite = False
+      variable uAlpha          { value = 0.8 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_flash_front" {
+      shader = "model.skeletal.generic"
+      material = "material_flash_front"
+      meshes <mesh_flash_front>
+      enabled = True
+      #allow multiple transperant meshes
+      depthWrite = False
+      variable uAlpha          { value = 0.8 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_blood_death" {
+      shader = "model.skeletal.generic"
+      material = "material_blood"
+      meshes <mesh_blood>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 1 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_guts_death" {
+      shader = "model.skeletal.generic"
+      material = "material_guts"
+      meshes <mesh_guts>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 150 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    timeline "timeline_cooldown" {
+        script at 0 {
+	  #turn off the glowing gun barrel as it's not fireing now
+	  render_chassis.uEmission.setValue (0, 0.2)
+	  #turn the eyeglow off
+	  render_brain.uEmission.setValue (0, 0.5)
+	}
+    }
+    timeline "timeline_aim" {
+        script at 0 {
+	  render_brain.uEmission.setValueFrom (0, 2, 0.5)
+	}
+    }
+    timeline "timeline_fire" {
+        script at 0 {
+	  render_chassis.uEmission.setValue (0.4)
+	}
+    }
+    timeline "timeline_death" {
+        script at 0 {
+	  render_brain.enabled = False
+          render_legs.enabled = False
+	  render_chassis.enabled = False
+	  render_cable.enabled = False
+	  render_flash_side.enabled = False
+	  render_flash_front.enabled = False
+	  render_brain_death.enabled = True
+	  render_legs_death.enabled = True
+	  render_chassis_death.enabled = True
+	  render_cable_death.enabled = True
+	  render_blood_death.enabled = True
+	  render_guts_death.enabled = True
+	  #turn the eyeglow off
+	  render_brain.uEmission.setValue (0, 0.5)
+	}
+    }
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state SPID_STND {
+      sequence arm|wait {
+  		prob = 1.0
+  		looping = True
+                priority = 1
+		timeline = timeline_cooldown
+  	}
+    }
+    state SPID_RUN1 {
+      sequence arm|walk {
+    		prob = 1.0
+    		looping = True
+		timeline = timeline_cooldown
+		priority = 1
+  	}
+    }
+    state SPID_PAIN {
+      sequence arm|pain {
+  		prob = 0.7
+		timeline = timeline_cooldown
+		priority = 3
+		mustFinish = True
+  	}
+    }
+    state SPID_ATK1 {
+      sequence arm|aim { #aim
+  		prob = 1.0
+  		looping = False
+		timeline = timeline_aim
+		priority = 1
+	}
+    }
+    state SPID_ATK2 {
+      sequence arm|attack { #fire
+  		prob = 0.3
+  		looping = True
+		mustFinish = True #must finish the current sequence before moving onto the next sequence
+		timeline = timeline_fire
+		priority = 1
+	}
+        sequence arm|attack_2 {
+  		prob = 0.3
+  		looping = True
+		mustFinish = True
+		duration = 4
+		timeline = timeline_fire
+		priority = 1
+	}
+	sequence arm|attack_3 {
+  		prob = 1
+  		looping = True
+		mustFinish = True
+		timeline = timeline_fire
+		priority = 1
+	}
+    }
+    state SPID_DIE1 {
+      sequence arm_death|death {
+        #use the timeline_death timeline (so we can show the model object that has the death animation)
+        timeline = timeline_death 
+        prob = 10
+      }
+    }
+  }
+}
