@@ -6,7 +6,7 @@
 RELEASER="com.hiriwa"
 #######
 #the below tells the script what folders to look for packs in
-FOLDERS_ARRAY=("ammunition" "artifact" "decorations" "keys" "monsters" "obstacles" "other" "powerup" "weapons")
+FOLDERS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "obstacles" "other" "powerup" "weapons")
 
 
 #automaticly set variables
