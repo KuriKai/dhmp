@@ -5,7 +5,7 @@ tags: ammunition ammo rocket
 
 #requires <dhmp.common.pack>
 
-#exported at 0.4
+#exported at 0.04
 
 
 ########################
@@ -14,7 +14,7 @@ tags: ammunition ammo rocket
 asset model.thing.misc18 {
   path = "rocket.fbx"
   front <0, 0, 1>
-  up <0, 1, 0>
+  up <0, -1, 0>
   alignment.yaw = random
 
   #++++++++++++++++++++++++

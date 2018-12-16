@@ -1,0 +1,74 @@
+title: DHMP Ammo Box
+version: 20181206-2311
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition ammo weapon pickup gun
+
+#requires <dhmp.common.pack>
+
+#exported at 0.09
+
+########################
+#Set up the model
+########################
+asset model.thing.misc17 {
+  path = "ammobox.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_metal" {
+      mesh_ammobox {
+        diffuseMap = "textures/ammobox_d.png/Multiply:ammobox_ao.png"
+        normalMap = "textures/ammobox_n.png"
+      	specularMap = "textures/ammobox_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_ammobox" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_metal"
+      meshes <mesh_ammobox>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.71, 0.71, 0.71> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 60 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 1 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state AMMO {
+      sequence arm_ammobox|wait {
+  		prob = 1.0
+  		looping = True
+                priority = 1
+      }
+    }
+  }
+}

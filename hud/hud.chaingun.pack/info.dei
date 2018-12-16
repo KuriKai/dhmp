@@ -1,0 +1,149 @@
+title: DHMP Hud Chaingun
+version: 20181216-0004
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: powerup item chaingun
+
+
+#exported at 0.06
+
+########################
+#Set up the model
+########################
+asset model.weapon.chain {
+  path = "chaingun_hud.fbx"
+  front <1, 0, 0>
+  up <0, 1, 0>
+  offset <0, -17, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_barrell_hud" {
+      mesh_hud_barrell {
+        diffuseMap = "textures/chaingun_barrell_d.png/Multiply:chaingun_barrell_hud_ao.png"
+        normalMap = "textures/chaingun_barrell_n.png"
+        heightMap = "textures/chaingun_barrell_h.png"
+      	specularMap = "textures/chaingun_barrell_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_flash" {
+      mesh_hud_flash {
+        diffuseMap = "textures/shotblast_front.png"
+      	emissiveMap = "textures/shotblast_front.png"
+      }
+    }
+  }
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_barrell_hud" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_barrell_hud"
+      meshes <mesh_hud_barrell>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.71, 0.71, 0.71> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 60 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_flash" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_flash"
+      meshes <mesh_hud_flash>
+      enabled = False
+      variable uAlpha          { value = 0.8 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    variable gunRotation{
+      #speed = 0
+	#axis chaingun rotates around
+      axis <-1, 0, 0>
+	#bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "barrel_hud"
+    }
+
+    timeline "timeline_spindown" {
+        script at 0 {
+			#speed degrees per second from 0 to 300 in 15 seconds
+		  gunRotation.speed.setValue (0, 1.5)
+		  render_flash.enabled = False
+
+	}
+    }
+    timeline "timeline_down" {
+        script at 0 {
+			#set the angle to 0, so the chaingun get's put away the angle we animated it, rather than what the current angle was from the rotation
+		  gunRotation.angle.setValue (0)
+		  gunRotation.speed.setValue (0)
+		  render_flash.enabled = False
+	}
+    }
+    timeline "timeline_fire" {
+        script at 0 {
+			#speed degrees per second
+		  gunRotation.speed.setValue (600, 0.2)
+		  render_flash.enabled = True
+
+			#set the alpha from 0.5 to 0 over 0.1 seconds with no delay
+#		  render_flash.uAlpha.setValueFrom (1, 0, 0.2)
+#		  render_flash.uEmission.setValueFrom (2, 0, 0.2)
+	}
+    }
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state CHAIN { #ready
+      sequence arm_hud_chaingun|hud_wait {
+  		  prob = 1.0
+  		  #looping = True
+		  timeline = timeline_spindown
+      }
+    }
+    state CHAINUP { #bring up
+      sequence arm_hud_chaingun|hud_up {
+  		  prob = 1.0
+		  #mustFinish = True
+      }
+    }
+    state CHAINDOWN { #bring down
+      sequence arm_hud_chaingun|hud_down {
+  		  prob = 1.0
+		  timeline = timeline_down
+      }
+    }
+    state CHAIN1 { #fire
+      sequence arm_hud_chaingun|hud_fire {
+  		  prob = 1.0
+  		  looping = True
+		  timeline = timeline_fire
+      }
+    }
+  }
+}

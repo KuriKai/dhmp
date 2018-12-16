@@ -1,0 +1,123 @@
+title: DHMP Chaingun
+version: 20181206-2311
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: ammunition chaingun weapon pickup gun
+
+#requires <dhmp.common.pack>
+
+#exported at 0.06
+
+########################
+#Set up the model
+########################
+asset model.thing.chaingun {
+  path = "chaingun.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_barrell" {
+      mesh_barrell {
+        diffuseMap = "textures/chaingun_barrell_d.png/Multiply:chaingun_barrell_ao.png"
+        normalMap = "textures/chaingun_barrell_n.png"
+        heightMap = "textures/chaingun_barrell_h.png"
+      	specularMap = "textures/chaingun_barrell_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_body" {
+      mesh_body {
+        diffuseMap = "textures/chaingun_body_d.png/Multiply:chaingun_body_ao.png"
+        normalMap = "textures/chaingun_body_n.png"
+        heightMap = "textures/chaingun_body_h.png"
+      	specularMap = "textures/chaingun_body_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_bullet" {
+      mesh_bullet {
+#        diffuseMap = "textures/clip_d.png"
+        diffuseMap = "textures/clip_d.png"
+        normalMap = "textures/clip_n.png"
+      	specularMap = "textures/clip_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_barrell" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_barrell"
+      meshes <mesh_barrell>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.71, 0.71, 0.71> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 60 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 5 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_body" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_body"
+      meshes <mesh_body>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_bullet" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_bullet"
+      meshes <mesh_bullet>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.71, 0.71, 0.71> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 48 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 20 }
+      variable uSpecular       { value = 0.4 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state MGUN {
+      sequence arm_chaingun|wait {
+  		prob = 1.0
+  		looping = True
+                priority = 1
+      }
+    }
+  }
+}

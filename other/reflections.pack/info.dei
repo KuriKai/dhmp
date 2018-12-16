@@ -13,10 +13,6 @@ tags: DOOM Reflection Cubemaps
 ##########
 #DOOM ep1#
 ##########
-asset texture.reflect.default {
-    interior.path = "e1m1-in.jpg"
-    exterior.path = "e1m1-out.jpg"
-}
 asset texture.reflect.e1m1 {
     interior.path = "e1m1-in.png"
     exterior.path = "e1m1-out.png"
