@@ -295,7 +295,7 @@ asset model.thing.shadows {
       blendFunc <SrcAlpha, OneMinusSrcAlpha>
       depthWrite = False
       enabled = True
-      variable uAlpha          { value = 0.2 }
+      variable uAlpha          { value = 0.3 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
@@ -312,7 +312,7 @@ asset model.thing.shadows {
       blendFunc <SrcAlpha, OneMinusSrcAlpha>
       depthWrite = False
       enabled = False
-      variable uAlpha          { value = 0.2 }
+      variable uAlpha          { value = 0.3 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
@@ -341,7 +341,7 @@ asset model.thing.shadows {
       material = "material_blood_death"
       meshes <mesh_blood_death>
       enabled = False
-      variable uAlpha          { value = 0.2 }
+      variable uAlpha          { value = 0.3 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
@@ -355,7 +355,7 @@ asset model.thing.shadows {
       material = "material_blood_pain"
       meshes <mesh_blood_pain>
       enabled = False
-      variable uAlpha          { value = 0.2 }
+      variable uAlpha          { value = 0.3 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
