@@ -83,7 +83,7 @@ asset model.weapon.chain {
     variable gunRotation{
       #speed = 0
 	#axis chaingun rotates around
-      axis <-1, 0, 0>
+      axis <1, 0, 0>
 	#bone that is affected by the rotation(child bones will also be affected of the chosen bone)
       node = "barrel_hud"
     }
