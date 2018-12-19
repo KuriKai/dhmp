@@ -4,10 +4,13 @@
 #Change the below to reflect the website you are releasing your version of the dhmp pack for
 #note the reverse order e.g. hiriwa.com = com.hiriwa
 RELEASER="com.hiriwa"
+#Do not change this license
+LICENSE="Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/"
 #######
 #the below tells the script what folders to look for packs in
-FOLDERS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "obstacles" "other" "powerup" "weapons")
-
+FOLDERS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "requires" "obstacles" "powerup" "weapons")
+REQUIRES_ARRAY=("requires")
+RECOMMENDS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "obstacles" "powerup" "weapons")
 
 #automaticly set variables
 DATESTAMP=$(date +%Y%m%d)
@@ -16,6 +19,42 @@ BASE_PATH=$(dirname "$SCRIPT_PATH")
 echo $SCRIPT_PATH
 echo $BASE_PATH
 
+#functions
+#function gather_requires {
+#  requires=`ls requires | sed 's/.pack//g' | sed 's/ / com.hiriwa.dhmp./g'`
+#}
+function gather_packs() {
+  RETURN_ARRAY=()
+  dependency="$1_ARRAY[@]"
+  for a in ${!dependency}
+  do
+    TEMP_ARRAY=(`ls $BASE_PATH/built/$PACK_FOLDERNAME/$a.pack`)
+    for b in ${TEMP_ARRAY[@]}
+    do
+    sanitised=`echo "com.hiriwa.dhmp"$EXT"."$a.$b | sed 's/\.pack/,/g'`
+    RETURN_ARRAY+=($sanitised)
+#    RETURN_ARRAY+=("com.hiriwa.dhmp"$EXT"."$a.$b, )
+    done
+  done
+  echo "<"${RETURN_ARRAY[@]}">"
+}
+
+function generate_info {
+  echo "title: Doom High-res Model Project" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "version: "$DATESTAMP >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "license: "$LICENSE >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "tags: Doom 2 II tnt plutonia" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "notes = \"3D model replacements for Doom sprites\"" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  dependency=$(gather_packs REQUIRES)
+  echo "requires" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  dependency=$(gather_packs RECOMMENDS) >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "recommends" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  dependency=$(gather_packs EXTRAS) >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "extras" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  sed -i 's/,>/>/g' $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+}
 
 #ask what texture resolution they want to build and ask to quit
 while true
@@ -25,19 +64,22 @@ do
   if [[ $REPLY =~ ^[Mm]$ ]]
   then
     RESOLUTION="medium"
-    PACK_FOLDERNAME="com.hiriwa.dhmp.pack"
+    EXT=""
+    PACK_FOLDERNAME="$RELEASER.dhmp.pack"
     echo "$PACK_FOLDERNAME"
     break
   elif [[ $REPLY =~ ^[Ll]$ ]]
   then
     RESOLUTION="low"
-    PACK_FOLDERNAME="com.hiriwa.dhmp.low.pack"
+    EXT=".low"
+    PACK_FOLDERNAME="$RELEASER.dhmp.low.pack"
     echo "$PACK_FOLDERNAME"
     break
   elif [[ $REPLY =~ ^[Ss]$ ]]
   then
     RESOLUTION="src"
-    PACK_FOLDERNAME="com.hiriwa.dhmp.src.pack"
+    EXT=".src"
+    PACK_FOLDERNAME="$RELEASER.dhmp.src.pack"
     echo "$PACK_FOLDERNAME"
     break
   elif [[  $REPLY =~ ^[Qq]$  ]]
@@ -135,6 +177,8 @@ do   # The quotes are necessary here
 done
 pushd $BASE_PATH/built/
 cp $BASE_PATH/docs/* $BASE_PATH/built/$PACK_FOLDERNAME/
+#generate the info.dei
+generate_info
 if [[ "$RESOLUTION" == "medium" ]]
 then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.$DATESTAMP.zip $PACK_FOLDERNAME
