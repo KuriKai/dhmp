@@ -1,7 +1,7 @@
 title: DHMP Model Reflection Maps
 version: 20170401.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: DOOM Reflection Cubemaps
+tags: DOOM Reflection Cubemaps hidden
 
 
 #In doomsday on the terminal type "cubeshot" to take a 360 
