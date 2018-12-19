@@ -1,7 +1,7 @@
 title: DHMP Candelabra
 version: 20181106-2223
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: obstacle Candelabra
+tags: doom obstacle light hidden
 
 #requires <dhmp.common.pack>
 

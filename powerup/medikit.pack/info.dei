@@ -1,7 +1,7 @@
 title: DHMP Medikit
 version: 20181023-2016
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: powerup medikit
+tags: doom pickup item health hidden
 
 #requires <dhmp.common.pack>
 

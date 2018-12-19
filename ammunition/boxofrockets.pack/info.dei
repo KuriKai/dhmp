@@ -1,7 +1,7 @@
 title: DHMP Box of Rockets
 version: 20181023-1958
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition ammo rocket box
+tags: doom ammunition pickup item ammo hidden
 
 #requires <dhmp.common.pack>
 

@@ -1,7 +1,7 @@
 title: DHMP Shotgun shells
 version: 20181023-2201
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition ammo shotgun shells
+tags: doom pickup item ammunition ammo hidden
 
 #requires <dhmp.common.pack>
 

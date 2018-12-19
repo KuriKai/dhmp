@@ -1,7 +1,7 @@
 title: DHMP Rocket Launcher
 version: 20181024-2005
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition rocket launcher weapon pickup
+tags: doom pickup item weapon gun hidden
 
 #requires <dhmp.common.pack>
 

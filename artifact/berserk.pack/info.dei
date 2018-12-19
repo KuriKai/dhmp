@@ -1,7 +1,7 @@
 title: DHMP Berserk
 version: 20181023-2016
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: artifact berserk
+tags: doom artifact pickup item health hidden
 
 #requires <dhmp.common.pack>
 

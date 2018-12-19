@@ -1,7 +1,7 @@
 title: DHMP Clip
 version: 20181023-2149
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition ammo clip
+tags: doom pickup item ammunition pistol chaingun ammo hidden
 
 #requires <dhmp.common.pack>
 

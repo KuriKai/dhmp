@@ -1,7 +1,7 @@
 title: DHMP Rocket
 version: 20181023-2159
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: ammunition ammo rocket
+tags: doom pickup item ammunition ammo hidden
 
 #requires <dhmp.common.pack>
 
