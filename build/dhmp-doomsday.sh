@@ -40,20 +40,20 @@ function gather_packs() {
 }
 
 function generate_info {
-  echo "title: Doom High-res Model Project" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "version: "$DATESTAMP >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "license: "$LICENSE >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "tags: Doom 2 II tnt plutonia" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "notes = \"3D model replacements for Doom sprites\"" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "title: Doom High-res Model Project" >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "version: "$DATESTAMP >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "license: "$LICENSE >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "tags: Doom 2 II tnt plutonia" >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "notes = \"3D model replacements for Doom sprites\"" >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "" >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
   dependency=$(gather_packs REQUIRES)
-  echo "requires" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  dependency=$(gather_packs RECOMMENDS) >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "recommends" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  dependency=$(gather_packs EXTRAS) >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  echo "extras" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
-  sed -i 's/,>/>/g' $BASE_PATH/built/$PACK_FOLDERNAME/info.dei
+  echo "requires" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  dependency=$(gather_packs RECOMMENDS) >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "recommends" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  dependency=$(gather_packs EXTRAS) >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  echo "extras" $dependency >> $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
+  sed -i 's/,>/>/g' $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack/info.dei
 }
 
 #ask what texture resolution they want to build and ask to quit
@@ -111,7 +111,7 @@ do   # The quotes are necessary here
   do
     echo "FOUND PACK"
     echo "$PACK"
-    #We need to add copywrite information into the pack,
+
     if [[ "$RESOLUTION" == "medium" ]]
     #copy the pack to the build folder, delete the texture folders
     #we don't want
@@ -176,9 +176,12 @@ do   # The quotes are necessary here
   popd
 done
 pushd $BASE_PATH/built/
+#We need to add copywrite information into the pack,
 cp $BASE_PATH/docs/* $BASE_PATH/built/$PACK_FOLDERNAME/
+cp -R $BASE_PATH/dhmp $BASE_PATH/built/$PACK_FOLDERNAME/dhmp.pack
 #generate the info.dei
 generate_info
+#compress the chosen pack
 if [[ "$RESOLUTION" == "medium" ]]
 then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.$DATESTAMP.zip $PACK_FOLDERNAME
@@ -190,6 +193,6 @@ then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.src.$DATESTAMP.zip $PACK_FOLDERNAME
 fi
 echo "removing temporary build folder $PACK_FOLDERNAME so we don't taint the next build if filenames change"
-rm -r $PACK_FOLDERNAME
+#rm -r $PACK_FOLDERNAME
 popd
 rm -r $BASE_PATH/doomsday
