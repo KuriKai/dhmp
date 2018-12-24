@@ -193,6 +193,6 @@ then
   zip -r $BASE_PATH/built/$RELEASER.dhmp.src.$DATESTAMP.zip $PACK_FOLDERNAME
 fi
 echo "removing temporary build folder $PACK_FOLDERNAME so we don't taint the next build if filenames change"
-#rm -r $PACK_FOLDERNAME
+rm -r $PACK_FOLDERNAME
 popd
 rm -r $BASE_PATH/doomsday

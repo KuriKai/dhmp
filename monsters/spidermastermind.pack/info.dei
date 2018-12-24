@@ -243,7 +243,7 @@ asset model.thing.spider {
       enabled = True
       #allow multiple transperant meshes
       depthWrite = False
-      variable uAlpha          { value = 0.8 }
+      variable uAlpha          { value = 0.7 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 1 }
@@ -260,7 +260,7 @@ asset model.thing.spider {
       enabled = True
       #allow multiple transperant meshes
       depthWrite = False
-      variable uAlpha          { value = 0.8 }
+      variable uAlpha          { value = 0.7 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 1 }

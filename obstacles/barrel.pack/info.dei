@@ -1,0 +1,340 @@
+title: DHMP Barrel
+version: 20181224.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle hidden
+
+#exported at 0.15
+
+########################
+#Set up the model
+########################
+asset model.thing.barrel {
+  path = "barrel.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #randomise the angle the barrel is facing, so they are more unique
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_barrel" { # material for both mesh_barrel and mesh_barrel_death
+      mesh_barrel {
+        diffuseMap = "textures/barrel_d.png"
+        normalMap = "textures/barrel_n.png"
+        specularMap = "textures/barrel_gs.png"
+        emissiveMap = "textures/barrel_e.png"
+      }
+      mesh_barrel_death {
+        diffuseMap = "textures/barrel_d.png"
+        normalMap = "textures/barrel_n.png"
+        specularMap = "textures/barrel_gs.png"
+        emissiveMap = "textures/barrel_e.png"
+      }
+    }
+    variant "material_liquid" {
+      mesh_nukage {
+        diffuseMap = "textures/barrel_d.png"
+        normalMap = "textures/barrel_n.png"
+        specularMap = "textures/barrel_gs.png"
+        emissiveMap = "textures/barrel_e.png"
+      }
+    }
+    variant "material_bubbles" {
+      mesh_bubbles {
+        diffuseMap = "textures/bubble_d.png"
+        #normalMap = "textures/bubble_d.png"
+        #specularMap = "textures/bubble_d.png"
+        emissiveMap = "textures/bubble_e.png"
+      }
+      mesh_bubbles2 {
+        diffuseMap = "textures/bubble_d.png"
+        #normalMap = "textures/bubble_d.png"
+        #specularMap = "textures/bubble_d.png"
+        emissiveMap = "textures/bubble_e.png"
+      }
+      mesh_bubbles3 {
+        diffuseMap = "textures/bubble_d.png"
+        #normalMap = "textures/bubble_d.png"
+        #specularMap = "textures/bubble_d.png"
+        emissiveMap = "textures/bubble_e.png"
+      }
+      mesh_bubbles4 {
+        diffuseMap = "textures/bubble_d.png"
+        #normalMap = "textures/bubble_d.png"
+        #specularMap = "textures/bubble_d.png"
+        emissiveMap = "textures/bubble_e.png"
+      }
+    }
+  }
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_barrel" {
+      shader = "model.skeletal.generic"
+      material = "material_barrel"
+      meshes <mesh_barrel>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 8 }
+      variable uReflection     { value = 0.4 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_barrel_death" {
+      shader = "model.skeletal.generic"
+      material = "material_barrel"
+      meshes <mesh_barrel_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 8 }
+      variable uReflection     { value = 0.4 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_pass_liquid" {
+      shader = "model.skeletal.generic"
+      material = "material_liquid"
+      meshes <mesh_nukage>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.20 }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 15 }
+      variable uSpecular       { value = 0.6 }
+    }
+    pass "render_pass_bubbles" {
+      shader = "model.skeletal.generic"
+      material = "material_bubbles"
+      meshes <mesh_bubbles>
+      enabled = True
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 15 }
+      variable uSpecular       { value = 0.6 }
+    }
+pass "render_pass_bubbles2" {
+      shader = "model.skeletal.generic"
+      material = "material_bubbles"
+      meshes <mesh_bubbles2>
+      enabled = True
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 15 }
+      variable uSpecular       { value = 0.6 }
+    }
+pass "render_pass_bubbles3" {
+      shader = "model.skeletal.generic"
+      material = "material_bubbles"
+      meshes <mesh_bubbles3>
+      enabled = True
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 15 }
+      variable uSpecular       { value = 0.6 }
+    }
+pass "render_pass_bubbles4" {
+      shader = "model.skeletal.generic"
+      material = "material_bubbles"
+      meshes <mesh_bubbles4>
+      enabled = True
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uGlossiness     { value = 6 }
+      variable uReflection     { value = 2 }
+      variable uReflectionBlur { value = 15 }
+      variable uSpecular       { value = 0.6 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_bubbles" {
+        script at 0.1 {
+          render_pass_bubbles.uOffsetUV.y.setValue (0.02, 0)
+	  render_pass_bubbles.uAlpha.setValue (0.9, 0)
+	}
+        script at 0.25 {
+          render_pass_bubbles.uOffsetUV.y.setValue (0.23, 0)
+	  render_pass_bubbles.uAlpha.setValue (0.9, 0)
+
+	}
+        script at 0.50 {
+          render_pass_bubbles.uOffsetUV.y.setValue (0.42, 0)
+	  render_pass_bubbles.uAlpha.setValue (0.6, 0)
+
+	}
+        script at 0.60 {
+          render_pass_bubbles.uOffsetUV.y.setValue (0.62, 0)
+	  render_pass_bubbles.uAlpha.setValue (0.4, 0)
+
+	}
+        script at 0.68 {
+          render_pass_bubbles.uOffsetUV.y.setValue (0.82, 0)
+	  render_pass_bubbles.uAlpha.setValue (0.2, 0)
+	}
+        script at 0.74 {
+	  render_pass_bubbles.uAlpha.setValue (0, 0)
+	}
+#----------bubbles2
+        script at 2.61 {
+          render_pass_bubbles2.uOffsetUV.y.setValue (0.02, 0)
+	  render_pass_bubbles2.uAlpha.setValue (0.8, 0)
+	}
+        script at 2.75 {
+          render_pass_bubbles2.uOffsetUV.y.setValue (0.23, 0)
+	  render_pass_bubbles2.uAlpha.setValue (0.8, 0)
+
+	}
+        script at 2.90 {
+          render_pass_bubbles2.uOffsetUV.y.setValue (0.42, 0)
+	  render_pass_bubbles2.uAlpha.setValue (0.6, 0)
+
+	}
+        script at 3.08 {
+          render_pass_bubbles2.uOffsetUV.y.setValue (0.62, 0)
+	  render_pass_bubbles2.uAlpha.setValue (0.7, 0)
+
+	}
+        script at 3.12 {
+          render_pass_bubbles2.uOffsetUV.y.setValue (0.82, 0)
+	  render_pass_bubbles2.uAlpha.setValue (0.2, 0)
+	}
+        script at 3.26 {
+	  render_pass_bubbles2.uAlpha.setValue (0, 0)
+	}
+#----------bubbles3
+        script at 4.1 {
+          render_pass_bubbles3.uOffsetUV.y.setValue (0.02, 0)
+	  render_pass_bubbles3.uAlpha.setValue (0.8, 0)
+        }
+        script at 4.15 {
+          render_pass_bubbles3.uOffsetUV.y.setValue (0.23, 0)
+	  render_pass_bubbles3.uAlpha.setValue (0.8, 0)
+        }
+        script at 4.30 {
+          render_pass_bubbles3.uOffsetUV.y.setValue (0.42, 0)
+	  render_pass_bubbles3.uAlpha.setValue (0.6, 0)
+        }
+        script at 4.39 {
+          render_pass_bubbles3.uOffsetUV.y.setValue (0.62, 0)
+	  render_pass_bubbles3.uAlpha.setValue (0.4, 0)
+        }
+        script at 4.42 {
+          render_pass_bubbles3.uOffsetUV.y.setValue (0.82, 0)
+	  render_pass_bubbles3.uAlpha.setValue (0.2, 0)
+        }
+        script at 4.56 {
+	  render_pass_bubbles3.uAlpha.setValue (0, 0)
+	}
+#----------bubbles4
+        script at 1.1 {
+          render_pass_bubbles4.uOffsetUV.y.setValue (0.02, 0)
+	  render_pass_bubbles4.uAlpha.setValue (0.8, 0)
+        }
+        script at 1.15 {
+          render_pass_bubbles4.uOffsetUV.y.setValue (0.23, 0)
+	  render_pass_bubbles4.uAlpha.setValue (0.8, 0)
+        }
+        script at 1.30 {
+          render_pass_bubbles4.uOffsetUV.y.setValue (0.42, 0)
+	  render_pass_bubbles4.uAlpha.setValue (0.6, 0)
+        }
+        script at 1.39 {
+          render_pass_bubbles4.uOffsetUV.y.setValue (0.62, 0)
+	  render_pass_bubbles4.uAlpha.setValue (0.4, 0)
+        }
+        script at 1.42 {
+          render_pass_bubbles4.uOffsetUV.y.setValue (0.82, 0)
+	  render_pass_bubbles4.uAlpha.setValue (0.2, 0)
+        }
+        script at 1.56 {
+	  render_pass_bubbles4.uAlpha.setValue (0, 0)
+	}
+    }
+    timeline "timeline_explode" {
+        script at 0 {
+          render_pass_bubbles.enabled = False
+          render_pass_barrel.enabled = False
+          render_pass_liquid.enabled = False
+          render_pass_barrel_death.enabled = True
+	}
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state BAR1 {
+      sequence arm_barrel|wait {
+  		  prob = 0.25
+  		  looping = True
+		  timeline = timeline_bubbles
+		mustFinish = True
+      }
+      sequence arm_barrel|wait2 {
+  		  prob = 0.25
+  		  looping = True
+		  timeline = timeline_bubbles
+		mustFinish = True
+      }
+      sequence arm_barrel|wait3 {
+  		  prob = 0.25
+  		  looping = True
+		  timeline = timeline_bubbles
+		mustFinish = True
+      }
+      sequence arm_barrel|wait4 {
+  		  prob = 1.0
+  		  looping = True
+		  timeline = timeline_bubbles
+		mustFinish = True
+      }
+     }     
+     state BEXP {
+      sequence arm_barrel|death {
+  		prob = 1.0
+		timeline = timeline_explode
+      }
+     }
+  }
+}
