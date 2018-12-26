@@ -32,6 +32,12 @@ asset model.thing.barrel {
         specularMap = "textures/barrel_gs.png"
         emissiveMap = "textures/barrel_e.png"
       }
+      mesh_barrelbot_death {
+        diffuseMap = "textures/barrel_d.png"
+        normalMap = "textures/barrel_n.png"
+        specularMap = "textures/barrel_gs.png"
+        emissiveMap = "textures/barrel_e.png"
+      }
     }
     variant "material_liquid" {
       mesh_nukage {
@@ -92,7 +98,7 @@ asset model.thing.barrel {
     pass "render_pass_barrel_death" {
       shader = "model.skeletal.generic"
       material = "material_barrel"
-      meshes <mesh_barrel_death>
+      meshes <mesh_barrel_death, mesh_barrelbot_death>
       enabled = False
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
@@ -299,6 +305,7 @@ pass "render_pass_bubbles4" {
           render_pass_barrel.enabled = False
           render_pass_liquid.enabled = False
           render_pass_barrel_death.enabled = True
+          render_pass_barrelbot_death.enabled = True
 	}
     }
     #-----------------
@@ -306,24 +313,28 @@ pass "render_pass_bubbles4" {
     #-----------------
      state BAR1 {
       sequence arm_barrel|wait {
+                  priority = 1
   		  prob = 0.25
   		  looping = True
 		  timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait2 {
+                  priority = 1
   		  prob = 0.25
   		  looping = True
 		  timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait3 {
+                  priority = 1
   		  prob = 0.25
   		  looping = True
 		  timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait4 {
+                  priority = 1
   		  prob = 1.0
   		  looping = True
 		  timeline = timeline_bubbles
@@ -332,8 +343,10 @@ pass "render_pass_bubbles4" {
      }     
      state BEXP {
       sequence arm_barrel|death {
+                priority = 5
   		prob = 1.0
 		timeline = timeline_explode
+		#mustFinish = True
       }
      }
   }
