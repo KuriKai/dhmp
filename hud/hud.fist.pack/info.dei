@@ -1,0 +1,143 @@
+title: DHMP HUD Fist
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom weapon hidden
+
+#requires <dhmp.common.pack>
+
+#exported at 0.02
+
+########################
+#Set up the model
+########################
+asset model.weapon.punch {
+  path = "fist-hud.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  offset <0, -40, 0>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_fist" { # use the normal textures
+      mesh_hud_leftarm_lp { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+      mesh_hud_rightarm_lp {
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_knuckles" { # use the normal textures
+      mesh_hud_knuckles_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/brassknuckles_diffuse.png"
+        normalMap = "textures/brassknuckles_normal.png"
+        specularMap = "textures/brassknuckles_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+      pass "render_pass_fist" {
+      shader = "model.skeletal.generic"
+      material = "material_fist" #make the render pass use the m_body material
+#      meshes <mesh_hud_leftarm_lp, mesh_hand> #make this render pass use the 2nd model
+      meshes <mesh_hud_leftarm_lp, mesh_hud_rightarm_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 2 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_pass_knuckles" {
+      shader = "model.skeletal.generic"
+      material = "material_knuckles" #make the render pass use the m_body material
+      meshes <mesh_hud_knuckles_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0.2 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0.2 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.6 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    #A_WeaponReady
+    state PUNCH {
+      sequence arm_hud|wait {
+    	  prob = 1.0
+    	  looping = FALSE
+	      timeline = timeline_wait
+  	  }
+    }
+    state PUNCH1 {
+      sequence arm_hud|prefire {
+  	    prob = 1.0
+  	    looping = FALSE
+        alwaysTrigger = False
+        priority = 1
+  	  }
+    }
+    state PUNCH2 {
+      sequence arm_hud|refire {
+  	    prob = 1.0
+  	    looping = False
+        alwaysTrigger = True
+        priority = 10
+  	  }
+    }
+    #A_Raise
+    state PUNCHUP {
+      sequence arm_hud|up {
+        prob = 1.0
+  	    looping = False
+        timeline = timeline_wait
+      }
+    }
+    #A_Lower
+    state PUNCHDOWN {
+      sequence arm_hud|down {
+        prob = 1.0
+        looping = False
+        timeline = timeline_wait
+      }
+    }
+  }
+}

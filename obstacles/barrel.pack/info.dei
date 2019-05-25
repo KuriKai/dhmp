@@ -305,7 +305,6 @@ pass "render_pass_bubbles4" {
           render_pass_barrel.enabled = False
           render_pass_liquid.enabled = False
           render_pass_barrel_death.enabled = True
-          render_pass_barrelbot_death.enabled = True
 	}
     }
     #-----------------
