@@ -1,0 +1,213 @@
+title: DHMP Keys
+version: 20190610-0056
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom key pickup item health hidden
+
+#requires <dhmp.common.pack>
+
+#exported at 0.10
+
+########################
+#Set up the model
+########################
+#bluekey
+asset model.thing.misc4 {
+  path = "key.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  material {
+    variant "material_key" { # use the normal textures
+      mesh_key { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/key_lp_ao_blue_d.png"
+        normalMap = "textures/key_lp_n.png"
+        specularMap = "textures/key_lp_gs.png"
+        emissiveMap = "textures/key_lp_e.png"
+      }
+    }
+  }
+
+  render {
+    pass "render_pass_key" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_key"
+      meshes <mesh_key>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 23 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    timeline "timeline_flash" {
+      script at 0 {
+        render_pass_key.uEmission.setValueFrom (0.2, 1, 0.3)
+      }
+      script at 0.3 {
+        render_pass_key.uEmission.setValueFrom (1, 0.2, 0.3)
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state BKEY {
+      sequence arm_key|wait {
+  		  prob = 1.0
+        duration = 0.6
+  		  looping = True
+        timeline = timeline_flash
+  		}
+	  }
+  }
+}
+
+########################
+#Set up the model
+########################
+#redkey
+asset model.thing.misc5 {
+  path = "key.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  material {
+    variant "material_key" { # use the normal textures
+      mesh_key { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/key_lp_ao_red_d.png"
+        normalMap = "textures/key_lp_n.png"
+        specularMap = "textures/key_lp_gs.png"
+        emissiveMap = "textures/key_lp_e.png"
+      }
+    }
+  }
+
+  render {
+    pass "render_pass_key" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_key"
+      meshes <mesh_key>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 23 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    timeline "timeline_flash" {
+      script at 0 {
+        render_pass_key.uEmission.setValueFrom (0.2, 1, 0.3)
+      }
+      script at 0.3 {
+        render_pass_key.uEmission.setValueFrom (1, 0.2, 0.3)
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state RKEY {
+      sequence arm_key|wait {
+  		  prob = 1.0
+        duration = 0.6
+  		  looping = True
+        timeline = timeline_flash
+  		}
+	  }
+  }
+}
+
+########################
+#Set up the model
+########################
+#yellowkey
+asset model.thing.misc6 {
+  path = "key.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  material {
+    variant "material_key" { # use the normal textures
+      mesh_key { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/key_lp_ao_yellow_d.png"
+        normalMap = "textures/key_lp_n.png"
+        specularMap = "textures/key_lp_gs.png"
+        emissiveMap = "textures/key_lp_e.png"
+      }
+    }
+  }
+
+  render {
+    pass "render_pass_key" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_key"
+      meshes <mesh_key>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 23 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }  animation {
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state YKEY {
+      sequence arm_key|wait {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+      variable uSpecular       { value = 2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    timeline "timeline_flash" {
+      script at 0 {
+        render_pass_key.uEmission.setValueFrom (0.2, 1, 0.3)
+      }
+      script at 0.3 {
+        render_pass_key.uEmission.setValueFrom (1, 0.2, 0.3)
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+  	state YKEY {
+      sequence arm_key|wait {
+  		  prob = 1.0
+        duration = 0.6
+  		  looping = True
+        timeline = timeline_flash
+  		}
+	  }
+  }
+}
