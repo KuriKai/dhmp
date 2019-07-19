@@ -1,0 +1,120 @@
+title: DHMP Cacodemon Dead
+version: 20190720-1141
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom enemy monster hidden
+
+#exported at 0.14
+
+########################
+#Set up the model
+########################
+asset model.thing.misc61 {
+  path = "cacodead.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_body" {
+      mesh_guts { #eye
+        diffuseMap = "textures/eye_d.png"
+        normalMap = "textures/eye_n.png"
+        specularMap = "textures/eye_gs.png"
+        emissiveMap = "textures/eye_e.png"
+      }
+    }
+    variant "material_body_death" {
+      mesh_caco_death {
+        diffuseMap = "textures/body_dead_d.png"
+        normalMap = "textures/body_dead_n.png"
+        specularMap = "textures/body_dead_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_blood" {
+      mesh_blood {
+        diffuseMap = "textures/blood.png"
+        normalMap = "textures/blood_n.png"
+        specularMap = "textures/blood_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_eye" {
+      shader = "model.skeletal.generic"
+      material = "material_body"
+      meshes <mesh_guts> #meshes
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 60 }
+      variable uReflection     { value = 0.6 }
+      variable uReflectionBlur { value = 0.5 }
+      variable uSpecular       { value = 3 }
+    }
+    pass "render_pass_death" {
+      shader = "model.skeletal.generic"
+      material = "material_body_death"
+      meshes <mesh_caco_death> #meshes
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 24 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 40 }
+      variable uSpecular       { value = 1.4 }
+    }
+
+    pass "render_pass_blood" {
+      shader = "model.skeletal.generic"
+      material = "material_blood"
+      meshes <mesh_blood>
+      enabled = True
+      variable uAlpha          { value = 0.86 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <0.3, 0, 0.5> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 15 }
+      variable uReflection     { value = 0.8 }
+      variable uReflectionBlur { value = 4.2 }
+      variable uSpecular       { value = 0.5 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state HEAD_DIE6 {
+      sequence arm_caco|death {
+        prob = 0.5
+        #we want dieing to take priority over everything
+        priority = 5
+      }
+      sequence arm_caco|death_2 {
+        #we want dieing to take priority over everything
+        priority = 5
+      }
+    }
+  }
+}
