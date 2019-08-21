@@ -1,0 +1,219 @@
+title: DHMP candle
+version: 20180218-0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: hidden decoration
+
+#exported at 6.0
+
+########################
+#Set up the model
+########################
+asset model.thing.misc49 {
+  path = "candle.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_candle" {
+      mesh_candle {
+        diffuseMap = "textures/candle_d.png"
+        normalMap = "textures/candle_n.png"
+      	specularMap = "textures/candle_s.png"
+      	emissiveMap = "textures/candle_e.png"
+      }
+      mesh_wick {
+        diffuseMap = "textures/candle_d.png"
+        normalMap = "textures/candle_n.png"
+      	specularMap = "textures/candle_s.png"
+      	emissiveMap = "textures/candle_e.png"
+      }
+    }
+    variant "material_flame" {
+      mesh_flame
+       {
+        diffuseMap = "textures/candleflame_d.png"
+        normalMap = "textures/noise3d_flame.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_candle" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_candle"
+      meshes <mesh_candle, mesh_wick>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0.5 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2.5 }
+    }
+    pass "render_pass_flame" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material_flame"
+      meshes <mesh_flame>
+      enabled = true
+      depthWrite = false
+      blendFunc <SrcAlpha, One>
+    variable uAlphaMultiplier       { value = 1.5 }
+    variable uAlphaPower            { value = 1 }
+    variable uDiffuseMultiplier     { value <4, 2.1, 1.2> }
+    variable uFresnelTranspPow      { value = 2 }
+    variable uMainOffset            { value <0.08, 0> }
+    variable uMainScaleUV           { value <0.79, 1> }
+    variable uMainSpeedUV           { value <0, 0> }
+    variable uNoiseMultiplier       { value = 0.001 }
+    variable uNoiseScaleUV          { value <0.2, 0.4> }
+    variable uNoiseSpeedUV          { value <0.01, 0.35> }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    timeline "timeline_flicker" {
+      script at 0.3 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.6 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.2)
+      }
+      script at 0.8 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 1 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.1)
+      }
+      script at 1.2 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 1.4 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 1.6 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 1.8 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+    }
+    timeline "timeline_flicker_offset1" {
+      script at 0.2 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.5 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.8 {
+        render_candle.uEmission.setValueFrom (0, 0.5, 0.2)
+      }
+      script at 1 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.2)
+      }
+      script at 1.2 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 1.5 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.1)
+      }
+      script at 1.8 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+    }
+    timeline "timeline_flicker_offset2" {
+      script at 0.2 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.5 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.2)
+      }
+      script at 0.8 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.1)
+      }
+      script at 1 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.1)
+      }
+      script at 1.2 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.2)
+      }
+      script at 1.5 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.2)
+      }
+      script at 1.8 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+    }
+    timeline "timeline_flicker_offset3" {
+      script at 0.1 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.4 {
+        #set the alpha from 2 to 0 over 0.2 seconds with no delay
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.1)
+      }
+      script at 0.5 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.1)
+      }
+      script at 0.8 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.2)
+      }
+      script at 1.1 {
+        render_candle.uEmission.setValueFrom (0.6, 0.3, 0.1)
+      }
+      script at 1.4 {
+        render_candle.uEmission.setValueFrom (0.3, 0.5, 0.2)
+      }
+      script at 1.8 {
+        render_candle.uEmission.setValueFrom (0.5, 0.3, 0.2)
+      }
+    }
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state CANDLESTIK {
+      sequence arm_candle|wait {
+  		  prob = 0.3
+  		  looping = True
+        timeline = timeline_flicker
+  		}
+      sequence arm_candle|wait_2 {
+  		  prob = 0.3
+  		  looping = True
+        timeline = timeline_flicker_offset1
+  		}
+      sequence arm_candle|wait_4 {
+  		  prob = 0.3
+  		  looping = True
+        timeline = timeline_flicker_offset2
+  		}
+      sequence arm_candle|wait_4 {
+  		  prob = 1.0
+  		  looping = True
+        timeline = timeline_flicker_offset3
+  		}
+	  }
+  }
+}
