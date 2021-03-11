@@ -1,0 +1,241 @@
+title: DHMP Cyberdemon
+version: 20180218-0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: actor enemy Cyberdemon
+
+#requires <dhmp.common.pack>
+
+#exported at 0.29
+
+########################
+#Set up the model
+########################
+asset model.thing.cyborg {
+  path = "cyberdemon.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_alive" { # use the normal textures
+      mesh_alive {
+        diffuseMap = "textures/body_d.png"
+        normalMap = "textures/cybes_n.png"
+      	specularMap = "textures/body_gs.png"
+      	emissiveMap = "textures/e.png"
+      }
+    }
+    variant "material_death" { #use the wound textures
+      mesh_death {
+        diffuseMap = "textures/body_dead_d.png"
+        normalMap = "textures/body_dead_n.png"
+      	specularMap = "textures/body_gs.png"
+      	emissiveMap = "textures/dead_e.png"
+      }
+    }
+    variant "material_explosion_blood" { # use the normal textures
+      mesh_blood {
+	diffuseMap = "textures/blood.png"
+        normalMap = "textures/blood.png"
+      	specularMap = "textures/blood.png"
+      	emissiveMap = "textures/blood.png"
+      }
+    }
+    variant "material_explosion_smoke" { # use the normal textures
+      mesh_smoke {
+        diffuseMap = "textures/smoke.png"
+        normalMap = "textures/smoke.png"
+      	specularMap = "textures/smoke.png"
+      	emissiveMap = "textures/smoke.png"
+      }
+    }
+    variant "material_fire" { # use the normal textures
+      mesh_fire01 {
+        diffuseMap = "textures/fire.png"
+        normalMap = "textures/fire.png"
+      	specularMap = "textures/fire.png"
+      	emissiveMap = "textures/fire.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_alive" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_alive"
+      meshes <mesh_alive>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 0.5 }
+    }
+    pass "render_death" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_death"
+      meshes <mesh_death>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_explosion_smoke" {
+      shader = "model.skeletal.generic"
+      material = "material_explosion_smoke"
+      meshes <mesh_smoke>
+      enabled = False
+      #allow multiple transperant meshes
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_explosion_blood" {
+      shader = "model.skeletal.generic"
+      material = "material_explosion_blood"
+      meshes <mesh_blood>
+      enabled = False
+      #allow multiple transperant meshes
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2 }
+    }
+    pass "render_fire" {
+      shader = "model.skeletal.generic"
+      material = "material_fire"
+      meshes <mesh_fire01>
+      enabled = False
+      #allow multiple transperant meshes
+      depthWrite = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 100 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_aware" {
+        script at 0 {
+	  render_body.uEmission.setValue (0.33, 0.3)
+	}
+    }
+    timeline "timeline_attack" {
+        script at 0 {
+	  render_body.uEmission.setValueFrom (0.33, 1, 0.2)
+	}
+	script at 0.2 {
+	  render_fire.enabled = True
+	  render_fire.uEmission.setValueFrom (2, 0, 0.6)
+	  render_fire.uAlpha.setValueFrom (1, 0, 0.6)
+	}
+        script at 0.9 {
+	  render_fire.uEmission.setValueFrom (2, 0, 0.6)
+	  render_fire.uAlpha.setValueFrom (1, 0, 0.6)
+	}
+        script at 1.2 {
+	  render_fire.uEmission.setValueFrom (2, 0, 0.6)
+	  render_fire.uAlpha.setValueFrom (1, 0, 0.6)
+	}
+    }
+    timeline "timeline_death" {
+        script at 0 {
+          #turn off the body object and turn on the death object
+          render_alive.enabled = False
+          render_death.enabled = True
+          render_explosion_blood.enabled = True
+          render_explosion_smoke.enabled = True
+        }
+	script at 0 {
+          #turn off the body object and turn on the death object
+	  #after 0.8 seconds change the value from 1 to 0 over 0.9 seconds
+          #render_explosion.uAlpha.setValueFrom (1, 0, 0.9, 0.8)
+	   render_explosion_blood.uAlpha.setValueFrom (1, 0, 1)
+           render_explosion_smoke.uAlpha.setValueFrom (1, 0, 2)
+	   render_explosion_smoke.uEmission.setValueFrom (0, 2, 2)
+        }
+    }
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state CYBER_STND {
+      sequence arm_alive|wait {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+    state CYBER_RUN1 {
+      sequence arm_alive|walk {
+		timeline = timeline_aware
+    		prob = 1.0
+    		looping = True
+  		}
+    }
+	  state CYBER_PAIN {
+      sequence arm_alive|pain {
+  		  prob = 1.0
+  		}
+    }
+    state CYBER_ATK1 {
+      sequence arm_alive|aim {
+		#timeline = timeline_aim
+  		prob = 1.0
+  		#looping = False
+		}
+    }
+    state CYBER_ATK2 {
+       sequence arm_alive|attack {
+		timeline = timeline_attack
+  		prob = 1.0
+  		#looping = False
+		}
+    }
+    state CYBER_DIE1 {
+      sequence arm_dead|death {
+        timeline = timeline_death #use the timeline_death timeline (so we can show the model object that has the death animation)
+        prob = 1.0
+      }
+    }
+  }
+}

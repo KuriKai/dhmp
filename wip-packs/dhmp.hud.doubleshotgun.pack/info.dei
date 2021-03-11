@@ -1,0 +1,220 @@
+title: DHMP HUD Double Barrel Shotgun
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom weapon
+
+#requires <dhmp.common.pack>
+
+#exported at ??
+
+########################
+#Set up the model
+########################
+asset model.weapon.dsgun {
+  path = "doubleshotgun-hud.fbx"
+  front <1, 0, 0>
+  up <0, 1, 0>
+  offset <0, -5, -0>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_shotgun" { # use the normal textures
+      mesh_shotgun { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/shotgun_d.png"
+        normalMap = "textures/shotgun_n.png"
+        specularMap = "textures/shotgun_s.png"
+        #emissiveMap = "textures/shotgun_e.png"
+      }
+    }
+    variant "material_barrel" { # use the normal textures
+      mesh_barrel { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/shotgun_d.png"
+        normalMap = "textures/shotgun_n.png"
+        specularMap = "textures/shotgun_s.png"
+        #emissiveMap = "textures/shotgun_e.png"
+      }
+    }
+    variant "material_shell" { # use the normal textures
+      mesh_shell { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/shotgunshells_d.png"
+        normalMap = "textures/shotgunshells_n.png"
+        specularMap = "textures/shotgunshells_s.png"
+        #emissiveMap = "textures/shotgunshells_e.png"
+      }
+    }
+    variant "material_arm" { # use the normal textures
+      mesh_hud_leftarm_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_glove" { # use the normal textures
+      mesh_hud_glove_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/glove_diffuse.png"
+        normalMap = "textures/glove_normal.png"
+        specularMap = "textures/glove_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+#    variant "material_fire" { # use the normal textures
+#      mesh_fire { #this says which mesh the material will be used with
+#        #Multiply adds another texture ontop of the first using multiplying blending
+#        diffuseMap = "textures/fire3.png"
+#        normalMap = "textures/fire3.png"
+#        specularMap = "textures/fire3.png"
+#        emissiveMap = "textures/fire3.png"
+#      }
+#    }
+  }
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+      pass "render_pass_shotgun" {
+      shader = "model.skeletal.generic"
+      material = "material_shotgun" #make the render pass use the m_body material
+      meshes <mesh_shotgun> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 36 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.3 }
+    }
+    pass "render_pass_barrel" {
+      shader = "model.skeletal.generic"
+      material = "material_barrel" #make the render pass use the m_body material
+      meshes <mesh_barrel> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 36 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.3 }
+    }
+pass "render_pass_shell" {
+      shader = "model.skeletal.generic"
+      material = "material_barrel" #make the render pass use the m_body material
+      meshes <mesh_shell> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 36 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.3 }
+    }
+    pass "render_pass_arm" {
+      shader = "model.skeletal.generic"
+      material = "material_arm" #make the render pass use the m_body material
+      meshes <mesh_hud_leftarm_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_pass_glove" {
+      shader = "model.skeletal.generic"
+      material = "material_glove" #make the render pass use the m_body material
+      meshes <mesh_hud_glove_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     #A_WeaponReady
+     state DSGUN {
+        sequence arm_hud_shotgun|hud_wait {
+  	  prob = 1.0
+  	  looping = FALSE
+	  timeline = timeline_wait
+  	}
+     }
+     #A_WeaponRefire
+     state DSGUN2 {
+        sequence arm_hud_shotgun|hud_fire {
+	  #timeline = timeline_fire
+  	  prob = 1.0
+  	  looping = FALSE
+  	}
+     }
+     #A_GunFlash
+     state DSGUN3 {
+        sequence arm_hud_shotgun|hud_reload {
+	  timeline = timeline_fire
+  	  prob = 1.0
+	  mustfinish = true
+  	  looping = False
+  	}
+     }
+     #A_Raise
+     state DSGUNUP {
+        sequence arm_hud_shotgun|hud_up {
+  	  prob = 1.0
+  	  looping = False
+	  timeline = timeline_wait
+  	}
+     }
+     #A_Lower
+     state DSGUNDOWN {
+        sequence arm_hud_shotgun|hud_down {
+  	  prob = 1.0
+  	  looping = False
+	  timeline = timeline_wait
+  	}
+     }
+  }
+}

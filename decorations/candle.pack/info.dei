@@ -61,7 +61,7 @@ asset model.thing.misc49 {
       variable uSpecular       { value = 2.5 }
     }
     pass "render_pass_flame" {
-      shader = "model.skeletal.veirdo.fire"
+      shader = "model.skeletal.veirdo.candlefire"
       material = "material_flame"
       meshes <mesh_flame>
       enabled = true

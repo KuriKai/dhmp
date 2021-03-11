@@ -1,0 +1,203 @@
+title: DHMP HUD plasmacannon
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom weapon
+
+#requires <dhmp.common.pack>
+
+#exported at 0.08
+
+########################
+#Set up the model
+########################
+asset model.weapon.plasma {
+  path = "plasmacannon-hud.fbx"
+  front <1, 0, 0>
+  up <0, 1, 0>
+  offset <0, -5, -12>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_plasmacannon" { # use the normal textures
+      mesh_plasmacannon_lp { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/plasmarifle_body_d.png"
+        normalMap = "textures/plasmarifle_body_n.png"
+        specularMap = "textures/plasmarifle_body_gs.png"
+        emissiveMap = "textures/plasmarifle_body_e.png"
+      }
+    }
+    variant "material_arm" { # use the normal textures
+      mesh_hud_leftarm_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_glove" { # use the normal textures
+      mesh_hud_glove_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/glove_diffuse.png"
+        normalMap = "textures/glove_normal.png"
+        specularMap = "textures/glove_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_flash" {
+      mesh_hud_flash {
+        diffuseMap = "textures/obj_hud_flash.png"
+        emissiveMap = "textures/obj_hud_flash.png"
+      }
+    }
+  }
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_plasmagun" {
+      shader = "model.skeletal.generic"
+      material = "material_plasmacannon" #make the render pass use the m_body material
+      meshes <mesh_plasmacannon_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 17 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.7 }
+    }
+    pass "render_pass_arm" {
+      shader = "model.skeletal.generic"
+      material = "material_arm" #make the render pass use the m_body material
+      meshes <mesh_hud_leftarm_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_pass_glove" {
+      shader = "model.skeletal.generic"
+      material = "material_glove" #make the render pass use the m_body material
+      meshes <mesh_hud_glove_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_flash" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_flash"
+      meshes <mesh_hud_flash>
+      enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_fire" {
+      script at 0 {
+        render_flash.enabled = True
+        render_flash.uAlpha.setValue (0.5)
+        #render_flash.uEmission.setValue (1)
+      }
+      script at 0 {
+        #set the alpha from 0.6 to 0 over 0.2 seconds with no delay
+        render_flash.uAlpha.setValueFrom (0.5, 0, 0.2)
+        #render_flash.uEmission.setValueFrom (1, 0, 0.2)
+      }
+    }
+    timeline "timeline_notfire" {
+      script at 0 {
+        render_flash.enabled = False
+      }
+    }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    #A_WeaponReady
+    state PLASMA {
+      sequence arm_gun|hud_wait {
+        prob = 1.0
+        looping = FALSE
+        timeline = timeline_notfire
+  	  }
+    }
+    #A_WeaponRefire
+    state PLASMA1 {
+      sequence arm_gun|hud_fire {
+  	    prob = 1.0
+        looping = false
+        timeline = timeline_fire
+        alwaysTrigger = true
+      }
+    }
+    #A_GunFlash
+    state PLASMA2 {
+      sequence arm_gun|hud_reload {
+        timeline = timeline_notfire
+        prob = 1.0
+        looping = False
+      }
+    }
+    #A_Raise
+    state PLASMAUP {
+      sequence arm_gun|hud_up {
+        prob = 1.0
+        looping = False
+        timeline = timeline_notfire
+  	  }
+     }
+     #A_Lower
+     state PLASMADOWN {
+      sequence arm_gun|hud_down {
+        prob = 1.0
+        looping = False
+        timeline = timeline_notfire
+      }
+      sequence arm_gun|hud_down {
+        prob = 1.0
+        looping = False
+        timeline = timeline_notfire
+      }
+    }
+  }
+}

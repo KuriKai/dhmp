@@ -1,6 +1,6 @@
 # Pack of custom shaders by veirdo v. 25022018
 #Shader for special effects like fire
-shader model.skeletal.veirdo.fire {
+shader model.skeletal.veirdo.candlefire {
     variable uNoiseSpeedUV          { value <0, 0> }
     variable uNoiseScaleUV          { value <1, 1> }
     variable uNoiseMultiplier       { value = 0 }

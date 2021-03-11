@@ -1,0 +1,190 @@
+title: DHMP invis
+version: 20180218-0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: evil eye
+
+#exported at 0.18
+
+########################
+#Set up the model
+########################
+asset model.thing.ins {
+  path = "invis.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <0, 18, 0>
+ alignment.yaw = view
+ alignment.pitch = view
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_outside" {
+      mesh_outsidered {
+        diffuseMap = "textures/red.png"
+        #normalMap = "textures/effects.png"
+      	specularMap = "textures/red.png"
+      	emissiveMap = "textures/red.png"
+      }
+      mesh_outsideblue {
+        diffuseMap = "textures/blue.png"
+        #normalMap = "textures/effects.png"
+      	specularMap = "textures/blue.png"
+      	emissiveMap = "textures/blue.png"
+      }
+    }
+    variant "material_eyeball" {
+      mesh_eyeball {
+        diffuseMap = "textures/eyeball2_d.png"
+        #normalMap = "textures/effects.png"
+      	specularMap = "textures/eyeball2_s.png"
+      	emissiveMap = "textures/eyeball2_e.png"
+      }
+    }
+    variant "material_red_back" {
+      mesh_red_back {
+        diffuseMap = "textures/core_d.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/effects.png"
+      	emissiveMap = "textures/core_d.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_back" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_red_back"
+      meshes <mesh_red_back>
+      enabled = True
+      depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0 }
+    }
+    pass "render_eyeball" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_eyeball"
+      meshes <mesh_eyeball>
+      enabled = True
+      #depthWrite = false
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 5 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 5 }
+    }
+
+    pass "render_outsideblue" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_outside"
+      meshes <mesh_outsideblue>
+      enabled = True
+      depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor >
+      variable uAlpha          { value = 0.20 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 20 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1 }
+    }
+    pass "render_outsidered" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_outside"
+      meshes <mesh_outsidered>
+      enabled = True
+      depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor >
+      variable uAlpha          { value = 0.20 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 20 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 5 }
+    }
+
+
+
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+
+   variable circleRotationRed{
+      speed = 80
+	#axis spec sphere rotates around
+      axis <0, 1, 0>
+	#bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "outsidered"
+   }
+   variable circleRotationBlue{
+      speed = 30
+	#axis spec sphere rotates around
+      axis <0, 0, 1>
+	#bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "outsideblue"
+   }
+
+   timeline "timeline_invis" {
+     script at 0.1{
+       render_back.uEmission.setValueFrom(0, 1.5, 1)
+     }
+     script at 0.3 {
+       render_eyeball.uAlpha.setValueFrom (1, 0, 1)
+       render_outsidered.uAlpha.setValueFrom (0.2, 0.1, 0.7)
+     }
+     script at 1 {
+       #set the alpha from 1 to 0.3 over 0.5 seconds with no delay
+       #render_eyeball.uAlpha.setValueFrom (1, 0, 0.2)
+       #render_back.uOffsetUV.x.setValueFrom(1, 0, 0.9)
+       #render_back.uOffsetUV.y.setValueFrom(1, 0, 0.9)
+       render_back.uEmission.setValueFrom(1.5, 0, 1)
+       render_outsidered.uAlpha.setValueFrom (0.1, 0.2, 0.7)
+     }
+     script at 1.7 {
+       #set the alpha to 1 over 0 seconds with no delay
+       render_eyeball.uAlpha.setValueFrom(0, 1, 0.3)
+     }
+    }
+
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state PINS {
+      sequence arm_invis|wait {
+  		  prob = 1.0
+  		  looping = True
+        timeline = timeline_invis
+  		}
+	  }
+  }
+}

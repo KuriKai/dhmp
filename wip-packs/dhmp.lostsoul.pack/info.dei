@@ -1,0 +1,169 @@
+title: DMP2 Lostsoul
+version: 020150904-0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: enemy lostsoul
+
+asset model.thing.skull {
+  path = "lostsoul.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  mirror = False
+  autoscale = False
+
+  material {
+    variant "material_skull" {
+      mesh_skull {
+        diffuseMap = "textures/lostsoul_d.png"
+        normalMap = "textures/lostsoul_n.png"
+        #specularMap = "textures/lostsoul_s.png"
+        emissiveMap = "textures/lostsoul_l.png"
+        #heightMap = "textures/lostsoul_h.png"
+      }
+      mesh_skull_dead {
+        diffuseMap = "textures/lostsoul_d.png"
+        normalMap = "textures/lostsoul_n.png"
+        #specularMap = "textures/lostsoul_s.png"
+        emissiveMap = "textures/lostsoul_l.png"
+        #heightMap = "textures/lostsoul_h.png"
+      }
+    }
+    variant "material_fire_maine" {
+      mesh_fire_maine {
+        diffuseMap = "textures/flame.png"
+        normalMap = "textures/noise3d_flame.png"
+      }
+      mesh_fire_eyes {
+        diffuseMap = "textures/flame.png"
+        normalMap = "textures/noise3d_flame.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_skull" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_skull"
+      meshes <mesh_skull>
+      enabled = true
+    }
+    pass "render_skull_dead" {
+      shader = "model.skeletal.opaque.generic"
+      material = "material_skull"
+      meshes <mesh_skull_dead>
+      enabled = false
+    }
+    pass "render_pass_flame_maine" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material_fire_maine"
+      meshes <mesh_fire_maine>
+      enabled = true
+      depthWrite = false
+      blendFunc <SrcAlpha, One>
+    variable uAlphaMultiplier       { value = 1 }
+    variable uAlphaPower            { value = 1 }
+    variable uDiffuseMultiplier     { value <4, 2.1, 1.2> }
+    variable uFresnelTranspPow      { value = 1 }
+#    variable uFresnelTranspPow      { value = 2 }
+    variable uMainOffset            { value <0, 0> }
+    variable uMainScaleUV           { value <1, 1> }
+    variable uMainSpeedUV           { value <0, 1> }
+    variable uNoiseMultiplier       { value = 0 }
+    variable uNoiseScaleUV          { value <0, 0> }
+    variable uNoiseSpeedUV          { value <0, 0> }
+    }
+pass "render_pass_flame_eyes" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material_fire_maine"
+      meshes <mesh_fire_eyes>
+      enabled = true
+      depthWrite = false
+      blendFunc <SrcAlpha, One>
+    variable uAlphaMultiplier       { value = 2 }
+    variable uAlphaPower            { value = 2 }
+    variable uDiffuseMultiplier     { value <4, 2.1, 1.2> }
+    variable uFresnelTranspPow      { value = 1 }
+#    variable uFresnelTranspPow      { value = 0 }
+    variable uMainOffset            { value <0, 0> }
+    variable uMainScaleUV           { value <1, 1> }
+    variable uMainSpeedUV           { value <0, 1> }
+    variable uNoiseMultiplier       { value = 0.001 }
+    variable uNoiseScaleUV          { value <0.2, 0.4> }
+    variable uNoiseSpeedUV          { value <2, 2> }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_die" {
+        script at 0 {
+	  render_skull_dead.enabled = True
+	  render_skull.enabled = False
+	}
+    }
+
+  animation {
+    state SKULL_STND {
+      sequence arm|idle {
+    	  prob = 1
+    	  priority = 0
+    	  looping = True
+    	}
+    }
+    state SKULL_RUN1 {
+      sequence arm|run {
+        prob = 0.25
+        looping = True
+      	priority = 1
+      }
+      sequence arm|run2 {
+        prob = 0.25
+        looping = True
+      	priority = 1
+      }
+      sequence arm|run3 {
+        prob = 0.25
+        looping = True
+      	priority = 1
+      }
+      sequence arm|run4 {
+        prob = 0.25
+        looping = True
+      	priority = 1
+      }
+    }
+
+    state SKULL_PAIN {
+      sequence arm|pain_F {
+    	 prob = 1.0
+    	 priority = 1
+      }
+    }
+
+    state SKULL_ATK1 {
+      sequence arm|attack {
+    	prob = 1.0
+    	priority = 1
+      }
+    }
+
+    state SKULL_DIE1 {
+      sequence arm|death {
+    	prob = 0.5
+    	priority = 1
+	timeline = timeline_die
+      }
+      sequence arm|death2 {
+    	prob = 0.5
+    	priority = 1
+	timeline = timeline_die
+      }
+    }
+  }
+}
