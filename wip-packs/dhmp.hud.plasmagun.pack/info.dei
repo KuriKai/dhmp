@@ -14,6 +14,7 @@ asset model.weapon.plasma {
   path = "plasmacannon-hud.fbx"
   front <1, 0, 0>
   up <0, 1, 0>
+  fov = 60
   offset <0, -5, -12>
 
 

@@ -14,7 +14,10 @@ asset model.weapon.sgun {
   path = "shotgun-hud.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
-  offset <0, -5, 0>
+  offset <0, 1, 2>
+#  fov = 38
+  fov = 50
+#    offset <0, -5, 0>
 
 
   #++++++++++++++++++++++++

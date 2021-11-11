@@ -57,8 +57,8 @@ asset model.thing.misc31 {
       variable uEmission       { value = 2 }
       variable uGlossiness     { value = 70 }
       variable uReflection     { value = 1.8 }
-      variable uReflectionBlur { value = 16 }
-      variable uSpecular       { value = 3.5 }
+      variable uReflectionBlur { value = 4.8 }
+      variable uSpecular       { value = 0.2}
     }
     pass "render_pass_glass" {
       shader = "model.skeletal.generic"
