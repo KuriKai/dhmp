@@ -1,37 +1,34 @@
-## Welcome to GitHub Pages
+#--------------
+**** DHMP ****
+--------------
+DOOM High-resolution Model Project
+* [Download](https://github.com/KuriKai/dhmp/wiki)
+* [GitHub](https://github.com/KuriKai/DHMP/)
+* [Forum](http://dengine.net/forums/viewtopic.php?f=3&t=877#topic)
 
-You can use the [editor on GitHub](https://github.com/KuriKai/dhmp/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+----------------------
+**** Introduction ****
+----------------------
 
-```markdown
-Syntax highlighted code block
+History:
+The DHMP (DOOM High-resolution Model Project) is a community driven project that had is birth as the dmp (Doom model project). Back when the doomsday engine had support for md2 and dmd low resolution models. Most of the models that were availible to play with looked nothing like the original sprites.
 
-# Header 1
-## Header 2
-### Header 3
+Aim:
+The aim of the DHMP is to get faithfully recreated high resolution models that may also have inspiration from the concept sketches and models the id create when making DOOM
 
-- Bulleted
-- List
+ It will also be a lot more tightly controlled than its predecessor, in regards to both copyrights and quality control.
 
-1. Numbered
-2. List
+---------------------------------
+**** Copyright / Permissions ****
+---------------------------------
+All submitted work must be under the "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License."
 
-**Bold** and _Italic_ and `Code` text
+-----------------------
+**** Participation ****
+-----------------------
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/KuriKai/dhmp/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+* [How to export models from blender to fbx format](https://github.com/KuriKai/dhmp/wiki/Model-exporting)
+* [Tips on Dei creation](https://github.com/KuriKai/dhmp/wiki/Dei-creation)
