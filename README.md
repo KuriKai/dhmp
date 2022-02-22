@@ -2,7 +2,7 @@
 **** DHMP ****
 --------------
 DOOM High-resolution Model Project
-* [Download](http://dhmp.hiriwa.com/)
+* [Download](https://github.com/KuriKai/dhmp/wiki)
 * [GitHub](https://github.com/KuriKai/DHMP/)
 * [Forum](http://dengine.net/forums/viewtopic.php?f=3&t=877#topic)
 
