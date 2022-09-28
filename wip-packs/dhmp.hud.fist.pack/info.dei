@@ -1,0 +1,218 @@
+title: DHMP HUD Fist
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom weapon
+
+#requires <dhmp.common.pack>
+
+#exported at 0.02
+
+########################
+#Set up the model
+########################
+asset model.weapon.punch {
+  path = "fist-hud.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  offset <0, 0, 0>
+  notifiedStates <PUNCH, PUNCH1, PUNCH2, PUNCHDOWN, PUNCHUP>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_fist" { # use the normal textures
+      mesh_hud_arm_L { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+      mesh_hud_arm_R {
+        diffuseMap = "textures/arm_diffuse.png"
+        normalMap = "textures/arm_normal.png"
+        specularMap = "textures/arm_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+    variant "material_knuckles" { # use the normal textures
+      mesh_hud_knuckles_lp { #this says which mesh the material will be used with
+        diffuseMap = "textures/brassknuckles_diffuse.png"
+        normalMap = "textures/brassknuckles_normal.png"
+        specularMap = "textures/brassknuckles_gs.png"
+        emissiveMap = "textures/black_e.png"
+      }
+    }
+  }
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+      pass "render_pass_fist" {
+      shader = "model.skeletal.generic"
+      material = "material_fist" #make the render pass use the m_body material
+#      meshes <mesh_hud_leftarm_lp, mesh_hand> #make this render pass use the 2nd model
+      meshes <mesh_hud_arm_L, mesh_hud_arm_R> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 2 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_pass_knuckles" {
+      shader = "model.skeletal.generic"
+      material = "material_knuckles" #make the render pass use the m_body material
+      meshes <mesh_hud_knuckles_lp> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0.2 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0.2 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.6 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup any scripts
+  #++++++++++++++++++++++++
+  script {
+    #https://manual.dengine.net/script/walkthrough/functions#records_as_argumentsreturn_value
+    record laststate
+    laststate.val = 'blank'
+    print "laststate.val init = ",laststate.val
+    print "laststate", laststate
+
+    record model.weapon.punch ()     
+        def onStateChange(animator, state)
+            #record the state as our last state
+
+	#only run when we are in the wait state
+            if state == "PUNCH"
+              #print "playingsequences: ",animator.playingSequences( )
+              #print "current state is punch"
+	      print "state", state
+              #laststate.val = text
+              print "lastate.val = ",laststate.val
+              #laststate = val:text
+              #print "lastate says ",laststate
+           #check to see if the last state was an attack(PUNCH2) action
+           #why is this not working?
+              if laststate.val == "PUNCH2"
+                print "playingsequences: ",animator.playingSequences( ) 
+                print "startsequence"
+                #animator.startSequence("arm_hud|up",1,0)
+                print "if laststate was: ", laststate.val
+              else
+                #animator.startSequence("arm_hud|crack")
+                print "if not starting new sequence, needed state PUNCH2, state is ",state
+              end
+            end
+            #if state == "PUNCH2"
+            #  print "current state is punch2"
+            #end
+            laststate.val = state
+        end
+    end
+  }
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    #A_WeaponReady
+    state PUNCH {
+      sequence arm_hud|wait {
+    	  prob = 1
+    	  looping = true
+	  timeline {
+	    script at 0 {
+              print "playing wait"
+            }
+          }
+      }
+      
+      sequence arm_hud|crack {
+    	  prob = 1
+    	  priority = 0
+    	  looping = true
+    	  timeline {
+	    script at 0 {
+	      print "playing crack"
+            }
+          }
+      }
+      sequence arm_hud|finishedpunch {
+    	  prob = 0
+    	  priority = 0
+    	  looping = true
+    	  timeline {
+	    script at 0 {
+	      print "playing finishedpunch"
+            }
+          }
+      }
+    }
+    state PUNCH1 {
+      sequence arm_hud|prefire {
+  	    prob = 1.0
+  	    looping = FALSE
+        alwaysTrigger = False
+        priority = 1
+  	  }
+    }
+    state PUNCH2 {
+      sequence arm_hud|refire {
+  	    prob = 1.0
+  	    looping = False
+        alwaysTrigger = True
+        priority = 10
+      }
+    }
+    #A_Raise
+    state PUNCHUP {
+      sequence arm_hud|up {
+        prob = 1.0
+  	looping = False
+  	mustfinish = true
+        #timeline = timeline_wait
+      }
+    }
+    #A_Lower
+    state PUNCHDOWN {
+      sequence arm_hud|down {
+        prob = 1.0
+        looping = False
+        #timeline = timeline_wait
+        #timeline { 
+	#  script at 0 {
+         #  laststate.val = "blank"
+        #  }
+        #}
+      }
+    }
+  }
+}

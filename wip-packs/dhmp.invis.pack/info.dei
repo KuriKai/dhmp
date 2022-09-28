@@ -153,9 +153,10 @@ asset model.thing.ins {
    timeline "timeline_invis" {
      script at 0.1{
        render_back.uEmission.setValueFrom(0, 1.5, 1)
+       render_eyeball.uAlpha.setValueFrom (1, 0, 1)
      }
      script at 0.3 {
-       render_eyeball.uAlpha.setValueFrom (1, 0, 1)
+       #render_eyeball.uAlpha.setValueFrom (1, 0, 1)
        render_outsidered.uAlpha.setValueFrom (0.2, 0.1, 0.7)
      }
      script at 1 {

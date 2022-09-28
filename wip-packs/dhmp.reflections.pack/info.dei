@@ -1,0 +1,275 @@
+title: DHMP wip Model Reflection Maps
+version: 20220920.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: DOOM Reflection Cubemaps 
+
+
+#In doomsday on the terminal type "cubeshot" to take a 360 
+#render of your current lcoation for reflection maps
+#
+
+# Default reflection maps
+
+##########
+#DOOM ep1#
+##########
+asset texture.reflect.e1m1 {
+    interior.path = "doom/e1m1-in.png"
+    exterior.path = "doom/e1m1-out.png"
+}
+asset texture.reflect.e1m2 {
+    interior.path = "doom/e1m2-in.png"
+    exterior.path = "doom/e1m2-out.png"
+}
+asset texture.reflect.e1m3 {
+    interior.path = "doom/e1m3-in.png"
+    exterior.path = "doom/e1m3-out.png"
+}
+asset texture.reflect.e1m4 {
+    interior.path = "doom/e1m4-in.png"
+    exterior.path = "doom/e1m4-out.png"
+}
+asset texture.reflect.e1m5 {
+    interior.path = "doom/e1m5-in.png"
+    exterior.path = "doom/e1m5-out.png"
+}
+asset texture.reflect.e1m6 {
+    interior.path = "doom/e1m6-in.png"
+    exterior.path = "doom/e1m6-out.png"
+}
+asset texture.reflect.e1m7 {
+    interior.path = "doom/e1m7-in.png"
+    exterior.path = "doom/e1m7-out.png"
+}
+asset texture.reflect.e1m8 {
+    interior.path = "doom/e1m8-in.png"
+    exterior.path = "doom/e1m8-out.png"
+}
+asset texture.reflect.e1m9 {
+    interior.path = "doom/e1m9-in.png"
+    exterior.path = "doom/e1m9-out.png"
+}
+
+##########
+#DOOM ep2#
+##########
+asset texture.reflect.e2m1 {
+    interior.path = "doom/e2m1-in.png"
+#    exterior.path = "doom/e2m1-out.png"
+}
+asset texture.reflect.e2m2 {
+    interior.path = "doom/e2m2-in.png"
+#    exterior.path = "doom/e2m2-out.png"
+}
+asset texture.reflect.e2m3 {
+    interior.path = "doom/e2m3-in.png"
+    exterior.path = "doom/e2m3-out.png"
+}
+asset texture.reflect.e2m4 {
+    interior.path = "doom/e2m4-in.png"
+#    exterior.path = "doom/e2m4-out.png"
+}
+asset texture.reflect.e2m5 {
+    interior.path = "doom/e2m5-in.png"
+    exterior.path = "doom/e2m5-out.png"
+}
+asset texture.reflect.e2m6 {
+    interior.path = "doom/e2m6-in.png"
+    exterior.path = "doom/doom/e2m6-out.png"
+}
+asset texture.reflect.e2m7 {
+    interior.path = "doom/e2m7-in.png"
+    exterior.path = "doom/e2m7-out.png"
+}
+asset texture.reflect.e2m8 {
+    interior.path = "doom/e2m8-in.png"
+    exterior.path = "doom/e2m8-out.png"
+}
+asset texture.reflect.e2m9 {
+    interior.path = "doom/e2m9-in.png"
+#    exterior.path = "doom/e2m9-out.png"
+}
+
+##########
+#DOOM ep3#
+##########
+asset texture.reflect.e3m1 {
+    interior.path = "doom/e3m1-in.png"
+    exterior.path = "doom/e3m1-out.png"
+}
+asset texture.reflect.e3m2 {
+    interior.path = "doom/e3m2-in.png"
+    exterior.path = "doom/e3m2-out.png"
+}
+asset texture.reflect.e3m3 {
+    interior.path = "doom/e3m3-in.png"
+    exterior.path = "doom/e3m3-out.png"
+}
+asset texture.reflect.e3m4 {
+    interior.path = "doom/e3m4-in.png"
+    exterior.path = "doom/e3m4-out.png"
+}
+asset texture.reflect.e3m5 {
+    interior.path = "doom/e3m5-in.png"
+    exterior.path = "doom/e3m5-out.png"
+}
+asset texture.reflect.e3m6 {
+    interior.path = "doom/e3m6-in.png"
+    exterior.path = "doom/e3m6-out.png"
+}
+asset texture.reflect.e3m7 {
+    interior.path = "doom/e3m7-in.png"
+#    exterior.path = "doom/e3m7-out.png"
+}
+asset texture.reflect.e3m8 {
+    interior.path = "doom/e3m8-in.png"
+    exterior.path = "doom/e3m8-out.png"
+}
+asset texture.reflect.e3m9 {
+    interior.path = "doom/e3m1-in.png"
+    exterior.path = "doom/e3m1-out.png"
+}
+##########
+#DOOM ep4#
+##########
+
+#######
+#DOOM2#
+#######
+asset texture.reflect.map01 {
+    interior.path = "doom2/map01-in.png"
+    exterior.path = "doom2/map01-out.png"
+}
+asset texture.reflect.map02 {
+    interior.path = "doom2/map02-in.png"
+    exterior.path = "doom2/map02-out.png"
+}
+asset texture.reflect.map03 {
+    interior.path = "doom2/map03-in.png"
+    exterior.path = "doom2/map03-out.png"
+}
+asset texture.reflect.map04 {
+    interior.path = "doom2/map04-in.png"
+    exterior.path = "doom2/map04-out.png"
+}
+asset texture.reflect.map05 {
+    interior.path = "doom2/map05-in.png"
+    exterior.path = "doom2/map05-out.png"
+}
+asset texture.reflect.map06 {
+    interior.path = "doom2/map06-in.png"
+    exterior.path = "doom2/map06-out.png"
+}
+asset texture.reflect.map07 {
+    interior.path = "doom2/map07-in.png"
+    exterior.path = "doom2/map07-out.png"
+}
+asset texture.reflect.map08 {
+    interior.path = "doom2/map08-in.png"
+    exterior.path = "doom2/map08-out.png"
+}
+asset texture.reflect.map09 {
+    interior.path = "doom2/map09-in.png"
+    exterior.path = "doom2/map09-out.png"
+}
+asset texture.reflect.map10 {
+    interior.path = "doom2/map10-in.png"
+    exterior.path = "doom2/map10-out.png"
+}
+asset texture.reflect.map11 {
+    interior.path = "doom2/map11-in.png"
+    exterior.path = "doom2/map11-out.png"
+}
+asset texture.reflect.map12 {
+    interior.path = "doom2/map12-in.png"
+    exterior.path = "doom2/map12-out.png"
+}
+asset texture.reflect.map13 {
+    interior.path = "doom2/map13-in.png"
+    exterior.path = "doom2/map13-out.png"
+}
+asset texture.reflect.map14 {
+    interior.path = "doom2/map14-in.png"
+    exterior.path = "doom2/map14-out.png"
+}
+asset texture.reflect.map15 {
+    interior.path = "doom2/map15-in.png"
+    exterior.path = "doom2/map15-out.png"
+}
+asset texture.reflect.map16 {
+    interior.path = "doom2/map16-in.png"
+    exterior.path = "doom2/map16-out.png"
+}
+asset texture.reflect.map17 {
+    interior.path = "doom2/map17-in.png"
+    exterior.path = "doom2/map17-out.png"
+}
+asset texture.reflect.map18 {
+    interior.path = "doom2/map18-in.png"
+    exterior.path = "doom2/map18-out.png"
+}
+asset texture.reflect.map19 {
+    interior.path = "doom2/map19-in.png"
+    exterior.path = "doom2/map19-out.png"
+}
+asset texture.reflect.map20 {
+    interior.path = "doom2/map20-in.png"
+    exterior.path = "doom2/map20-out.png"
+}
+asset texture.reflect.map21 {
+    interior.path = "doom2/map21-in.png"
+    exterior.path = "doom2/map21-out.png"
+}
+asset texture.reflect.map22 {
+    interior.path = "doom2/map22-in.png"
+    exterior.path = "doom2/map22-out.png"
+}
+asset texture.reflect.map23 {
+    interior.path = "doom2/map23-in.png"
+    exterior.path = "doom2/map23-out.png"
+}
+asset texture.reflect.map24 {
+    interior.path = "doom2/map24-in.png"
+    exterior.path = "doom2/map24-out.png"
+}
+asset texture.reflect.map25 {
+    interior.path = "doom2/map25-in.png"
+    exterior.path = "doom2/map25-out.png"
+}
+asset texture.reflect.map26 {
+    interior.path = "doom2/map26-in.png"
+    exterior.path = "doom2/map26-out.png"
+}
+asset texture.reflect.map27 {
+    interior.path = "doom2/map27-in.png"
+    exterior.path = "doom2/map27-out.png"
+}
+asset texture.reflect.map28 {
+    interior.path = "doom2/map28-in.png"
+#    exterior.path = "doom2/map28-out.png"
+}
+asset texture.reflect.map29 {
+    interior.path = "doom2/map29-in.png"
+    exterior.path = "doom2/map29-out.png"
+}
+asset texture.reflect.map30 {
+    interior.path = "doom2/map30-in.png"
+#    exterior.path = "doom2/map30-out.png"
+}
+asset texture.reflect.map31 {
+    interior.path = "doom2/map31-in.png"
+#    exterior.path = "doom2/map31-out.png"
+}
+asset texture.reflect.map32 {
+    interior.path = "doom2/map32-in.png"
+#    exterior.path = "doom2/map32-out.png"
+}
+
+##########
+#DOOM tnt#
+##########
+
+
+###########
+#DOOM plut#
+###########

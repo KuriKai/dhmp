@@ -3,6 +3,8 @@ version: 20181103-2359
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: doom enemy monster pinky spectre hidden
 
+#Add the word "hidden" to the tag to hide the pack from the loading page(usefull when inside a collective pack)
+
 #exported at 0.20
 
 ########################
