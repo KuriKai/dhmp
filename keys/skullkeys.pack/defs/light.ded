@@ -1,0 +1,66 @@
+	 # LIGHT DEFINITIONS
+
+###---yellow key---###
+#create states so we can attach different level lights to each state
+State { ID = "YSKULL"; Sprite = "YSKU"; Frame = 0; Tics = 70; Next state = "YSKULL2"; }
+State { ID = "YSKULL2"; Sprite = "YSKU"; Frame = 1; Flags = fullbright; Tics = 5; Next state = "YSKULL3"; }
+* State { ID = "YSKULL3"; Next state = "YSKULL4"; }
+* State { ID = "YSKULL4"; Next state = "YSKULL5"; }
+* State { ID = "YSKULL5"; Next state = "YSKULL6"; }
+* State { ID = "YSKULL6"; Next state = "YSKULL7"; }
+* State { ID = "YSKULL7"; Next state = "YSKULL8"; }
+* State { ID = "YSKULL8"; Next state = "YSKULL"; }
+
+#attach the lights to the states
+Light { State = "YSKULL";  Size = 0; Color { 0.50 0.50 0.00 }; }
+Light { State = "YSKULL2"; Size = 0; Color { 1.00 1.00 0.70 }; }
+Light { State = "YSKULL3"; Size = 0; Color { 0.80 0.80 0.60 }; }
+Light { State = "YSKULL4"; Size = 0; Color { 0.65 0.65 0.50 }; }
+Light { State = "YSKULL5"; Size = 0; Color { 0.50 0.50 0.40 }; }
+Light { State = "YSKULL6"; Size = 0; Color { 0.35 0.35 0.30 }; }
+Light { State = "YSKULL7"; Size = 0; Color { 0.20 0.20 0.20 }; }
+Light { State = "YSKULL8"; Size = 0; Color { 0.05 0.05 0.10 }; }
+
+
+###---red key---###
+#create states so we can attach different level lights to each state
+State { ID = "RSKULL"; Sprite = "RSKU"; Frame = 0; Tics = 70; Next state = "RSKULL2"; }
+State { ID = "RSKULL2"; Sprite = "RSKU"; Frame = 1; Flags = fullbright; Tics = 5; Next state = "RSKULL3"; }
+* State { ID = "RSKULL3"; Next state = "RSKULL4"; }
+* State { ID = "RSKULL4"; Next state = "RSKULL5"; }
+* State { ID = "RSKULL5"; Next state = "RSKULL6"; }
+* State { ID = "RSKULL6"; Next state = "RSKULL7"; }
+* State { ID = "RSKULL7"; Next state = "RSKULL8"; }
+* State { ID = "RSKULL8"; Next state = "RSKULL"; }
+
+#attach the lights to the states
+Light { State = "RSKULL";  Size = 0; Color { 0.5 0.00 0.00 }; }
+Light { State = "RSKULL2"; Size = 0; Color { 1.00 0.70 0.70 }; }
+Light { State = "RSKULL3"; Size = 0; Color { 0.80 0.60 0.60 }; }
+Light { State = "RSKULL4"; Size = 0; Color { 0.65 0.50 0.50 }; }
+Light { State = "RSKULL5"; Size = 0; Color { 0.50 0.40 0.40 }; }
+Light { State = "RSKULL6"; Size = 0; Color { 0.35 0.30 0.30 }; }
+Light { State = "RSKULL7"; Size = 0; Color { 0.20 0.20 0.20 }; }
+Light { State = "RSKULL8"; Size = 0; Color { 0.05 0.10 0.10 }; }
+
+
+###---blue key---###
+#create states so we can attach different level lights to each state
+State { ID = "BSKULL"; Sprite = "BSKU"; Frame = 0; Tics = 70; Next state = "BSKULL2"; }
+State { ID = "BSKULL2"; Sprite = "BSKU"; Frame = 1; Flags = fullbright; Tics = 5; Next state = "BSKULL3"; }
+* State { ID = "BSKULL3"; Next state = "BSKULL4"; }
+* State { ID = "BSKULL4"; Next state = "BSKULL5"; }
+* State { ID = "BSKULL5"; Next state = "BSKULL6"; }
+* State { ID = "BSKULL6"; Next state = "BSKULL7"; }
+* State { ID = "BSKULL7"; Next state = "BSKULL8"; }
+* State { ID = "BSKULL8"; Next state = "BSKULL"; }
+
+#attach the lights to the states
+Light { State = "BSKULL";  Size = 0; Color { 0.00 0.00 0.5 }; }
+Light { State = "BSKULL2"; Size = 0; Color { 0.35 0.35 1.00 }; }
+Light { State = "BSKULL3"; Size = 0; Color { 0.30 0.30 0.80 }; }
+Light { State = "BSKULL4"; Size = 0; Color { 0.25 0.25 0.65 }; }
+Light { State = "BSKULL5"; Size = 0; Color { 0.20 0.20 0.50 }; }
+Light { State = "BSKULL6"; Size = 0; Color { 0.15 0.15 0.35 }; }
+Light { State = "BSKULL7"; Size = 0; Color { 0.10 0.10 0.20 }; }
+Light { State = "BSKULL8"; Size = 0; Color { 0.05 0.05 0.05 }; }

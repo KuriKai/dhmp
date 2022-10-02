@@ -3,6 +3,8 @@ version: 020150904-0057
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: enemy lostsoul
 
+#export at 0.10
+
 asset model.thing.skull {
   path = "lostsoul.fbx"
   front <0, 0, 1>
@@ -27,13 +29,13 @@ asset model.thing.skull {
         #heightMap = "textures/lostsoul_h.png"
       }
     }
-    variant "material_fire_maine" {
-      mesh_fire_maine {
-        diffuseMap = "textures/flame.png"
+    variant "material_fire" {
+      mesh_fire {
+        diffuseMap = "textures/fire_long.png"
         normalMap = "textures/noise3d_flame.png"
       }
       mesh_fire_eyes {
-        diffuseMap = "textures/flame.png"
+        diffuseMap = "textures/fire_long.png"
         normalMap = "textures/noise3d_flame.png"
       }
     }
@@ -55,10 +57,10 @@ asset model.thing.skull {
       meshes <mesh_skull_dead>
       enabled = false
     }
-    pass "render_pass_flame_maine" {
+    pass "render_pass_fire" {
       shader = "model.skeletal.veirdo.fire"
-      material = "material_fire_maine"
-      meshes <mesh_fire_maine>
+      material = "material_fire"
+      meshes <mesh_fire>
       enabled = true
       depthWrite = false
       blendFunc <SrcAlpha, One>
@@ -74,9 +76,9 @@ asset model.thing.skull {
     variable uNoiseScaleUV          { value <0, 0> }
     variable uNoiseSpeedUV          { value <0, 0> }
     }
-pass "render_pass_flame_eyes" {
+pass "render_pass_fire_eyes" {
       shader = "model.skeletal.veirdo.fire"
-      material = "material_fire_maine"
+      material = "material_fire"
       meshes <mesh_fire_eyes>
       enabled = true
       depthWrite = false

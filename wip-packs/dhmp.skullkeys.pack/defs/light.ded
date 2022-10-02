@@ -1,7 +1,0 @@
-	 # LIGHT DEFINITIONS
-
-	 Light{
-		State = "BSKULL"
-		Size = 0
-		Color { 1 0 0}
-	 }

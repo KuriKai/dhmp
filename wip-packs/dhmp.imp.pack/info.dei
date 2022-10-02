@@ -1,7 +1,7 @@
-title: DHMP Spider MasterMind
+title: DHMP imp test
 version: 20181206-2311
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: doom enemy boss hidden
+tags: doom enemy
 
 #requires <dhmp.common.pack>
 
@@ -10,8 +10,8 @@ tags: doom enemy boss hidden
 ########################
 #Set up the model
 ########################
-asset model.thing.spider {
-  path = "spidermm.fbx"
+asset model.thing.troop {
+  path = "imp_test.fbx"
   front <0, 0, 1>
   up <0, 1, 0>
 

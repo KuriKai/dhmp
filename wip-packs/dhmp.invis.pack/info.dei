@@ -1,9 +1,11 @@
 title: DHMP invis
 version: 20180218-0057
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: evil eye
+tags: pickup invisibility
 
 #exported at 0.18
+#include ded's
+defsPath = "defs"
 
 ########################
 #Set up the model
@@ -24,29 +26,29 @@ asset model.thing.ins {
       mesh_outsidered {
         diffuseMap = "textures/red.png"
         #normalMap = "textures/effects.png"
-      	specularMap = "textures/red.png"
+      	specularMap = "textures/out_s.png"
       	emissiveMap = "textures/red.png"
       }
       mesh_outsideblue {
         diffuseMap = "textures/blue.png"
         #normalMap = "textures/effects.png"
-      	specularMap = "textures/blue.png"
+      	specularMap = "textures/out_s.png"
       	emissiveMap = "textures/blue.png"
       }
     }
     variant "material_eyeball" {
       mesh_eyeball {
-        diffuseMap = "textures/eyeball2_d.png"
+        diffuseMap = "textures/eyeball2.png"
         #normalMap = "textures/effects.png"
-      	specularMap = "textures/eyeball2_s.png"
-      	emissiveMap = "textures/eyeball2_e.png"
+      	specularMap = "textures/out_s.png"
+      	emissiveMap = "textures/eyeball2.png"
       }
     }
     variant "material_red_back" {
       mesh_red_back {
-        diffuseMap = "textures/core_d.png"
+        diffuseMap = "textures/redback.png"
         #normalMap = "textures/cybes_n.png"
-      	#specularMap = "textures/effects.png"
+      	specularMap = "textures/out_s.png"
       	emissiveMap = "textures/core_d.png"
       }
     }
@@ -64,15 +66,15 @@ asset model.thing.ins {
       depthWrite = false
       #blendFunc <SrcAlpha, OneMinusDestColor>
       #depthFunc = Always
-      variable uAlpha          { value = 0.5 }
+      variable uAlpha          { value = 0.4 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
-      variable uEmission       { value = 0 }
+      variable uEmission       { value = 0.5 }
       variable uGlossiness     { value = 0 }
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 0 }
+      variable uSpecular       { value = 0.1 }
     }
     pass "render_eyeball" {
       shader = "model.skeletal.opaque.generic"
@@ -83,12 +85,12 @@ asset model.thing.ins {
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
-      variable uEmission       { value = 1 }
+      variable uEmission       { value = 0 }
       variable uGlossiness     { value = 5 }
       variable uOffsetUV       { value <0, 0> }
-      variable uReflection     { value = 0 }
-      variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 5 }
+      variable uReflection     { value = 0.15 }
+      variable uReflectionBlur { value = 7.5 }
+      variable uSpecular       { value = 0.2 }
     }
 
     pass "render_outsideblue" {
@@ -98,7 +100,7 @@ asset model.thing.ins {
       enabled = True
       depthWrite = false
       #blendFunc <SrcAlpha, OneMinusDestColor >
-      variable uAlpha          { value = 0.20 }
+      variable uAlpha          { value = 0.40 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 1 }
@@ -106,7 +108,7 @@ asset model.thing.ins {
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 1 }
+      variable uSpecular       { value = 0.1 }
     }
     pass "render_outsidered" {
       shader = "model.skeletal.opaque.generic"
@@ -115,7 +117,7 @@ asset model.thing.ins {
       enabled = True
       depthWrite = false
       #blendFunc <SrcAlpha, OneMinusDestColor >
-      variable uAlpha          { value = 0.20 }
+      variable uAlpha          { value = 0.80 }
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 1 }
@@ -123,7 +125,7 @@ asset model.thing.ins {
       variable uOffsetUV       { value <0, 0> }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 5 }
+      variable uSpecular       { value = 0.1 }
     }
 
 
@@ -182,10 +184,15 @@ asset model.thing.ins {
     #-----------------
     state PINS {
       sequence arm_invis|wait {
-  		  prob = 1.0
-  		  looping = True
+  	prob = 0.8
+  	looping = True
         timeline = timeline_invis
-  		}
-	  }
+      }
+      sequence arm_invis|wait2 {
+  	prob = 1.0
+  	looping = True
+        timeline = timeline_invis
+      }
+    }
   }
 }
