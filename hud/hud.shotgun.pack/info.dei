@@ -1,7 +1,7 @@
 title: DHMP HUD shotgun
 version: 20170921.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: doom weapon
+tags: doom weapon hidden
 
 #requires <dhmp.common.pack>
 

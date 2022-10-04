@@ -1,0 +1,97 @@
+title: DHMP Super Shotgun
+version: 20221004-2005
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom pickup item weapon gun hidden
+
+#requires <dhmp.common.pack>
+
+#exported at 0.08
+
+########################
+#Set up the model
+########################
+asset model.thing.supershotgun {
+  path = "doubleshotgun-pickup.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_shotgun" { # use the normal textures
+      mesh_shotgun { #this says which mesh the material will be used with
+        diffuseMap = "textures/supershotty_d.png"
+        normalMap = "textures/supershotty_n.png"
+        specularMap = "textures/supershotty_gs.png"
+        emissiveMap = "textures/supershotty_l.png"
+      }
+    }
+    variant "material_barrel" { # use the normal textures
+      mesh_barrel { #this says which mesh the material will be used with
+        diffuseMap = "textures/supershotty_d.png"
+        normalMap = "textures/supershotty_n.png"
+        specularMap = "textures/supershotty_gs.png"
+        emissiveMap = "textures/supershotty_l.png"
+      }
+    }
+  }
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_shotgun" {
+      shader = "model.skeletal.generic"
+      material = "material_shotgun"
+      meshes <mesh_shotgun>
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 9 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.7 }
+    }
+    pass "render_pass_barrel" {
+      shader = "model.skeletal.generic"
+      material = "material_barrel"
+      meshes <mesh_barrel>
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 25 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state SHOT2 {
+      sequence arm|wait {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

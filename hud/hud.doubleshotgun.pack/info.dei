@@ -1,7 +1,7 @@
 title: DHMP HUD Double Barrel Shotgun
 version: 20170921.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: doom weapon
+tags: doom weapon hidden
 
 #Add the word "hidden" to the tag to hide the pack from the loading page(usefull when inside a collective pack)
 
@@ -31,7 +31,7 @@ asset model.weapon.dsgun {
         #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/supershotty_d.png"
         normalMap = "textures/supershotty_n.png"
-        specularMap = "textures/supershotty_s.png"
+        specularMap = "textures/supershotty_gs.png"
         #emissiveMap = "textures/black_e.png"
       }
     }
@@ -40,7 +40,7 @@ asset model.weapon.dsgun {
         #Multiply adds another texture ontop of the first using multiplying blending
         diffuseMap = "textures/supershotty_d.png"
         normalMap = "textures/supershotty_n.png"
-        specularMap = "textures/supershotty_s.png"
+        specularMap = "textures/supershotty_gs.png"
         #emissiveMap = "textures/black_e.png"
       }
     }
@@ -67,15 +67,6 @@ asset model.weapon.dsgun {
         normalMap = "textures/glove_normal.png"
         specularMap = "textures/glove_gs.png"
         emissiveMap = "textures/black_e.png"
-      }
-    }
-    variant "material_flashL" { # use the normal textures
-      mesh_flashL { #this says which mesh the material will be used with
-        #Multiply adds another texture ontop of the first using multiplying blending
-        diffuseMap = "textures/flash.png"
-        normalMap = "textures/flash.png"
-        specularMap = "textures/flash.png"
-        emissiveMap = "textures/flash.png"
       }
     }
     variant "material_flashR" { # use the normal textures
@@ -176,22 +167,6 @@ asset model.weapon.dsgun {
       variable uReflectionBlur { value = 0 }
       variable uSpecular       { value = 0.2 }
     }
-    pass "render_pass_flashL" {
-      shader = "model.skeletal.generic"
-      material = "material_flashL" #make the render pass use the m_body material
-      meshes <mesh_flashL> #make this render pass use the 2nd model
-      #enabled = True
-      enabled = False
-      variable uAlpha          { value = 1 }
-      variable uAlphaLimit     { value = 0 }
-      variable uColor          { value <1, 1, 1> }
-      variable uEmission       { value = 1 }
-      variable uGlossiness     { value = 0 }
-      variable uOffsetUV       { value <0, 0> }
-      variable uReflection     { value = 0 }
-      variable uReflectionBlur { value = 0 }
-      variable uSpecular       { value = 0 }
-    }
     pass "render_pass_flashR" {
       shader = "model.skeletal.generic"
       material = "material_flashR" #make the render pass use the m_body material
@@ -219,10 +194,7 @@ asset model.weapon.dsgun {
     #-----------------
     timeline "timeline_flash" {
       script at 0 {
-        render_pass_flashL.enabled = True
         render_pass_flashR.enabled = True
-        render_pass_flashL.uEmission.setValueFrom (1, 0, 0.3)
-        render_pass_flashL.uAlpha.setValueFrom (0.7, 0, 0.3)
         render_pass_flashR.uEmission.setValueFrom (1, 0, 0.3)
         render_pass_flashR.uAlpha.setValueFrom (0.7, 0, 0.3)
       }

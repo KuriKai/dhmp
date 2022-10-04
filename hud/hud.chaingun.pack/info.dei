@@ -10,7 +10,7 @@ tags: doom weapon hidden
 #Set up the model
 ########################
 asset model.weapon.chain {
-  path = "chaingun_hud.fbx"
+  path = "chaingun-hud.fbx"
   front <1, 0, 0>
   up <0, 1, 0>
   offset <0, -17, 0>

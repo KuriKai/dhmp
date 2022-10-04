@@ -1,7 +1,7 @@
 title: DHMP HUD plasmacannon
 version: 20220831.01
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
-tags: doom weapon
+tags: doom weapon hidden
 
 #Add the word "hidden" to the tag to hide the pack from the loading page(usefull when inside a collective pack)
 
@@ -32,7 +32,7 @@ asset model.weapon.plasma {
         diffuseMap = "textures/plasmarifle_body_d.png"
         normalMap = "textures/plasmarifle_body_n.png"
         specularMap = "textures/plasmarifle_body_gs.png"
-        emissiveMap = "textures/plasmarifle_body_e.png"
+        emissiveMap = "textures/plasmarifle_body_l.png"
       }
     }
     variant "material_arm" { # use the normal textures

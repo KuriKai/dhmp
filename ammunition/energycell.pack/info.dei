@@ -1,0 +1,74 @@
+title: DHMP Energy cell
+version: 20221003-2241
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom pickup item ammunition plasma ammo hidden
+
+#requires <dhmp.common.pack>
+
+#exported at 0.3
+
+########################
+#Set up the model
+########################
+asset model.thing.misc20 {
+  path = "energy_cell.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_cell" { # use the normal textures
+      mesh_cell { #this says which mesh the material will be used with
+        diffuseMap = "textures/plasma_cell_d.png"
+        normalMap = "textures/plasma_cell_n.png"
+        specularMap = "textures/plasma_cell_gs.png"
+        emissiveMap = "textures/plasma_cell_l.png"
+      }
+    }
+  }
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_cell" {
+      shader = "model.skeletal.generic"
+      material = "material_cell" #make the render pass use the m_body material
+      meshes <mesh_cell>
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1.5 }
+      variable uGlossiness     { value = 20 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 10 }
+      variable uSpecular       { value = 1 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state CELL {
+      sequence arm|wait {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}
