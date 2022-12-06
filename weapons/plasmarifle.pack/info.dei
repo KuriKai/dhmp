@@ -1,0 +1,97 @@
+title: DHMP Plasmarifle
+version: 20221004-2005
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom pickup item weapon gun hidden
+
+#requires <dhmp.common.pack>
+
+#exported at 0.08
+
+########################
+#Set up the model
+########################
+asset model.thing.misc28 {
+  path = "plasmacannon-pickup.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_plasmacannon" { # use the normal textures
+      mesh_plasmacannon { #this says which mesh the material will be used with
+        diffuseMap = "textures/plasmarifle_d.png"
+        normalMap = "textures/plasmarifle_n.png"
+        specularMap = "textures/plasmarifle_gs.png"
+        emissiveMap = "textures/plasmarifle_l.png"
+      }
+    }
+    variant "material_screen" { # use the normal textures
+      mesh_screen { #this says which mesh the material will be used with
+        diffuseMap = "textures/screen_d.png"
+        normalMap = "textures/screen_n.png"
+        specularMap = "textures/screen_gs.png"
+        emissiveMap = "textures/screen_l.png"
+      }
+    }
+  }
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_pass_plasmacannon" {
+      shader = "model.skeletal.generic"
+      material = "material_plasmacannon"
+      meshes <mesh_plasmacannon>
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 9 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.7 }
+    }
+    pass "render_pass_screen" {
+      shader = "model.skeletal.generic"
+      material = "material_screen"
+      meshes <mesh_screen>
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 25 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     state PLAS {
+      sequence arm_gun|wait {
+  		  prob = 1.0
+  		  looping = True
+  		}
+	  }
+  }
+}

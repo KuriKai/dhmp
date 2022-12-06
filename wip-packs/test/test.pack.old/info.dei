@@ -1,0 +1,13 @@
+title: Test pack
+version: 2022.10.29
+license: Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) https://creativecommons.org/licenses/by-nc-nd/4.0/
+tags: hexen
+author: Veirdo
+
+notes = "Test pack"
+
+requires <test.common>
+
+recommends <
+    test.decor
+>

@@ -1,0 +1,105 @@
+# Pack of custom shaders by veirdo v. 25022018
+#Shader for special effects like fire
+shader model.skeletal.veirdo.candlefire {
+    variable uNoiseSpeedUV          { value <0, 0> }
+    variable uNoiseScaleUV          { value <1, 1> }
+    variable uNoiseMultiplier       { value = 0 }
+    variable uMainSpeedUV           { value <0, 0> }
+    variable uMainScaleUV           { value <1, 1> }
+    variable uMainOffset            { value <0, 0> }
+    variable uDiffuseMultiplier     { value <1, 1, 1> }
+    variable uFresnelTranspPow      { value = 1 }
+    variable uAlphaPower            { value = 1 }
+    variable uAlphaMultiplier       { value = 1 }
+    variable uMapTime {}
+    # Mapping when used with ModelDrawable.
+    textureMapping <diffuse, normals>
+    include.vertex </packs/net.dengine.client.renderer/shaders/include/skeletal.glsl>
+    vertex = "
+        uniform vec2  uNoiseSpeedUV;
+        uniform vec2  uNoiseScaleUV;
+        uniform float uMapTime;
+        uniform vec2  uMainSpeedUV;
+        uniform vec2  uMainScaleUV;
+        uniform mat4  uMvpMatrix; // ModelViewProjection
+        in vec4 aVertex;
+        in vec2 aUV;
+        in vec4 aColor;
+        in vec3 aNormal;
+        in vec4 aBounds;   // main map
+        in vec4 aBounds2;  // normal map
+        out vec2 vMUV; //uvs for main texture
+        out vec2 vNUV; //uvs for normal texture
+        out vec4 vUVBounds[2]; //bounds for 2 textures
+        out vec4 vColor;
+        out vec4 vWorldPos; // output world position
+        out vec4 vNormal; // output normal
+        void main(void)
+        {
+            mat4 bone = vertexBoneTransform(); // World
+            vec4 modelPos = bone * aVertex;
+            gl_Position = uMvpMatrix * modelPos; // Vertex position
+            vec2 noiseSpeed = uNoiseSpeedUV; // Noise uv speed
+            vec2 noiseScale = vec2(aUV.xy * uNoiseScaleUV.xy); // Noise uv scale
+            vec2 noiseAdd = ((uMapTime * noiseSpeed.xy) + noiseScale.xy); // Noise uv speed-scale combine
+            vNUV = noiseAdd; // Noise texture uv output for fragment
+            vec2 mainSpeed = uMainSpeedUV; // Main uv speed
+            vec2 mainScale = vec2(aUV.xy * uMainScaleUV.xy); // Main uv scale
+            vec2 mainAdd =((uMapTime * mainSpeed.xy) + mainScale.xy); // Main uv speed-scale combine
+            vMUV = mainAdd; // Main texture uv output for fragment
+            vColor = aColor; // Color output for fragment
+            vec4 worldNormal = normalize (vec4(aNormal, 1.0) * bone); // Calculating world normals
+            vNormal = worldNormal; // Normals output for fragment
+            vec4 WorldPos = bone * modelPos; // World position
+            vWorldPos = WorldPos; // World position output for fragment
+            vUVBounds[0] = aBounds; // output bounds for main texture
+            vUVBounds[1] = aBounds2; // output bounds for noise texture
+        }"
+    defines $= {'PREDEF_TRANSFORM_ALPHA(alpha)'   : ''}
+    include.fragment </packs/net.dengine.client.renderer/shaders/include/texture.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/fog.glsl>
+    fragment = "
+        uniform float uMapTime;
+        uniform float uNoiseMultiplier;
+        uniform vec3  uDiffuseMultiplier;
+        uniform vec3  uEyePos; // camera position
+        uniform float uFresnelTranspPow;
+        uniform float uAlphaPower;
+        uniform float uAlphaMultiplier;
+        uniform vec2  uMainOffset;
+        in vec2 vMUV; //uvs for main texture
+        in vec2 vNUV; //uvs for noise texture
+        in vec4 vUVBounds[2]; //bounds for 2 textures
+        in vec4 vColor; // vertex color
+        in vec4 vWorldPos; // world position
+        in vec4 vNormal; // world normal
+        void main (void)
+        {
+            vec2 wrappedMUV = vMUV + uMainOffset;
+            wrappedMUV = fract(wrappedMUV);
+            vec2 muv = mapToBounds(wrappedMUV, vUVBounds[0]); // wrapped UVs for main texture
+            vec2 wrappedNUV = vNUV;
+            wrappedNUV = fract(wrappedNUV);
+            vec2 nuv = mapToBounds(wrappedNUV, vUVBounds[1]); // wrapped UVs for main texture
+            vec4 noiseSampler = texture(uTex, nuv); // sampler for noise
+            vec2 noiseSamplerVec2 = vec2(noiseSampler.x, noiseSampler.y); // extracting RG channels from noise
+            vec2 noiseSamplerRange = (1.0 - (2.0 * noiseSamplerVec2.xy)); // changing range for noise
+            vec2 noiseMult = (noiseSamplerRange * uNoiseMultiplier); // noise multiplier
+            vec2 noiseAdd = (noiseMult + muv); //applying noise to main texture UVs
+            vec4 diffuseSampler = texture(uTex, vec2(noiseAdd.xy)); // sampler for main
+            vec3 diffuseColorVertMult = (uDiffuseMultiplier.xyz * (vColor.xyz * diffuseSampler.xyz));
+            vec3 cameraPosition = uEyePos;
+            vec3 cameraVector = normalize(cameraPosition - vWorldPos.xyz);
+            float fresnelPow = pow (dot (cameraVector, vNormal.xyz), uFresnelTranspPow);
+            float fresnelPowMult = ((vColor.w * fresnelPow) * diffuseSampler.w);
+            float fresnelAlphaPow = pow(fresnelPowMult, uAlphaPower);
+            float alphaFactor = uAlphaMultiplier;
+        #if defined (PREDEF_TRANSFORM_ALPHA)
+            PREDEF_TRANSFORM_ALPHA(alphaFactor);
+        #endif
+            float fresnelAlphaMult = clamp((fresnelAlphaPow * alphaFactor), 0.0, 1.0);
+            vec3 colorPremult = (diffuseColorVertMult * fresnelAlphaMult);
+            out_FragColor = vec4(colorPremult.xyz, fresnelAlphaMult);
+            applyFog();
+    }"
+}

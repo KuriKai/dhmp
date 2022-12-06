@@ -72,10 +72,10 @@ asset model.thing.head {
       variable uAlphaLimit     { value = 0 }
       variable uColor          { value <1, 1, 1> }
       variable uEmission       { value = 0 }
-      variable uGlossiness     { value = 24 }
+      variable uGlossiness     { value = 200 }
       variable uReflection     { value = 0 }
       variable uReflectionBlur { value = 40 }
-      variable uSpecular       { value = 1.4 }
+      variable uSpecular       { value = 0.2 }
     }
     pass "render_pass_eye" {
       shader = "model.skeletal.generic"

@@ -1,0 +1,11 @@
+title: Test pack: Common Resources
+version: 2022.10.29
+license: Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) https://creativecommons.org/licenses/by-nc-nd/4.0/
+tags: hexen common hidden
+author: Veirdo
+
+# Default reflection maps
+asset texture.reflect.default {
+    interior.path = "CubeMaps/ELV_WinnowingIndoor.png"
+    exterior.path = "CubeMaps/ELV_WinnowingOutdoor.png"
+}

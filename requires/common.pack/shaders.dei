@@ -1,0 +1,313 @@
+# Pack of custom shaders by veirdo 
+# version: 2022.10.29
+
+# Generic shader with additional uv control support
+shader model.skeletal.veirdo.generic {
+    variable uAlphaLimit     { value = 0 }
+    variable uAlpha          { value = 1 }
+    variable uColor          { value <1, 1, 1> }
+    variable uSpeedUV        { value <0, 0> }
+    variable uScaleUV        { value <1, 1> }
+    variable uOffsetUV       { value <0, 0> }
+    variable uSpecular       { value = 1 }
+    variable uEmission       { value = 0 }
+    variable uGlossiness     { value = 100 }
+    variable uReflection     { value = 1 }
+    variable uReflectionBlur { value = 10 }
+
+
+    variable uMapTime {}
+
+    # Mapping when used with ModelDrawable.
+    textureMapping <diffuse, normals, specular, emission>
+
+    include.vertex </packs/net.dengine.client.renderer/shaders/include/tangentspace.glsl,
+                    /packs/net.dengine.client.renderer/shaders/include/skeletal.glsl,
+                    /packs/net.dengine.client.renderer/shaders/include/lighting.glsl>
+
+    vertex = "
+        uniform float uMapTime;
+        uniform vec2  uSpeedUV;
+        uniform vec2  uScaleUV;
+        uniform mat4 uMvpMatrix;
+
+        in vec4 aVertex;
+        in vec4 aColor;
+        in vec2 aUV;
+        in vec4 aBounds;   // diffuse map
+        in vec4 aBounds2;  // normal map
+        in vec4 aBounds3;  // specular map
+        in vec4 aBounds4;  // emission map
+
+        out vec4 vColor;
+        out vec2 vUV;
+        out vec4 vUVBounds[4];
+
+        void main(void)
+        {
+            mat4 bone = vertexBoneTransform();
+            setTangentSpace(bone);
+
+            // Vertex position.
+            vec4 modelPos = bone * aVertex;
+            calculateEyeDirection(modelPos);
+
+            gl_Position = uMvpMatrix * modelPos;
+            vec2 Speed = uSpeedUV;
+            vec2 Scale = aUV * uScaleUV;
+            vec2 SpeedScale = uMapTime * Speed + Scale;
+            vColor = aColor;
+            vUV = SpeedScale;
+            vUVBounds[0] = aBounds;
+            vUVBounds[1] = aBounds2;
+            vUVBounds[2] = aBounds3;
+            vUVBounds[3] = aBounds4;
+        }"
+
+    defines $= {'PREDEF_TRANSFORM_UV(uv)'          : '',
+                'PREDEF_TRANSFORM_EMISSION(color)' : '',
+                'PREDEF_TRANSFORM_ALPHA(alpha)'    : ''}
+
+    include.fragment </packs/net.dengine.client.renderer/shaders/include/texture.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/tangentspace.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/lighting.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/reflection.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/fog.glsl>
+    fragment = "
+        uniform vec3 uColor;       // diffuse color multiplier
+        uniform float uAlpha;      // diffuse alpha multiplier
+        uniform float uAlphaLimit; // alpha test to discard fragments
+        uniform vec2 uOffsetUV;
+        uniform float uMapTime;
+
+        in vec4 vColor;
+        in vec2 vUV;
+        in vec4 vUVBounds[4];
+
+        void main(void)
+        {
+            // Calculate UV at the fragment (wrapped inside the bounds).
+            vec2 wrappedUV = vUV + uOffsetUV;
+        #if defined (PREDEF_TRANSFORM_UV)
+            PREDEF_TRANSFORM_UV(wrappedUV);
+        #endif
+            wrappedUV = fract(wrappedUV);
+
+            vec2 uv         = mapToBounds(wrappedUV, vUVBounds[0]);
+            vec2 normalUV   = mapToBounds(wrappedUV, vUVBounds[1]);
+            vec2 specularUV = mapToBounds(wrappedUV, vUVBounds[2]);
+            vec2 emissiveUV = mapToBounds(wrappedUV, vUVBounds[3]);
+
+            vec3 msNormal = modelSpaceNormalVector(normalUV);
+            vec4 specGloss = specularGloss(specularUV);
+
+            float alphaFactor = uAlpha * uAmbientLight.a;
+        #if defined (PREDEF_TRANSFORM_ALPHA)
+            PREDEF_TRANSFORM_ALPHA(alphaFactor);
+        #endif
+            out_FragColor = diffuseAndReflectedLight(
+                vColor * vec4(uColor, alphaFactor), uv, specGloss, msNormal);
+
+            if (out_FragColor.a < uAlphaLimit) discard;
+
+            out_FragColor.rgb += specularLight(specGloss, msNormal);
+
+            // Emitted light.
+            vec4 emitted = emittedLight(emissiveUV);
+        #if defined (PREDEF_TRANSFORM_EMISSION)
+            PREDEF_TRANSFORM_EMISSION(emitted);
+        #endif
+            out_FragColor += emitted;
+
+            applyFog();
+        }"
+}
+
+
+# Unlit shader with additional uv control support
+shader model.skeletal.veirdo.unlit.diffuse {
+    variable uAlphaLimit { value = 0.0 }
+    variable uAlphaPower { value = 1.0 }
+    variable uAlpha      { value = 1.0 }
+    variable uColor      { value <1, 1, 1> }
+    variable uColorGain  { value = 1.0 }
+    variable uSpeedUV    { value <0, 0> }
+    variable uScaleUV    { value <1, 1> }
+    variable uOffsetUV   { value <0, 0> }
+
+    variable uMapTime {}
+
+    # Mapping when used with ModelDrawable.
+    textureMapping <diffuse>
+
+    defines $= {'PREDEF_TRANSFORM_UV(uv)'       : '',
+                'PREDEF_TRANSFORM_ALPHA(alpha)' : ''}
+        
+include.vertex </packs/net.dengine.client.renderer/shaders/include/skeletal.glsl>
+    vertex = "
+        uniform float uMapTime;
+        uniform vec2  uSpeedUV;
+        uniform vec2  uScaleUV;
+        uniform mat4  uMvpMatrix; // ModelViewProjection
+
+        in vec4 aVertex;
+        in vec4 aColor;
+        in vec2 aUV;
+        in vec4 aBounds;   // diffuse map
+
+        out vec4 vColor;
+        out vec2 vUV;
+        out vec4 vUVBounds;
+
+        void main(void) 
+        {
+            mat4 bone = vertexBoneTransform();
+            // Vertex position
+            vec4 modelPos = bone * aVertex;
+            gl_Position = uMvpMatrix * modelPos;
+            vec2 Speed = uSpeedUV;
+            vec2 Scale = aUV * uScaleUV;
+            vec2 SpeedScale = uMapTime * Speed + Scale;
+            vColor = aColor;
+            vUV = SpeedScale;
+            vUVBounds = aBounds;
+        }"
+
+include.fragment </packs/net.dengine.client.renderer/shaders/include/texture.glsl>
+    fragment = "
+        uniform float uAlphaLimit;
+        uniform float uAlpha;
+        uniform float uAlphaPower;
+        uniform vec3 uColor;       // diffuse color multiplier
+        uniform float uColorGain;
+        uniform vec2 uOffsetUV;
+        uniform float uMapTime;
+         
+        in vec4 vColor;
+        in vec2 vUV;
+        in vec4 vUVBounds;
+        
+        void main(void) 
+        {
+            // Calculate UV at the fragment (wrapped inside the bounds).
+            vec2 wrappedUV = vUV + uOffsetUV;
+        #if defined (PREDEF_TRANSFORM_UV)
+            PREDEF_TRANSFORM_UV(wrappedUV);
+        #endif
+            wrappedUV = fract(wrappedUV);
+            vec2 uv = mapToBounds(wrappedUV, vUVBounds);
+        
+            vec4 diffuse = vColor * texture(uTex, uv);
+            if (diffuse.a < uAlphaLimit) discard;
+            
+            float alphaFactor = clamp ((pow ((uAlpha*diffuse.a),uAlphaPower)), 0.0, 1.0);
+        #if defined (PREDEF_TRANSFORM_ALPHA)
+            PREDEF_TRANSFORM_ALPHA(alphaFactor);
+        #endif
+            out_FragColor = vec4 ((diffuse.rgb * uColorGain), alphaFactor) * vec4(uColor, 1.0);
+        }"
+}
+
+shader model.skeletal.veirdo.fire {
+    variable uNoiseSpeedUV          { value <0, 0> }
+    variable uNoiseScaleUV          { value <1, 1> }
+    variable uNoiseMultiplier       { value = 0 }
+    variable uMainSpeedUV           { value <0, 0> }
+    variable uMainScaleUV           { value <1, 1> }
+    variable uMainOffset            { value <0, 0> }
+    variable uDiffuseMultiplier     { value <1, 1, 1> }
+    variable uFresnelTranspPow      { value = 1 }
+    variable uAlphaPower            { value = 1 }
+    variable uAlphaMultiplier       { value = 1 }
+    variable uMapTime {}
+    # Mapping when used with ModelDrawable.
+    textureMapping <diffuse, normals>
+    include.vertex </packs/net.dengine.client.renderer/shaders/include/skeletal.glsl>
+    vertex = "
+        uniform vec2  uNoiseSpeedUV;
+        uniform vec2  uNoiseScaleUV;
+        uniform float uMapTime;
+        uniform vec2  uMainSpeedUV;
+        uniform vec2  uMainScaleUV;
+        uniform mat4  uMvpMatrix; // ModelViewProjection
+        in vec4 aVertex;
+        in vec2 aUV;
+        in vec4 aColor;
+        in vec3 aNormal;
+        in vec4 aBounds;   // main map
+        in vec4 aBounds2;  // normal map
+        out vec2 vMUV; //uvs for main texture
+        out vec2 vNUV; //uvs for normal texture
+        out vec4 vUVBounds[2]; //bounds for 2 textures
+        out vec4 vColor;
+        out vec4 vWorldPos; // output world position
+        out vec4 vNormal; // output normal
+        void main(void)
+        {
+            mat4 bone = vertexBoneTransform(); // World
+            vec4 modelPos = bone * aVertex;
+            gl_Position = uMvpMatrix * modelPos; // Vertex position
+            vec2 noiseSpeed = uNoiseSpeedUV; // Noise uv speed
+            vec2 noiseScale = vec2(aUV.xy * uNoiseScaleUV.xy); // Noise uv scale
+            vec2 noiseAdd = ((uMapTime * noiseSpeed.xy) + noiseScale.xy); // Noise uv speed-scale combine
+            vNUV = noiseAdd; // Noise texture uv output for fragment
+            vec2 mainSpeed = uMainSpeedUV; // Main uv speed
+            vec2 mainScale = vec2(aUV.xy * uMainScaleUV.xy); // Main uv scale
+            vec2 mainAdd =((uMapTime * mainSpeed.xy) + mainScale.xy); // Main uv speed-scale combine
+            vMUV = mainAdd; // Main texture uv output for fragment
+            vColor = aColor; // Color output for fragment
+            vec4 worldNormal = normalize (vec4(aNormal, 1.0) * bone); // Calculating world normals
+            vNormal = worldNormal; // Normals output for fragment
+            vec4 WorldPos = bone * modelPos; // World position
+            vWorldPos = WorldPos; // World position output for fragment
+            vUVBounds[0] = aBounds; // output bounds for main texture
+            vUVBounds[1] = aBounds2; // output bounds for noise texture
+        }"
+    defines $= {'PREDEF_TRANSFORM_ALPHA(alpha)'   : ''}
+    include.fragment </packs/net.dengine.client.renderer/shaders/include/texture.glsl,
+                      /packs/net.dengine.client.renderer/shaders/include/fog.glsl>
+    fragment = "
+        uniform float uMapTime;
+        uniform float uNoiseMultiplier;
+        uniform vec3  uDiffuseMultiplier;
+        uniform vec3  uEyePos; // camera position
+        uniform float uFresnelTranspPow;
+        uniform float uAlphaPower;
+        uniform float uAlphaMultiplier;
+        uniform vec2  uMainOffset;
+        in vec2 vMUV; //uvs for main texture
+        in vec2 vNUV; //uvs for noise texture
+        in vec4 vUVBounds[2]; //bounds for 2 textures
+        in vec4 vColor; // vertex color
+        in vec4 vWorldPos; // world position
+        in vec4 vNormal; // world normal
+        void main (void)
+        {
+            vec2 wrappedMUV = vMUV + uMainOffset;
+            wrappedMUV = fract(wrappedMUV);
+            vec2 muv = mapToBounds(wrappedMUV, vUVBounds[0]); // wrapped UVs for main texture
+            vec2 wrappedNUV = vNUV;
+            wrappedNUV = fract(wrappedNUV);
+            vec2 nuv = mapToBounds(wrappedNUV, vUVBounds[1]); // wrapped UVs for main texture
+            vec4 noiseSampler = texture(uTex, nuv); // sampler for noise
+            vec2 noiseSamplerVec2 = vec2(noiseSampler.x, noiseSampler.y); // extracting RG channels from noise
+            vec2 noiseSamplerRange = (1.0 - (2.0 * noiseSamplerVec2.xy)); // changing range for noise
+            vec2 noiseMult = (noiseSamplerRange * uNoiseMultiplier); // noise multiplier
+            vec2 noiseAdd = (noiseMult + muv); //applying noise to main texture UVs
+            vec4 diffuseSampler = texture(uTex, vec2(noiseAdd.xy)); // sampler for main
+            vec3 diffuseColorVertMult = (uDiffuseMultiplier.xyz * (vColor.xyz * diffuseSampler.xyz));
+            vec3 cameraPosition = uEyePos;
+            vec3 cameraVector = normalize(cameraPosition - vWorldPos.xyz);
+            float fresnelPow = pow (dot (cameraVector, vNormal.xyz), uFresnelTranspPow);
+            float fresnelPowMult = ((vColor.w * fresnelPow) * diffuseSampler.w);
+            float fresnelAlphaPow = pow(fresnelPowMult, uAlphaPower);
+            float alphaFactor = uAlphaMultiplier;
+        #if defined (PREDEF_TRANSFORM_ALPHA)
+            PREDEF_TRANSFORM_ALPHA(alphaFactor);
+        #endif
+            float fresnelAlphaMult = clamp((fresnelAlphaPow * alphaFactor), 0.0, 1.0);
+            vec3 colorPremult = (diffuseColorVertMult * fresnelAlphaMult);
+            out_FragColor = vec4(colorPremult.xyz, fresnelAlphaMult);
+            applyFog();
+    }"
+}

@@ -1,0 +1,46 @@
+title: Test pack Pottery replacement
+version: 2022.10.29
+license: Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) https://creativecommons.org/licenses/by-nc-nd/4.0/
+tags: hexen decorations
+requires <test.common>
+author: Veirdo
+
+asset model.thing.pottery3 {
+    path = "D_Pottery_ShaderTest.fbx"
+    front <-1, 0, 0>
+    up <0, 1, 0>
+    offset <0, 0, 0>
+    autoscale = False
+    material {
+        variant "default" {
+            @0 {
+                diffuseMap =  "D_Pottery_ShaderTest_diffuse.png"
+                normalMap =   "D_Pottery_ShaderTest_normal.png"
+                specularMap = "D_Pottery_ShaderTest_specGloss.png"
+                emissiveMap = "D_Pottery_ShaderTest_emissive.png"
+            }
+            @1 {
+                diffuseMap =  "D_Pottery_ShaderTest_emissive.png"
+            }
+        }
+    }
+    render {
+        pass "lower" {
+            enabled = True
+            shader = "model.skeletal.veirdo.generic"
+            meshes <@0>
+            variable uSpeedUV { value <0, 0.2> }
+            variable uScaleUV { value <1, 1> }
+            variable uEmission { value = 1 }
+        }
+        pass "upper" {
+            enabled = True
+            shader = "model.skeletal.veirdo.unlit.diffuse"
+            meshes <@1>
+            variable uSpeedUV { value <0, -0.1> }
+            variable uScaleUV { value <2, 2> }
+            blendFunc <SrcAlpha, One>
+            depthWrite = False
+        }
+    }
+}

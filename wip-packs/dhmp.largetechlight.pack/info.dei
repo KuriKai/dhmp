@@ -1,0 +1,144 @@
+title: DHMP large tech light
+version: 20221201-1058
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle tech lamp
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.18
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+asset model.thing.misc29 {
+  path = "largetechlight.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <0, 18, 0>
+ #alignment.yaw = view
+ #alignment.pitch = view
+   #alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-base" {
+      mesh-base {
+        diffuseMap = "textures/mat-base-d.png"
+        normalMap = "textures/mat-base-n.png"
+      	specularMap = "textures/mat-base-d.png"
+      	#emissiveMap = "textures/computermap_box_l.png"
+      }
+    }
+    variant "material-glass" {
+      mesh-glass {
+        diffuseMap = "textures/mat-glass.png"
+      	emissiveMap = "textures/mat-glass.png"
+      }
+    }
+    variant "material-light" {
+      mesh-light {
+        diffuseMap = "textures/mat-light-d.png"
+      	emissiveMap = "textures/mat-light-l.png"
+      }
+    }
+    variant "material-led" {
+      mesh-led {
+        diffuseMap = "textures/led.png"
+      	emissiveMap = "textures/led.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_led" {
+      shader = "model.skeletal.generic"
+      material = "material-led"
+      meshes <mesh-led>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+    }
+    pass "render_light" {
+      shader = "model.skeletal.generic"
+      material = "material-light"
+      meshes <mesh-light>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+    }
+    pass "render_base" {
+      shader = "model.skeletal.generic"
+      material = "material-base"
+      meshes <mesh-base>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.1 }
+    }
+    pass "render_glass" {
+      shader = "model.skeletal.generic"
+      material = "material-glass"
+      meshes <mesh-glass>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1.5> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 10 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+     #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state TECHLAMP {
+      sequence arm|wait {
+        alwaysTrigger = true
+        mustFinish = true
+  	prob = 1
+  	duration = 2.4
+  	looping = true
+        #timeline = map
+      }
+    }
+  }
+}

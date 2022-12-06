@@ -1,10 +1,13 @@
 title: DMP2 Lostsoul
-version: 020150904-0057
+version: 20150904-0057
 license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
 tags: enemy lostsoul
 
 #export at 0.10
 
+########################
+#Set up the model
+########################
 asset model.thing.skull {
   path = "lostsoul.fbx"
   front <0, 0, 1>
@@ -12,6 +15,9 @@ asset model.thing.skull {
   mirror = False
   autoscale = False
 
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
   material {
     variant "material_skull" {
       mesh_skull {
@@ -34,9 +40,30 @@ asset model.thing.skull {
         diffuseMap = "textures/fire_long.png"
         normalMap = "textures/noise3d_flame.png"
       }
-      mesh_fire_eyes {
-        diffuseMap = "textures/fire_long.png"
-        normalMap = "textures/noise3d_flame.png"
+    }
+    variant "material_eye" {
+      mesh-eye-left {
+        diffuseMap = "textures/eye.png"
+        normalMap = "textures/lostsoul_n.png"
+        #specularMap = "textures/lostsoul_s.png"
+        emissiveMap = "textures/eye.png"
+        #heightMap = "textures/lostsoul_h.png"
+     }
+     mesh-eye-right {
+        diffuseMap = "textures/eye.png"
+        normalMap = "textures/lostsoul_n.png"
+        #specularMap = "textures/lostsoul_s.png"
+        emissiveMap = "textures/eye.png"
+        #heightMap = "textures/lostsoul_h.png"
+     }
+    }
+    variant "material_glow" {
+      mesh-glow {
+        diffuseMap = "textures/glow.png"
+        #normalMap = "textures/lostsoul_n.png"
+        #specularMap = "textures/lostsoul_s.png"
+        emissiveMap = "textures/glow.png"
+        #heightMap = "textures/lostsoul_h.png"
       }
     }
   }
@@ -76,24 +103,59 @@ asset model.thing.skull {
     variable uNoiseScaleUV          { value <0, 0> }
     variable uNoiseSpeedUV          { value <0, 0> }
     }
-pass "render_pass_fire_eyes" {
-      shader = "model.skeletal.veirdo.fire"
-      material = "material_fire"
-      meshes <mesh_fire_eyes>
+   pass "render_eye_right" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_eye"
+      meshes <mesh-eye-right>
+      enabled = false
+      #depthWrite = false
+      #blendFunc <SrcAlpha, One>
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uEmission       { value = 0.20 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV        { value <0.10, -0.70> }
+      variable uScaleUV        { value <2, 2> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_eye_left" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_eye"
+      meshes <mesh-eye-left>
+      enabled = false
+      #depthWrite = false
+      #blendFunc <SrcAlpha, One>
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uEmission       { value = 0.20 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV        { value <0.10, -0.70> }
+      variable uScaleUV        { value <2, 2> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_glow" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_glow"
+      meshes <mesh-glow>
       enabled = true
-      depthWrite = false
-      blendFunc <SrcAlpha, One>
-    variable uAlphaMultiplier       { value = 2 }
-    variable uAlphaPower            { value = 2 }
-    variable uDiffuseMultiplier     { value <4, 2.1, 1.2> }
-    variable uFresnelTranspPow      { value = 1 }
-#    variable uFresnelTranspPow      { value = 0 }
-    variable uMainOffset            { value <0, 0> }
-    variable uMainScaleUV           { value <1, 1> }
-    variable uMainSpeedUV           { value <0, 1> }
-    variable uNoiseMultiplier       { value = 0.001 }
-    variable uNoiseScaleUV          { value <0.2, 0.4> }
-    variable uNoiseSpeedUV          { value <2, 2> }
+      #depthWrite = false
+      #blendFunc <SrcAlpha, One>
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uEmission       { value = 0.20 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV        { value <0.10, -0.70> }
+      variable uScaleUV        { value <2, 2> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
     }
   }
 

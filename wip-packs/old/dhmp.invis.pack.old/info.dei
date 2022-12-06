@@ -1,0 +1,269 @@
+title: DHMP invis
+version: 20180218-0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: pickup invisibility
+requires <dhmp.common>
+
+#exported at 0.18
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+asset model.thing.ins {
+  path = "invis.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <0, 18, 0>
+ alignment.yaw = view
+ #alignment.pitch = view
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_outside_blue" {
+      mesh-outside-blue {
+        diffuseMap = "textures/outsideblue_d.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/spec.png"
+      	emissiveMap = "textures/outsideblue_d.png"
+      }
+    }
+    variant "material_spec" {
+      mesh-spec {
+        diffuseMap = "textures/spec_d.png"
+        #normalMap = "textures/cybes_n.png"
+      	specularMap = "textures/spec.png"
+      	#emissiveMap = "textures/outsideblue_d.png"
+      }
+    }
+    variant "material_back_red" {
+      mesh-back-red {
+        diffuseMap = "textures/redback.png"
+        #normalMap = "textures/cybes_n.png"
+      	specularMap = "textures/spec.png"
+      	emissiveMap = "textures/redback.png"
+      }
+    }
+    variant "material_eye" {
+      mesh-eye {
+        diffuseMap = "textures/eye.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/eye.png"
+      	emissiveMap = "textures/eye.png"
+      }
+    }
+    variant "material_iris" {
+      mesh-iris {
+        diffuseMap = "textures/iris.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/iris.png"
+      	emissiveMap = "textures/iris.png"
+      }
+    }
+    variant "material_lightball" {
+      mesh-lightball {
+        diffuseMap = "textures/lightball.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/spec.png"
+      	emissiveMap = "textures/lightball.png"
+      }
+    }
+    variant "material_lightball2" {
+      mesh-lightball2 {
+        diffuseMap = "textures/lightball.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/spec.png"
+      	emissiveMap = "textures/lightball.png"
+      }
+    }
+    variant "material_lightball3" {
+      mesh-lightball3 {
+        diffuseMap = "textures/lightball.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/spec.png"
+      	emissiveMap = "textures/lightball.png"
+      }
+    }
+    variant "material_lightball4" {
+      mesh-lightball4 {
+        diffuseMap = "textures/lightball.png"
+        #normalMap = "textures/cybes_n.png"
+      	#specularMap = "textures/spec.png"
+      	emissiveMap = "textures/lightball.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+  #furthest back first, closest to the player last
+    pass "render_back_red" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_back_red"
+      meshes <mesh-back-red>
+      enabled = True
+      #depthWrite = false
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 1 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+    pass "render_eye" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_eye"
+      meshes <mesh-eye>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uOffsetUV { value <0, 0> }
+      variable uEmission { value = 0 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+    pass "render_iris" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_iris"
+      meshes <mesh-iris>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+    pass "render_spec" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_spec"
+      meshes <mesh-spec>
+      enabled = True
+      #depthWrite = false
+      variable uAlpha { value = 2 }
+      variable uColor          { value <1, 1, 1> }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 10 }
+      variable uGlossiness     { value = 200 }
+    }
+    pass "render_outside_blue" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_outside_blue"
+      meshes <mesh-outside-blue>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha { value = 0.15 }
+      variable uSpeedUV { value <0, 0.7> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 1 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+    pass "render_lightball" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_lightball"
+      meshes <mesh-lightball>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha          { value = 0.1 }
+      variable uColor          { value <1, 1, 1> }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV { value <0, 0.1> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+    }
+    pass "render_lightball2" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_lightball2"
+      meshes <mesh-lightball2>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha          { value = 0.2 }
+      variable uColor          { value <1, 1, 1> }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV { value <0, 0.1> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+    }
+    pass "render_lightball3" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_lightball3"
+      meshes <mesh-lightball3>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha          { value = 0.2 }
+      variable uColor          { value <1, 1, 1> }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV { value <0, 0.1> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+    }
+    pass "render_lightball4" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material_lightball4"
+      meshes <mesh-lightball4>
+      enabled = true
+      #depthWrite = false
+      variable uAlpha          { value = 0.2 }
+      variable uColor          { value <1, 1, 1> }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV { value <0, 0.1> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 0 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "invis" {
+    script at 0 {
+       render_eye.uOffsetUV.y.setValue ( 0.28, 0.1 )
+       render_iris.uAlpha.setValue ( 1, 0.1 )
+    }
+    script at 0.1 {
+       render_eye.uOffsetUV.y.setValueFrom ( 0.28, 0.55, 0.9 )
+       }
+    script at 0.7 {
+       render_iris.uAlpha.setValueFrom ( 1, 0.2, 0.5 )
+       }
+    }
+    
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state PINS {
+      sequence arm_invis|wait {
+        alwaysTrigger = true
+        mustFinish = true
+        duration = 2
+  	looping = True
+  	timeline = invis
+      }
+    }
+  }
+}

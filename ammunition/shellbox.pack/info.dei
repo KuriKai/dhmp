@@ -1,0 +1,132 @@
+title: DHMP shellbox
+version: 20221206-1020
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: shotgun shells box hidden
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.20
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+asset model.thing.misc23 {
+  path = "shellbox.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <0, 18, 0>
+ #alignment.yaw = view
+ #alignment.pitch = view
+   #alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-box" {
+      mesh-box {
+        diffuseMap = "textures/shotgunammobox_d.png"
+        normalMap = "textures/shotgunammobox_n.png"
+        specularMap = "textures/shotgunammobox_gs.png"
+      	#emissiveMap = "textures/shotgunammobox_ao.png"
+      }
+    }
+    variant "material-shells" {
+      mesh-shell {
+        diffuseMap = "textures/shell_d.png"
+        normalMap = "textures/shell_n.png"
+      	specularMap = "textures/shell_gs.png"
+      	#emissiveMap = "textures/inner.png"
+      }
+      mesh-shell2 {
+        diffuseMap = "textures/shell_d.png"
+        normalMap = "textures/shell_n.png"
+      	specularMap = "textures/shell_gs.png"
+      	#emissiveMap = "textures/inner.png"
+      }
+      mesh-shell3 {
+        diffuseMap = "textures/shell_d.png"
+        normalMap = "textures/shell_n.png"
+      	specularMap = "textures/shell_gs.png"
+      	#emissiveMap = "textures/inner.png"
+      }
+      mesh-shell4 {
+        diffuseMap = "textures/shell_d.png"
+        normalMap = "textures/shell_n.png"
+      	specularMap = "textures/shell_gs.png"
+      	#emissiveMap = "textures/inner.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+  #furthest back first 
+    pass "render_box" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-box"
+      meshes <mesh-box>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = LessOrEqual
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV        { value <0, 0> }
+      variable uScaleUV        { value <1, 1> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0 }
+    }
+    pass "render_shells" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-shells"
+      meshes <mesh-shell, mesh-shell2, mesh-shell3, mesh-shell4>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = LessOrEqual
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uSpeedUV        { value <0, 0> }
+      variable uScaleUV        { value <1, 1> }
+      variable uReflection     { value = 0.10 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.5 }
+    }
+
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state SBOX {
+      sequence arm|wait {
+        alwaysTrigger = true
+        #mustFinish = true
+  	prob = 1
+  	#duration = 2.4
+  	looping = true
+      }
+    }
+  }
+}

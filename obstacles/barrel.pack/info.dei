@@ -315,21 +315,21 @@ pass "render_pass_bubbles4" {
                   priority = 1
   		  prob = 0.25
   		  looping = True
-		  timeline = timeline_bubbles
+		  #timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait2 {
                   priority = 1
   		  prob = 0.25
   		  looping = True
-		  timeline = timeline_bubbles
+		  #timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait3 {
                   priority = 1
   		  prob = 0.25
   		  looping = True
-		  timeline = timeline_bubbles
+		  #timeline = timeline_bubbles
 		mustFinish = True
       }
       sequence arm_barrel|wait4 {
