@@ -1,0 +1,228 @@
+title: DHMP Computer map
+version: 20221206-1037
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: pickup computer map hidden
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.15
+#include ded's
+defsPath = "defs"
+
+########################
+#Set up the model
+########################
+asset model.thing.misc15 {
+  path = "computerareamap.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <0, 18, 0>
+ #alignment.yaw = view
+ #alignment.pitch = view
+   alignment.yaw = random
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-computer" {
+      mesh-computer {
+        diffuseMap = "textures/computermap_box_d.png"
+        normalMap = "textures/computermap_box_n.png"
+      	specularMap = "textures/computermap_box_gs.png"
+      	emissiveMap = "textures/computermap_box_l.png"
+      }
+    }
+    variant "material-lights-red" {
+      mesh-lights-red {
+        diffuseMap = "textures/mat-lights-d.png"
+      	emissiveMap = "textures/mat-lights-l.png"
+      }
+    }
+    variant "material-lights-blue" {
+      mesh-lights-blue {
+        diffuseMap = "textures/mat-lights-d.png"
+      	emissiveMap = "textures/mat-lights-l.png"
+      }
+    }
+    variant "material-glow-blue" {
+      mesh-glow-blue {
+        diffuseMap = "textures/computermap_box_d.png"
+        normalMap = "textures/computermap_box_n.png"
+      	specularMap = "textures/computermap_box_gs.png"
+      	emissiveMap = "textures/computermap_box_l.png"
+      }
+    }
+    variant "material-screen" {
+      mesh-screen {
+        diffuseMap = "textures/map.png"
+        #normalMap = "textures/eyeball3_n.png"
+      	specularMap = "textures/map_s.png"
+      	emissiveMap = "textures/map_e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_computer" {
+      shader = "model.skeletal.generic"
+      material = "material-computer"
+      meshes <mesh-computer>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.1 }
+    }
+    pass "render_lights_red" {
+      shader = "model.skeletal.generic"
+      material = "material-lights-red"
+      meshes <mesh-lights-red>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+    }
+    pass "render_lights_blue" {
+      shader = "model.skeletal.generic"
+      material = "material-lights-blue"
+      meshes <mesh-lights-blue>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+    }
+    pass "render_glow_blue" {
+      shader = "model.skeletal.generic"
+      material = "material-glow-blue"
+      meshes <mesh-glow-blue>
+      enabled = True
+      #depthWrite = false
+      #blendFunc <SrcAlpha, OneMinusDestColor>
+      #depthFunc = Always
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.5 }
+    }
+    pass "render_screen" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-screen"
+      meshes <mesh-screen>
+      enabled = True
+      #depthWrite = false
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 10 }
+      variable uOffsetUV       { value <0.93, 0.93> }
+      variable uSpeedUV        { value <0, 0> }
+      variable uScaleUV        { value <1.12, 1.30> }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+     #-----------------
+    #setup different timeline changes
+    #-----------------
+        timeline "map" {
+            script at 0 {
+                render_screen.uOffsetUV.x.setValue ( 0.93 )
+                render_screen.uOffsetUV.y.setValue  ( 0.93 )
+                render_screen.uScaleUV.x.setValue ( 1.12 )
+                render_screen.uScaleUV.y.setValue ( 1.30 )
+                render_lights_red.uEmission.setValue  ( 1 )
+                render_computer.uEmission.setValueFrom ( 2, 1.5, 0.1 )
+            }
+            script at 0.2 {
+                render_lights_red.uEmission.setValue  ( 0.5 )
+            }
+            #top left
+            script at 0.8 {
+                render_screen.uScaleUV.x.setValueFrom ( 1.12, 0.70, 0 )
+                render_screen.uScaleUV.y.setValueFrom ( 1.30, 0.70, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+            }
+            #middle
+            script at 1.2 {
+                render_screen.uOffsetUV.x.setValueFrom ( 0.93, 1.15, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 0.93, 1.20, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+                render_lights_blue.uEmission.setValue  ( 1 )
+                render_glow_blue.uEmission.setValue  ( 1.5 )
+            }
+            #bottom right
+            script at 1.4 {
+                render_screen.uOffsetUV.x.setValueFrom ( 1.15, 1.35, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 1.20, 1.40, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+                render_lights_blue.uEmission.setValue  ( 0.5 )
+                render_glow_blue.uEmission.setValue  ( 0.5 )
+            }
+            #right
+            script at 1.6 {
+                render_screen.uOffsetUV.x.setValueFrom ( 1.35, 1.35, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 1.40, 1.20, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+            }
+            #top right
+            script at 1.8 {
+                render_screen.uOffsetUV.x.setValueFrom ( 1.35, 1.35, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 1.20, 0.93, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+            }
+            #middle
+            script at 2 {
+                render_screen.uOffsetUV.x.setValueFrom ( 0.93, 1.15, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 0.93, 1.20, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+            }
+            #bottom left
+            script at 2.2 {
+                render_screen.uOffsetUV.x.setValueFrom ( 0.93, 0.93, 0 )
+                render_screen.uOffsetUV.y.setValueFrom  ( 0.93, 1.40, 0 )
+                render_computer.uEmission.setValueFrom ( 2, 0.5, 0.5 )
+            }
+        }
+
+
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state PMAP {
+      sequence arm|wait {
+        alwaysTrigger = true
+        mustFinish = true
+  	prob = 1
+  	duration = 2.4
+  	looping = true
+        timeline = map
+      }
+    }
+  }
+}

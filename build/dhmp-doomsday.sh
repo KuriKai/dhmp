@@ -8,9 +8,9 @@ RELEASER="com.hiriwa"
 LICENSE="Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/"
 #######
 #the below tells the script what folders to look for packs in
-FOLDERS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "requires" "obstacles" "powerup" "weapons")
+FOLDERS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "requires" "obstacles" "powerup" "weapons" "projectiles")
 REQUIRES_ARRAY=("requires")
-RECOMMENDS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "obstacles" "powerup" "weapons")
+RECOMMENDS_ARRAY=("ammunition" "artifact" "hud" "decorations" "keys" "monsters" "obstacles" "powerup" "weapons" "projectiles")
 
 #automaticly set variables
 DATESTAMP=$(date +%Y%m%d)

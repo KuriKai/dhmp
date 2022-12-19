@@ -1,0 +1,13 @@
+#==Licence==
+#Attribution-NonCommercial-ShareAlike 4.0 International
+#https://creativecommons.org/licenses/by-nc-sa/4.0/
+#===========
+
+#==Credits==
+#model
+#Mark
+#texture
+#Tea Monster: tea_monster@yahoo.com
+#ingame
+#KuriKai: eunbolt@gmail.com
+#===========

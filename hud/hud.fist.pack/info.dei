@@ -63,7 +63,7 @@ asset model.weapon.punch {
       #enabled = False
       variable uAlpha          { value = 1 }
       variable uAlphaLimit     { value = 0 }
-      variable uColor          { value <1, 1, 1> }
+      variable uColor          { value <0.6, 0.6, 0.6> }
       variable uEmission       { value = 0 }
       variable uGlossiness     { value = 2 }
       variable uOffsetUV       { value <0, 0> }
