@@ -1,0 +1,9 @@
+model.rocket_fire_hud {
+    shader uvscroll inherits model.skeletal.unlit.diffuse {
+        script {
+            self.include.fragment += ['uvscroll.glsl']
+        }
+        # Macro definition
+        defines $= { 'PREDEF_TRANSFORM_UV(uv)': 'uv = scrolledUV(uv, uMapTime)'}
+    }
+}

@@ -1,0 +1,194 @@
+title: DHMP rocket projectile
+version: 20221219-0302
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: rocket projectile hidden
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.75
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+#for testing unhash misc12 and load up doom2map5, disable soulsphere model too
+#asset model.thing.misc12 {
+asset model.thing.rocket {
+  path = "rocket.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+offset <0, 7, 0>
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-rocket" {
+      mesh-rocket {
+        diffuseMap = "textures/rocket_d.png"
+        normalMap = "textures/rocket_n.png"
+        specularMap = "textures/rocket_gs.png"
+      	emissiveMap = "textures/rocketlightbake.png"
+      }
+    }
+    variant "material-flame-middle" {
+      mesh-flame-middle {
+        diffuseMap = "textures/middle-d.png"
+        normalMap = "textures/noise3d_flame.png"
+        specularMap = "textures/noise3d_flame.png"
+      	emissiveMap = "textures/middle-d.png"
+      }
+    }
+    variant "material-flame-inner" {
+      mesh-flame-inner {
+        diffuseMap = "textures/inner-d.png"
+        normalMap = "textures/noise3d_flame.png"
+        specularMap = "textures/noise3d_flame.png"
+      	emissiveMap = "textures/inner-d.png"
+      }
+    }
+    variant "material-death" {
+      mesh-death {
+        diffuseMap = "textures/noise3d_flame.png"
+        normalMap = "textures/noise3d_flame.png"
+        heightMap = "textures/noise3d_flame.png"
+      	specularMap = "textures/noise3d_flame.png"
+      	emissiveMap = "textures/noise3d_flame.png"
+      }
+     }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+  #furthest back first
+
+    
+    pass "render_rocket" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-rocket"
+      meshes <mesh-rocket>
+      enabled = true
+      #depthFunc = Always
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 1 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+    
+    pass "render_flameinner" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-flame-inner"
+      meshes <mesh-flame-inner>
+      enabled = true
+      #depthFunc = Always
+      depthWrite = false
+      variable uAlphaMultiplier       { value = 2 }
+      variable uAlphaPower            { value = 1 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 0.25 }
+      variable uMainOffset            { value <0, 0.77> }
+      variable uMainScaleUV           { value <1, 1> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.01 }
+      variable uNoiseScaleUV          { value <2, 1> }
+      variable uNoiseSpeedUV          { value <0, 2> }
+    }
+    pass "render_flamemiddle" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-flame-middle"
+      meshes <mesh-flame-middle>
+      enabled = true
+      #depthFunc = Always
+      depthWrite = false
+      variable uAlphaMultiplier       { value = 1 }
+      variable uAlphaPower            { value = 1 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 0.50 }
+      variable uMainOffset            { value <0, 0.88> }
+      variable uMainScaleUV           { value <1, 1> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.02 }
+      variable uNoiseScaleUV          { value <1.33, 0.75> }
+      variable uNoiseSpeedUV          { value <0, 1> }
+    }
+ 
+    pass "render_death" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-death"
+      meshes <mesh-death>
+      enabled = false
+      #depthWrite = false
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 1 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+      
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_death" {
+        script at 0 {
+	  
+		  render_rocket.enabled = False
+		  render_flameinner.enabled = False
+		  render_flamemiddle.enabled = False
+		  #render_death.enabled = True
+		  #render_death.uSpecular.setValueFrom ( 0, 10, 0.2 )
+		  #render_death.uEmission.setValueFrom ( 0, 2, 0.2 )
+
+	}
+     }
+     timeline "timeline_flight" {
+	script at 0 {
+		render_rocket.uEmission.setValue (2)
+		render_flamemiddle.uAlphaMultiplier.setValue (1.2)
+	}
+	script at 0.1 {
+		render_rocket.uEmission.setValue (1)
+		render_flamemiddle.uAlphaMultiplier.setValue (1)
+	}
+    }
+    #-----------------
+    #setup` the states(e.g. attacking, dying, walking)
+    #-----------------
+    #state SOUL {
+     state ROCKET {
+      sequence arm|wait {
+  	prob = 1
+  	duration = 0.2
+  	timeline = timeline_flight
+  	alwaysTrigger = true
+  	looping = true
+      }
+     }
+     state EXPLODE0 {
+       sequence arm|death {
+         alwaysTrigger = true
+         mustFinish = true
+         prob = 1
+         duration = 1
+         timeline = timeline_death
+        }
+     }
+  }
+}

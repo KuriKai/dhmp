@@ -1,0 +1,220 @@
+title: DHMP HUD Rocket Launcher2
+version: 20170921.01
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: doom weapon
+
+#requires <dhmp.common.pack>
+
+#exported at ?0.30?
+
+########################
+#Set up the model
+########################
+asset model.weapon.missile {
+  path = "rocketlauncher-hud.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  #offset <-1, -15, 15>
+    offset <-1, -50, 15>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material_rocket_launcher" { # use the normal textures
+      mesh_rocketlauncher { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/rocketlauncher_d.png"
+        normalMap = "textures/rocketlauncher_n.png"
+        specularMap = "textures/rocketlauncher_gs.png"
+        emissiveMap = "textures/glow.png"
+      }
+    }
+    variant "material_fire" { # use the normal textures
+      mesh_fire { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/fire3.png"
+        normalMap = "textures/fire3.png"
+        specularMap = "textures/fire3.png"
+        emissiveMap = "textures/fire3.png"
+      }
+    }
+    variant "material_smoke" { # use the normal textures
+      mesh_smoke { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/smoke.png"
+      }
+    }
+    variant "material-fire2" { # use the normal textures
+      mesh-fire2 { #this says which mesh the material will be used with
+        #Multiply adds another texture ontop of the first using multiplying blending
+        diffuseMap = "textures/fire2.png"
+        normalMap = "textures/noise3d_flame.png"
+        specularMap = "textures/noise3d_flame.png"
+        emissiveMap = "textures/fire2.png"
+      }
+    }
+  }
+
+
+
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+      pass "render_pass_rocket_launcher" {
+      shader = "model.skeletal.generic"
+      material = "material_rocket_launcher" #make the render pass use the m_body material
+      meshes <mesh_rocketlauncher> #make this render pass use the 2nd model
+      enabled = True
+      #enabled = False
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 36 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.3 }
+    }
+      pass "render_pass_smoke" {
+      shader = "model.skeletal.generic"
+      material = "material_smoke" #make the render pass use the m_body material
+      meshes <mesh_smoke> #make this render pass use the 0st model
+      #enabled = True
+      enabled = False
+      #allow other transperent thigns to render through this one
+      depthWrite = False
+      variable uAlpha          { value = 0.5 }
+      variable uAlphaLimit     { value = 0.4 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0.2 }
+      variable uGlossiness     { value = 0 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0 }
+    }
+      pass "render_pass_fire" {
+      shader = "model.skeletal.generic"
+      material = "material_fire" #make the render pass use the m_body material
+      meshes <mesh_fire> #make this render pass use the 1st model
+      #enabled = True
+      enabled = False
+      #allow other transperent thigns to render through this one
+      depthWrite = False
+      variable uAlpha          { value = 0.25 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 25 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+    }
+    pass "render_pass_fire2" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-fire2"
+      meshes <mesh-fire2>
+      enabled = False
+      #depthFunc = Always
+      variable uAlphaMultiplier       { value = 1.70 }
+      variable uAlphaPower            { value = 0.60 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 0 }
+      variable uMainOffset            { value <0.99, 0.20> }
+      variable uMainScaleUV           { value <1, 0.7> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.005 }
+      variable uNoiseScaleUV          { value <2, 2> }
+      variable uNoiseSpeedUV          { value <0, 2> }
+    }
+  }
+  
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+     timeline "timeline_fire" {
+        script at 0 {
+          #turn off the body object and turn on the death object
+          render_pass_fire.enabled = False
+          render_pass_fire2.enabled = True
+          render_pass_fire2.uAlphaMultiplier.setValueFrom (1, 0, 0.2)
+          render_pass_rocket_launcher.uEmission.setValueFrom (1, 0, 0.2)
+          render_pass_smoke.enabled = True
+#	  render_pass_fire.uAlpha.setValueFrom (1, 0, 0.2, 0.1)
+#	  render_pass_fire.uOffsetUV.y.setValueFrom (0, 0.5, 0.5)
+#	  render_pass_smoke.uAlpha.setValueFrom (1, 0.7, 0.2)
+#	  render_pass_smoke.uOffsetUV.x.setValueFrom (0, 0.20, 1)
+#	  render_pass_smoke.uEmission.x.setValueFrom (0.5, 0, 0.5)
+       }
+     }
+#	script at 0.2 {
+#	  render_pass_smoke.uAlpha.setValueFrom (0.7, 0, 0.2)	
+#	}
+#	script at 2 {
+#          #turn off the body object and turn on the death object
+#          #render_pass_fire.enabled = False
+#          #render_pass_smoke.enabled = False
+#        }
+#      }
+     timeline "timeline_wait" {
+        script at 0 {
+	  render_pass_fire.enabled = False
+          render_pass_smoke.enabled = False
+          render_pass_fire2.enabled = False
+	}
+     }
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+     #A_WeaponReady
+     state MISSILE {
+        sequence arm_hud_rocketlauncher|wait {
+  	  prob = 1.0
+  	  looping = FALSE
+	  timeline = timeline_wait
+  	}
+     }
+     #A_WeaponRefire
+#     state MISSILE3 {
+#        sequence arm_hud_rocketlauncher|fire {
+#	  #timeline = timeline_fire
+#  	  prob = 1.0
+#  	  looping = FALSE
+#  	}
+#     }
+     #A_GunFlash
+     state MISSILE1 {
+        sequence arm_hud_rocketlauncher|fire {
+	  timeline = timeline_fire
+  	  prob = 1.0
+  	  looping = True
+  	}
+     }
+     #A_Raise
+     state MISSILEUP {
+        sequence arm_hud_rocketlauncher|up {
+  	  prob = 1.0
+  	  looping = False
+	  timeline = timeline_wait
+  	}
+     }
+     #A_Lower
+     state MISSILEDOWN {
+        sequence arm_hud_rocketlauncher|down {
+  	  prob = 1.0
+  	  looping = False
+	  timeline = timeline_wait
+  	}
+     }
+  }
+}

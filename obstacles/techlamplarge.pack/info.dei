@@ -1,0 +1,135 @@
+title: DHMP tech lamp large
+version: 20221201-1058
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: obstacle tech lamp hidden
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.18
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+asset model.thing.misc29 {
+  path = "techlamplarge.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-base" {
+      mesh-base {
+        diffuseMap = "textures/mat-base-d.png"
+        normalMap = "textures/mat-base-n.png"
+      	specularMap = "textures/mat-base-gs.png"
+      	emissiveMap = "textures/mat-baseglow-l.png"
+      }
+    }
+    variant "material-glass" {
+      mesh-glass {
+        diffuseMap = "textures/mat-glass-d.png"
+        specularMap = "textures/mat-glass-s.png"
+        normalMap = "textures/mat-glass-n.png"
+        heightMap = "textures/mat-glass-h.png"
+      	emissiveMap = "textures/mat-glass-e.png"
+      }
+    }
+    variant "material-light" {
+      mesh-light {
+        diffuseMap = "textures/mat-light-d.png"
+        normalMap = "textures/mat-cloud.png"
+        specularMap = "textures/mat-light-e.png"
+      	emissiveMap = "textures/mat-light-e.png"
+      }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render { 
+    pass "render_light" {
+      shader = "model.skeletal.generic"
+      material = "material-light"
+      meshes <mesh-light>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+      variable uGlossiness     { value = 50 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.9 }
+    }
+    pass "render_base" {
+      shader = "model.skeletal.generic"
+      material = "material-base"
+      meshes <mesh-base>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 2 }
+      variable uGlossiness     { value = 50 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.9 }
+    }
+    pass "render_glass" {
+      shader = "model.skeletal.generic"
+      material = "material-glass"
+      meshes <mesh-glass>
+      enabled = True
+      variable uAlpha          { value = 0.75 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1.5> }
+      variable uEmission       { value = 1 }
+      variable uGlossiness     { value = 200 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 1 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 10 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    timeline "timeline_flicker" {
+            script at 0 {
+		render_glass.uAlpha.setValue (0.75)
+		render_glass.uEmission.setValue (1.25)
+		render_base.uEmission.setValue (1.50)
+            }
+            script at 0.2 {
+		render_glass.uAlpha.setValue (0.85)
+		render_glass.uEmission.setValue (1.50)
+		render_base.uEmission.setValue (1.75)
+            }
+    }
+     #-----------------
+    #setup different timeline changes
+    #-----------------
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state TECHLAMP {
+      sequence arm|wait {
+        alwaysTrigger = true
+        mustFinish = true
+  	prob = 1
+  	duration = 0.4
+  	looping = true
+        timeline = timeline_flicker
+      }
+    }
+  }
+}
