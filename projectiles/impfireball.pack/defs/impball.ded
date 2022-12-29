@@ -1,0 +1,17 @@
+State {
+  ID = "TBALLX1";
+  Sprite = "BAL1";
+  Frame = 0;
+  Flags = fullbright;
+  Tics = 120;
+  Next state = "NULL";
+}
+
+State {
+  ID = "TBALLX2";
+  Sprite = "BAL1";
+  Frame = 1;
+  Flags = fullbright;
+  Tics = 4;
+  Next state = "TBALL1";
+}

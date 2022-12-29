@@ -1,0 +1,25 @@
+State {
+  ID = "RBALLX1";
+  Sprite = "BAL2";
+  Frame = 2;
+  Flags = fullbright;
+  Tics = 120;
+  Next state = "NULL";
+}
+
+State {
+  ID = "RBALLX2";
+  Sprite = "BAL2";
+  Frame = 3;
+  Flags = fullbright;
+  Tics = 6;
+  Next state = "RBALLX3";
+}
+State {
+  ID = "RBALLX3";
+  Sprite = "BAL2";
+  Frame = 4;
+  Flags = fullbright;
+  Tics = 6;
+  Next state = "NULL";
+}

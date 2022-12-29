@@ -1,0 +1,17 @@
+State {
+  ID = "BEXP";
+  Sprite = "BEXP";
+  Frame = 0;
+  Flags = fullbright;
+  Tics = 200;
+  Next state = "NULL";
+}
+State {
+  ID = "BEXP2";
+  Sprite = "BEXP";
+  Frame = 1;
+  Flags = fullbright;
+  Tics = -1;
+  Action = "A_Scream";
+  Next state = "NULL";
+}

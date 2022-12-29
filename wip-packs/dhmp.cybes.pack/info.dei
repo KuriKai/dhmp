@@ -157,12 +157,12 @@ asset model.thing.cyborg {
     #-----------------
     timeline "timeline_aware" {
         script at 0 {
-	  render_body.uEmission.setValue (0.33, 0.3)
+	  render_body.uEmission.setValue (1, 0.3)
 	}
     }
     timeline "timeline_attack" {
         script at 0 {
-	  render_body.uEmission.setValueFrom (0.33, 1, 0.2)
+	  render_body.uEmission.setValue (2, 0.2)
 	}
 	script at 0.2 {
 	  render_fire.enabled = True

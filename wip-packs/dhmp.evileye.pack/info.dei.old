@@ -1,0 +1,127 @@
+title: DHMP Evil Eye
+version: 20221226.0057
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: evil
+
+#exported at 0.18
+
+
+
+########################
+#Set up the model
+########################
+asset model.thing.misc38 {
+  path = "evileye.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+  offset <0, 0, 0>
+ #alignment.yaw = view
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+      variant "material-circle" {
+	​      mesh-circle {
+	        #Multiply adds another texture ontop of the first using multiplying blending
+	​        diffuseMap = "textures/green.png"
+	​        #normalMap = "textures/green.png"
+	​      	#specularMap = "textures/green.png"
+	​      	emissiveMap = "textures/green.png"
+	​      }
+      }
+      variant "material-arrow" {
+	​      mesh-arrow {
+	        #Multiply adds another texture ontop of the first using multiplying blending
+	​        diffuseMap = "textures/green.png"
+	​        #normalMap = "textures/green.png"
+	​      	#specularMap = "textures/green.png"
+	​      	emissiveMap = "textures/green.png"
+	​      }
+	}
+      variant "material-triangle" {
+	​      mesh-triangle {
+	        #Multiply adds another texture ontop of the first using multiplying blending
+	​        diffuseMap = "textures/green.png"
+	​        normalMap = "textures/noise3d_flame.png"
+	​      	specularMap = "textures/noise3d_flame.png"
+	​      	emissiveMap = "textures/green.png"
+	​      }
+	}
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+    pass "render_circle" {
+      shader = "model.skeletal.generic"
+      material = "material-circle"
+      meshes <mesh-circle>
+      enabled = True
+      variable uAlpha          { value = 1 }
+      variable uAlphaLimit     { value = 0 }
+      variable uColor          { value <1, 1, 1> }
+      variable uEmission       { value = 0 }
+      variable uGlossiness     { value = 36 }
+      variable uOffsetUV       { value <0, 0> }
+      variable uReflection     { value = 0 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 1.3 }
+    } 
+   pass "render_arrow" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-arrow"
+      meshes <mesh-arrow>
+      enabled = true
+      variable uAlphaMultiplier       { value = 0.70 }
+      variable uAlphaPower            { value = 0.60 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 0 }
+      variable uMainOffset            { value <1, 1.10> }
+      variable uMainScaleUV           { value <1, 1> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.01 }
+      variable uNoiseScaleUV          { value <2, 2> }
+      variable uNoiseSpeedUV          { value <0, 2> }
+    }
+      pass "render_triangle" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-triangle"
+      meshes <mesh-triangle>
+      enabled = true
+      #depthWrite = false
+      #blendFunc <SrcAlpha, One>
+      variable uAlphaMultiplier       { value = 0.70 }
+      variable uAlphaPower            { value = 0.60 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 0 }
+      variable uMainOffset            { value <1, 1.10> }
+      variable uMainScaleUV           { value <1, 1> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.01 }
+      variable uNoiseScaleUV          { value <2, 2> }
+      variable uNoiseSpeedUV          { value <0, 2> }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+
+    #-----------------
+    #setup the states(e.g. attacking, dying, walking)
+    #-----------------
+    state EVILEYE {
+      sequence arm|wait {
+    	  prob = 1.0
+    	  #looping = True
+    	}
+      }
+  }
+}
