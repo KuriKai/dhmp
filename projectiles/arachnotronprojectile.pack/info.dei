@@ -1,0 +1,183 @@
+title: DHMP arachnotron projectile
+version: 20221219-0302
+license: Attribution-NonCommercial-ShareAlike 4.0 International https://creativecommons.org/licenses/by-nc-sa/4.0/
+tags: arachnotron projectile hidden
+
+#requires <com.hiriwa.dhmp.dhmp.common>
+#exported at 0.09
+#include ded's
+#defsPath = "defs"
+
+########################
+#Set up the model
+########################
+#asset model.thing.misc12 {
+asset model.thing.arachplaz {
+  path = "aplasma.fbx"
+  front <0, 0, 1>
+  up <0, 1, 0>
+offset <0, 0, 0>
+#offset <0, 18, 0>
+ alignment.yaw = view
+ alignment.pitch = random
+
+
+  #++++++++++++++++++++++++
+  #set up the textures for the model
+  #++++++++++++++++++++++++
+  material {
+    variant "material-light-cross" {
+      mesh-light-cross {
+        diffuseMap = "textures/light-cross.png"
+        normalMap = "textures/noise3d_flamed.png"
+        specularMap = "textures/light-cross.png"
+      	emissiveMap = "textures/light-cross.png"
+      }
+    }
+    variant "material-light-blue" {
+      mesh-light-blue {
+        diffuseMap = "textures/light-blue.png"
+        normalMap = "textures/noise3d_flamed.png"
+        specularMap = "textures/light-blue.png"
+      	emissiveMap = "textures/light-blue.png"
+      }
+    }
+    variant "material-death" {
+      mesh-death {
+        diffuseMap = "textures/death.png"
+        normalMap = "textures/death.png"
+        heightMap = "textures/death.png"
+      	specularMap = "textures/death.png"
+      	emissiveMap = "textures/exploded.png"
+      }
+     }
+  }
+
+  #++++++++++++++++++++++++
+  #set up the rendering of the skin
+  #++++++++++++++++++++++++
+  render {
+  #furthest back first
+    pass "render_light_blue" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-light-blue"
+      meshes <mesh-light-blue>
+      enabled = true
+      depthFunc = Always
+      variable uAlphaMultiplier       { value = 2 }
+      variable uAlphaPower            { value = 1 }
+      variable uDiffuseMultiplier     { value <0, 1.5, 2> }
+      variable uFresnelTranspPow      { value = 2 }
+      variable uMainOffset            { value <0.63, 0.63> }
+      variable uMainScaleUV           { value <1.75, 1.75> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.002 }
+      variable uNoiseScaleUV          { value <1, 1> }
+      variable uNoiseSpeedUV          { value <-1, -1> }
+    }
+    
+    pass "render_light_cross" {
+      shader = "model.skeletal.veirdo.fire"
+      material = "material-light-cross"
+      meshes <mesh-light-cross>
+      enabled = true
+      depthFunc = Always
+      variable uAlphaMultiplier       { value = 2 }
+      variable uAlphaPower            { value = 1 }
+      variable uDiffuseMultiplier     { value <1, 1, 1> }
+      variable uFresnelTranspPow      { value = 2 }
+      variable uMainOffset            { value <0, 0> }
+      variable uMainScaleUV           { value <1, 1> }
+      variable uMainSpeedUV           { value <0, 0> }
+      variable uNoiseMultiplier       { value = 0.002 }
+      variable uNoiseScaleUV          { value <1, 1> }
+      variable uNoiseSpeedUV          { value <-1, -1> }
+    }
+    pass "render_death" {
+      shader = "model.skeletal.veirdo.generic"
+      material = "material-death"
+      meshes <mesh-death>
+      enabled = false
+      depthWrite = false
+      variable uAlpha { value = 1 }
+      variable uSpeedUV { value <0, 0> }
+      variable uScaleUV { value <1, 1> }
+      variable uEmission { value = 1 }
+      variable uReflection     { value = 0.5 }
+      variable uReflectionBlur { value = 0 }
+      variable uSpecular       { value = 0.2 }
+      variable uGlossiness     { value = 10 }
+    }
+  }
+
+  #++++++++++++++++++++++++
+  #setup the animations
+  #++++++++++++++++++++++++
+  animation {
+   variable blight_cross_rotation{
+      speed = -130
+      #axis chaingun rotates around
+      axis <0, -1, 0>
+      angle = 1
+      #bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "bone-light-cross"
+    }
+    variable dlight_blue_rotation{
+      speed = -90
+      #axis chaingun rotates around
+      axis <0, -1, 0>
+      angle = 1
+      #bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "bone-light-blue"
+    }
+    variable death_rotation{
+      speed = 0
+      #axis chaingun rotates around
+      axis <0, 1, 0>
+      angle = 60
+      #bone that is affected by the rotation(child bones will also be affected of the chosen bone)
+      node = "bone-death"
+    }
+    
+    #-----------------
+    #setup different timeline changes
+    #-----------------
+    timeline "timeline_death" {
+        script at 0 {
+	          #speed degrees per second
+		  blight_cross_rotation.speed.setValue (0)
+		  dlight_blue_rotation.speed.setValue (0)
+		  
+		  render_light_blue.enabled = False
+		  render_light_cross.enabled = False
+
+		  render_death.enabled = True
+		  render_death.uSpecular.setValueFrom ( 0, 10, 0.2 )
+		  render_death.uEmission.setValueFrom ( 0, 2, 0.2 )
+		  death_rotation.angle.setValue (170)
+	}
+	script at 0.3 {
+		render_death.uAlpha.setValueFrom ( 1, 0, 0.4 )
+		render_death.uSpecular.setValueFrom ( 10, 0, 0.1 )
+		render_death.uEmission.setValueFrom ( 2, 0, 0.3 )
+	}
+    }
+    #-----------------
+    #setup` the states(e.g. attacking, dying, walking)
+    #-----------------
+    state ARACH_PLAZ {
+      sequence arm|wait {
+  	  prob = 1
+      }
+     }
+     state ARACH_PLEX {
+       sequence arm|death {
+         alwaysTrigger = true
+         mustFinish = true
+         prob = 1
+         duration = 1
+         timeline = timeline_death
+        }
+      }
+  }
+}
